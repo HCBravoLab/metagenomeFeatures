@@ -5,6 +5,7 @@
 ##
 ## -----------------------------------------------------------------------------
 
+## Not sure how to access method, currently need MgDb$methodname(mgdb_object)
 #loading the sqlite database from file
 .load_taxa_db <- function(taxdb){
     db_con <- dplyr::src_sqlite(taxdb)
