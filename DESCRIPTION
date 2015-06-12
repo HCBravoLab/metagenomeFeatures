@@ -10,4 +10,5 @@ Imports: ShortRead,
     dplyr,
     stringr,
     lazyeval,
-    RSQLite
+    RSQLite,
+    magrittr
