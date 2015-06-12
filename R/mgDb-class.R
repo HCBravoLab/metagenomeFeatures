@@ -1,7 +1,7 @@
 ## -----------------------------------------------------------------------------
 ##
 ## Definition and methods for MgDb class
-## using RefClass locking data to make immutable
+## using RefClass as db changes state with query string
 ##
 ## -----------------------------------------------------------------------------
 
@@ -12,6 +12,11 @@
     dplyr::tbl(src = db_con, from = "tree")
 }
 
+#' Metagenome Database class
+#'
+#' @field taxa taxonomy database
+#' @field seq database reference sequences
+#' @field metadata database metadata
 MgDb <- setRefClass("MgDb",
                      contains="ShortRead",
                      fields=list(seq="ShortRead",
@@ -111,7 +116,7 @@ MgDb$methods(annotate = function(object, ...){
     return(select_tbl %>% dplyr::collect())
 }
 
-#' select function returns a filtered set of sequences or taxa based on defined
+# select function returns a filtered set of sequences or taxa based on defined
 # input ' use type = "seq" returns a ShortRead object and type = "taxa" returns a
 # filtered database not sure if we want to make the select method only generate a
 MgDb$methods(select = function(object, type, ...){
@@ -138,19 +143,42 @@ MgDb$methods(select = function(object, type, ...){
 
 ## MgDb Taxa function ----------------------------------------------------------
 
-# Select function revisions
+
+#' Retrieve key values for a specific taxa
+#' @name taxa_keys
+#' @param object
+#' @param keytype
+#'
+#' @return tbl_df
+#' @export
+#'
+#' @examples TODO
 MgDb$methods(taxa_keys = function(object, keytype){
                 dplyr::select_(object$taxa, keytype) %>% dplyr::collect()
           }
 )
 
 #' List of database columns.
+#' @name taxa_columns
+#' @param object
+#'
+#' @return vector
+#' @export
+#'
+#' @examples TODO
 MgDb$methods(taxa_columns = function(object){
         colnames(object$taxa)
     }
 )
 
 #' Field to potentially use to query database.
+#' @name taxa_keytypes
+#' @param object
+#'
+#' @return vector
+#' @export
+#'
+#' @examples TODO
 MgDb$methods(taxa_keytypes = function(object){
         colnames(object$taxa)
     }
