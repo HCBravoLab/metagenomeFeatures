@@ -9,4 +9,5 @@ LazyData: true
 Imports: ShortRead,
     dplyr,
     stringr,
-    lazyeval
+    lazyeval,
+    RSQLite
