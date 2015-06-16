@@ -71,6 +71,8 @@ setMethod("show", "MgDb",
 ## Methods to generate metagenomeAnnotation object %%TODO%% modify features to
 ## include additional information about metagenomeAnnotation class, specifically
 ## filter command and other approriate metadata, e.g. method used for mapping
+
+
 MgDb$methods(annotate = function(object, ...){
                 filtered_db <- select(object, type = "both", ...)
                 MgDb$new(taxa = filtered_db[[1]],
@@ -78,6 +80,9 @@ MgDb$methods(annotate = function(object, ...){
                           features = object$metadata)
             }
 )
+
+
+
 
 ## select methods --------------------------------------------------------------
 ## use ShortRead Object filters
