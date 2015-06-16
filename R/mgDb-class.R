@@ -13,7 +13,9 @@
 }
 
 #' Metagenome Database class
-#'
+#' @name MgDb
+#' @import methods
+#' @exportClass MgDb
 #' @field taxa taxonomy database
 #' @field seq database reference sequences
 #' @field metadata database metadata
@@ -142,44 +144,66 @@ MgDb$methods(select = function(object, type, ...){
 )
 
 ## MgDb Taxa function ----------------------------------------------------------
+### Not sure how to best document and export MgDb methods, wrote wrappers
+### so they can be used using standard function(value) method
 
-
-#' Retrieve key values for a specific taxa
-#' @name taxa_keys
-#' @param object
-#' @param keytype
-#'
-#' @return tbl_df
-#' @export
-#'
-#' @examples TODO
 MgDb$methods(taxa_keys = function(object, keytype){
                 dplyr::select_(object$taxa, keytype) %>% dplyr::collect()
           }
 )
 
-#' List of database columns.
-#' @name taxa_columns
-#' @param object
+## Wrapper for taxa_keys method
+
+#' Taxonomy values for a given keytype
 #'
-#' @return vector
+#' @param mgdb_object object of MgDB class
+#' @param keytype taxonomic classification level
+#'
+#' @return tbl_df
 #' @export
 #'
-#' @examples TODO
+#' @examples taxa_keys(mgdb, "Class")
+taxa_keys <- function(mgdb_object, keytype){
+    return(mgdb_object$taxa_keys(keytype))
+}
+
 MgDb$methods(taxa_columns = function(object){
         colnames(object$taxa)
     }
 )
 
-#' Field to potentially use to query database.
-#' @name taxa_keytypes
-#' @param object
+## Wrapper for taxa_columns method
+
+#' Taxonomic levels for a MdDB class
+#'
+#' @param mgdb_object object of MgDB class
+#' @param keytype taxonomic classification level
 #'
 #' @return vector
 #' @export
 #'
-#' @examples TODO
+#' @examples taxa_keys(mgdb)
+taxa_columns <- function(mgdb_object){
+    return(mgdb_object$taxa_columns())
+}
+
+
+## %%TODO%% have return an AnnotatedDataFrame
 MgDb$methods(taxa_keytypes = function(object){
         colnames(object$taxa)
     }
 )
+
+## Wrapper for taxa_keytypes method
+
+#' Keytypes for the MgDB object
+#'
+#' @param mgdb_object object of MgDB class
+#'
+#' @return vector
+#' @export
+#'
+#' @examples taxa_keytypes(mgdb)
+taxa_keytypes <- function(mgdb_object){
+    return(mgdb_object$taxa_keytypes())
+}
