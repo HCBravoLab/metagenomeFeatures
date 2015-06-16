@@ -40,3 +40,4 @@ testMgDb$select(testMgDb,
 ### metagenomeAnnotation class
 
 ## testing annotate method
+testMgDb$annotate(testMgDb, keys = c("Vibrio", "Salmonella"),keytype = "Genus")
