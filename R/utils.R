@@ -1,8 +1,8 @@
-#' @imports methods
+#' @import methods
 NULL
 
-#' @importClassesFrom ShortRead
+#' @importClassesFrom ShortRead ShortRead
 NULL
 
-#' @importFrom margrittr %>%
+#' @importFrom magrittr %>%
 NULL
