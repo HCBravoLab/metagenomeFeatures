@@ -90,17 +90,21 @@ setMethod("show", "MgDb",
 ## returns a metagenomeAnnotation class object
 
 MgDb$methods(annotate = function(object, ...){
-                filtered_db <- select(object, type = "both", ...)
-                MgDb$new(taxa = filtered_db[[1]],
-                          seq = filtered_db[[2]],
-                          features = object$metadata)
+                filtered_db <- object$select(object, type = "both", ...)
+#                 MgDb$new(taxa = filtered_db[[1]],
+#                           seq = filtered_db[[2]],
+#                           features = object$metadata)
+                new("metagenomeAnnotation",
+                    annotation = object$metadata,
+                    data = filtered_db)
+                )
             }
 )
 
 ## use ShortRead Object filters
-## %%TODO%%
+## %%TODO%% head(x) standin with expected type
 .select.seq <- function(x, ...){
-    return
+    return(head(x))
 }
 
 #' Function for querying the marker gene taxonomy database.
@@ -149,7 +153,7 @@ MgDb$methods(select = function(object, type, ...){
                   stop("type must be either 'seq' or 'taxa'")
               }
               if(type == "seq" || type == "both"){
-                  seq_obj <- .select.seq(object$seq, ...)
+                  seq_df <- .select.seq(object$seq, ...)
                   if(type != "both"){
                       return(seq_obj)
                   }
@@ -162,11 +166,16 @@ MgDb$methods(select = function(object, type, ...){
               }else{
                   taxa_df <- object$taxa
               }
-              return(list(taxa_df, seq_df))
+              return(list(taxa = taxa_df, seq = seq_df))
           }
 )
 
-## %%TODO%% cannot create a wrapper like with taxa functions as it
+## %%TODO%% Document
+# setMethod("select", "MgDb",
+#           function(object, type, ...) {
+#               object$select(object, type, ...)
+#           }
+# )
 
 ### ============================================================================
 ##
