@@ -49,8 +49,20 @@ setValidity("MgDb", function(object) {
     if (is.null(msg)) TRUE else msg
 })
 
-## MgDb Methods ----------------------------------------------------------------
-## General Methods
+################################################################################
+################################################################################
+##
+##                              MgDb Methods
+##
+################################################################################
+################################################################################
+
+### ============================================================================
+##
+##                              MgDb show method
+##
+### ============================================================================
+
 setMethod("show", "MgDb",
           function(object){
             cat(class(object), "object:\n")
@@ -66,12 +78,16 @@ setMethod("show", "MgDb",
         }
 )
 
+### ============================================================================
 ##
+##                              MgDb select method
 ##
+### ============================================================================
+
 ## Methods to generate metagenomeAnnotation object %%TODO%% modify features to
 ## include additional information about metagenomeAnnotation class, specifically
 ## filter command and other approriate metadata, e.g. method used for mapping
-
+## returns a metagenomeAnnotation class object
 
 MgDb$methods(annotate = function(object, ...){
                 filtered_db <- select(object, type = "both", ...)
@@ -81,22 +97,24 @@ MgDb$methods(annotate = function(object, ...){
             }
 )
 
-
-
-
-## select methods --------------------------------------------------------------
 ## use ShortRead Object filters
+## %%TODO%%
 .select.seq <- function(x, ...){
     return
 }
 
 #' Function for querying the marker gene taxonomy database.
+#'
 #' @param ids sequence ids to select
+#'
 #' @param columns quoted vector of table columns returned, all returned by default
+#'
 #' @param sqlite database connection, see src_sqlite in dplyr
+#'
 #' @param dbtable database table name, defaults to tree.
+#'
 #' @return generates database, function does not return anything
-.select.taxa<- function(keys, keytype,
+.select.taxa<- function(taxaDb, keys, keytype,
                         columns="all"){
 
     # selecting desired rows
@@ -139,7 +157,7 @@ MgDb$methods(select = function(object, type, ...){
               if(type == "taxa"|| type == "both"){
                   taxa_df <- .select.taxa(object$taxa, ...)
                   if(type != "both"){
-                      return(taxa_obj)
+                      return(taxa_df)
                   }
               }else{
                   taxa_df <- object$taxa
@@ -148,10 +166,18 @@ MgDb$methods(select = function(object, type, ...){
           }
 )
 
-## MgDb Taxa function ----------------------------------------------------------
+## %%TODO%% cannot create a wrapper like with taxa functions as it
+
+### ============================================================================
+##
+##                              MgDb Taxa methods
+##
+### ============================================================================
+
 ### Not sure how to best document and export MgDb methods, wrote wrappers
 ### so they can be used using standard function(value) method
 
+### Taxa keys function ---------------------------------------------------------
 MgDb$methods(taxa_keys = function(object, keytype){
                 dplyr::select_(object$taxa, keytype) %>% dplyr::collect()
           }
@@ -169,9 +195,11 @@ MgDb$methods(taxa_keys = function(object, keytype){
 #'
 #' @examples taxa_keys(mgdb, "Class")
 taxa_keys <- function(mgdb_object, keytype){
-    return(mgdb_object$taxa_keys(keytype))
+    return(mgdb_object$taxa_keys(mgdb_object, keytype))
 }
 
+
+### Taxa columns function ------------------------------------------------------
 MgDb$methods(taxa_columns = function(object){
         colnames(object$taxa)
     }
@@ -189,10 +217,10 @@ MgDb$methods(taxa_columns = function(object){
 #'
 #' @examples taxa_keys(mgdb)
 taxa_columns <- function(mgdb_object){
-    return(mgdb_object$taxa_columns())
+    return(mgdb_object$taxa_columns(mgdb_object))
 }
 
-
+### taxa keytypes function -----------------------------------------------------
 ## %%TODO%% have return an AnnotatedDataFrame
 MgDb$methods(taxa_keytypes = function(object){
         colnames(object$taxa)
@@ -210,5 +238,5 @@ MgDb$methods(taxa_keytypes = function(object){
 #'
 #' @examples taxa_keytypes(mgdb)
 taxa_keytypes <- function(mgdb_object){
-    return(mgdb_object$taxa_keytypes())
+    return(mgdb_object$taxa_keytypes(mgdb_object))
 }
