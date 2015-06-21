@@ -88,21 +88,45 @@ setMethod("show", "MgDb",
 ## include additional information about metagenomeAnnotation class, specifically
 ## filter command and other approriate metadata, e.g. method used for mapping
 ## returns a metagenomeAnnotation class object
+## query - is a DNAStringSet with user provided sequences
+##      potentially modify to accept a fasta/ fastq file
+## mapping - defines method to map user provided sequences to database
+##              arbitrary - for developmental use only randomly selects random subset of sequences in the database to assign as matching sequences to the first 100 sequences in the query set
 
-# MgDb$methods(annotate = function(object, ...){
-#                 filtered_db <- object$select(object, type = "both", ...)
-# #                 MgDb$new(taxa = filtered_db[[1]],
-# #                           seq = filtered_db[[2]],
-# #                           features = object$metadata)
-#                 new("metagenomeAnnotation",
-#                     annotation = object$metadata,
-#                     data = filtered_db)
-#                 )
-#             }
-# )
+MgDb$methods(
+    annotate = function(object,
+                        query,
+                        mapping = "arbitrary",
+                        ...){
+        if(mapping == "arbitrary"){
+            query_size <- length(query)
+            db_subset <- sample(taxa_keys(object,
+                                          keytype = c("Keys"))$Keys,
+                                query_size)
+            match_df <- data.frame(query_id = names(query_subset),
+                                   Keys = db_subset,
+                                   stringsAsFactors = FALSE)
+        }
+        filtered_db <- object$select(object,
+                                     type = "both",
+                                     keys = match_df$Keys,
+                                     keytype = "Keys")
 
-## use ShortRead Object filters
-## %%TODO%% head(x) standin with expected type
+        annotated_db <- dplyr::right_join(match_df, filtered_db$taxa)
+        annoDF <- new("AnnotatedDataFrame", annotated_db)
+        anno_metadata <- testMgDb$metadata
+        anno_metadata$mapping <- mapping
+
+        new("metagenomeAnnotation",
+            refDF = annotated_db,
+            metadata = anno_metadata,
+            feature_data = query
+        )
+
+    }
+)
+
+
 .select.seq <- function(seqObj, ids, ...){
     seqObj[names(seqObj) %in% ids,]
 }
@@ -159,11 +183,9 @@ MgDb$methods(select = function(object, type, ids = NULL, ...){
                     taxa_df <- .select.taxa(object$taxa, ...)
                     if(type == "taxa"){
                         return(taxa_df)
-                    }else{
-                        if(ids == NULL){
+                    }
+                    if(is.null(ids)){
                             ids <- taxa_df$Keys
-                        }
-                        taxa_df <- object$taxa
                     }
                 }
 
@@ -171,7 +193,7 @@ MgDb$methods(select = function(object, type, ids = NULL, ...){
                     seq_obj <- .select.seq(object$seq, ids, ...)
                     if(type != "both"){
                         return(seq_obj)
-                }
+                    }
               }
 
               return(list(taxa = taxa_df, seq = seq_obj))
