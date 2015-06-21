@@ -20,8 +20,8 @@
 #' @field seq database reference sequences
 #' @field metadata database metadata
 MgDb <- setRefClass("MgDb",
-                     contains="ShortRead",
-                     fields=list(seq="ShortRead",
+                     contains="DNAStringSet",
+                     fields=list(seq="DNAStringSet",
                                  taxa = "ANY",
                                  metadata= "list"),
                      methods=list(
@@ -40,8 +40,8 @@ MgDb <- setRefClass("MgDb",
 ## MgDb Validity ---------------------------------------------------------------
 setValidity("MgDb", function(object) {
     msg <- NULL
-    if(!("seq" %in% ls(object)) || !is(object@seq, "ShortRead"))
-        msg <- paste(msg, "'seq' slot must contain a ShortRead object with sequence data", sep = "\n")
+    if(!("seq" %in% ls(object)) || !is(object@seq, "DNAStringSet"))
+        msg <- paste(msg, "'seq' slot must contain a DNAStringSeq object with sequence data", sep = "\n")
     if(!("taxa" %in% ls(object)) || !is(object@taxa, "tbl_sqlite"))
         msg <- paste(msg, "'taxa' slot must contain a tbl_sqlite object with taxonomy data", sep = "\n")
     if(!("metadata" %in% ls(object)) || !is(object@metadata, "list"))
@@ -89,22 +89,22 @@ setMethod("show", "MgDb",
 ## filter command and other approriate metadata, e.g. method used for mapping
 ## returns a metagenomeAnnotation class object
 
-MgDb$methods(annotate = function(object, ...){
-                filtered_db <- object$select(object, type = "both", ...)
-#                 MgDb$new(taxa = filtered_db[[1]],
-#                           seq = filtered_db[[2]],
-#                           features = object$metadata)
-                new("metagenomeAnnotation",
-                    annotation = object$metadata,
-                    data = filtered_db)
-                )
-            }
-)
+# MgDb$methods(annotate = function(object, ...){
+#                 filtered_db <- object$select(object, type = "both", ...)
+# #                 MgDb$new(taxa = filtered_db[[1]],
+# #                           seq = filtered_db[[2]],
+# #                           features = object$metadata)
+#                 new("metagenomeAnnotation",
+#                     annotation = object$metadata,
+#                     data = filtered_db)
+#                 )
+#             }
+# )
 
 ## use ShortRead Object filters
 ## %%TODO%% head(x) standin with expected type
-.select.seq <- function(x, ...){
-    return(head(x))
+.select.seq <- function(seqObj, ids, ...){
+    seqObj[names(seqObj) %in% ids,]
 }
 
 #' Function for querying the marker gene taxonomy database.
@@ -148,25 +148,33 @@ MgDb$methods(annotate = function(object, ...){
 # select function returns a filtered set of sequences or taxa based on defined
 # input ' use type = "seq" returns a ShortRead object and type = "taxa" returns a
 # filtered database not sure if we want to make the select method only generate a
-MgDb$methods(select = function(object, type, ...){
-              if(!(type %in% c("seq","taxa", "both"))){
-                  stop("type must be either 'seq' or 'taxa'")
+
+## either select by ids for taxa information
+MgDb$methods(select = function(object, type, ids = NULL, ...){
+                if(!(type %in% c("seq","taxa", "both"))){
+                    stop("type must be either 'seq' or 'taxa'")
+                }
+
+                if(type == "taxa"|| type == "both" || is.null(ids)){
+                    taxa_df <- .select.taxa(object$taxa, ...)
+                    if(type == "taxa"){
+                        return(taxa_df)
+                    }else{
+                        if(ids == NULL){
+                            ids <- taxa_df$Keys
+                        }
+                        taxa_df <- object$taxa
+                    }
+                }
+
+                if(type == "seq" || type == "both"){
+                    seq_obj <- .select.seq(object$seq, ids, ...)
+                    if(type != "both"){
+                        return(seq_obj)
+                }
               }
-              if(type == "seq" || type == "both"){
-                  seq_df <- .select.seq(object$seq, ...)
-                  if(type != "both"){
-                      return(seq_obj)
-                  }
-              }
-              if(type == "taxa"|| type == "both"){
-                  taxa_df <- .select.taxa(object$taxa, ...)
-                  if(type != "both"){
-                      return(taxa_df)
-                  }
-              }else{
-                  taxa_df <- object$taxa
-              }
-              return(list(taxa = taxa_df, seq = seq_df))
+
+              return(list(taxa = taxa_df, seq = seq_obj))
           }
 )
 
