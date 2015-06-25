@@ -38,16 +38,17 @@ MgDb <- setRefClass("MgDb",
 # DB_SCHEMA_VERSION <- "1.0"
 
 ## MgDb Validity ---------------------------------------------------------------
-setValidity("MgDb", function(object) {
-    msg <- NULL
-    if(!("seq" %in% ls(object)) || !is(object@seq, "DNAStringSet"))
-        msg <- paste(msg, "'seq' slot must contain a DNAStringSeq object with sequence data", sep = "\n")
-    if(!("taxa" %in% ls(object)) || !is(object@taxa, "tbl_sqlite"))
-        msg <- paste(msg, "'taxa' slot must contain a tbl_sqlite object with taxonomy data", sep = "\n")
-    if(!("metadata" %in% ls(object)) || !is(object@metadata, "list"))
-        msg <- paste(msg, "'metadata' slot must contain a list", sep = "\n")
-    if (is.null(msg)) TRUE else msg
-})
+## not sure how to set validity for refClass
+# setValidity("MgDb", function() {
+#     msg <- NULL
+#     if(!("seq" %in% ls(.self)) || !is(.self@seq, "DNAStringSet"))
+#         msg <- paste(msg, "'seq' slot must contain a DNAStringSeq object with sequence data", sep = "\n")
+#     if(!("taxa" %in% ls(.self)) || !is(.self@taxa, "tbl_sqlite"))
+#         msg <- paste(msg, "'taxa' slot must contain a tbl_sqlite object with taxonomy data", sep = "\n")
+#     if(!("metadata" %in% ls(.self)) || !is(.self@metadata, "list"))
+#         msg <- paste(msg, "'metadata' slot must contain a list", sep = "\n")
+#     if (is.null(msg)) TRUE else msg
+# })
 
 ################################################################################
 ################################################################################
@@ -64,17 +65,17 @@ setValidity("MgDb", function(object) {
 ### ============================================================================
 
 setMethod("show", "MgDb",
-          function(object){
-            cat(class(object), "object:\n")
+          function(){
+            cat(class(.self), "object:\n")
             print("Metadata\n")
-            metadata <-object$metadata
+            metadata <-.self$metadata
                 for(i in names(metadata)){
                     cat("|", i, ": ", metadata[[i]], "\n", sep = "")
                 }
             print("Sequence Data:\n")
-            print(object$seq)
+            print(.self$seq)
             print("Taxonomy Data:\n")
-            print(object$taxa)
+            print(.self$taxa)
         }
 )
 
@@ -94,27 +95,23 @@ setMethod("show", "MgDb",
 ##              arbitrary - for developmental use only randomly selects random subset of sequences in the database to assign as matching sequences to the first 100 sequences in the query set
 
 MgDb$methods(
-    annotate = function(object,
-                        query,
-                        mapping = "arbitrary",
-                        ...){
+    annotate = function(query, mapping = "arbitrary",...){
         if(mapping == "arbitrary"){
             query_size <- length(query)
-            db_subset <- sample(taxa_keys(object,
+            db_subset <- sample(taxa_keys(.self,
                                           keytype = c("Keys"))$Keys,
                                 query_size)
             match_df <- data.frame(query_id = names(query_subset),
                                    Keys = db_subset,
                                    stringsAsFactors = FALSE)
         }
-        filtered_db <- object$select(object,
-                                     type = "both",
+        filtered_db <- .self$select(type = "both",
                                      keys = match_df$Keys,
                                      keytype = "Keys")
 
         annotated_db <- dplyr::right_join(match_df, filtered_db$taxa)
         annoDF <- new("AnnotatedDataFrame", annotated_db)
-        anno_metadata <- testMgDb$metadata
+        anno_metadata <- .self$metadata
         anno_metadata$mapping <- mapping
 
         new("metagenomeAnnotation",
@@ -174,13 +171,13 @@ MgDb$methods(
 # filtered database not sure if we want to make the select method only generate a
 
 ## either select by ids for taxa information
-MgDb$methods(select = function(object, type, ids = NULL, ...){
+MgDb$methods(select = function(type, ids = NULL, ...){
                 if(!(type %in% c("seq","taxa", "both"))){
                     stop("type must be either 'seq' or 'taxa'")
                 }
 
                 if(type == "taxa"|| type == "both" || is.null(ids)){
-                    taxa_df <- .select.taxa(object$taxa, ...)
+                    taxa_df <- .select.taxa(.self$taxa, ...)
                     if(type == "taxa"){
                         return(taxa_df)
                     }
@@ -190,7 +187,7 @@ MgDb$methods(select = function(object, type, ids = NULL, ...){
                 }
 
                 if(type == "seq" || type == "both"){
-                    seq_obj <- .select.seq(object$seq, ids, ...)
+                    seq_obj <- .select.seq(.self$seq, ids, ...)
                     if(type != "both"){
                         return(seq_obj)
                     }
@@ -200,12 +197,6 @@ MgDb$methods(select = function(object, type, ids = NULL, ...){
           }
 )
 
-## %%TODO%% Document
-# setMethod("select", "MgDb",
-#           function(object, type, ...) {
-#               object$select(object, type, ...)
-#           }
-# )
 
 ### ============================================================================
 ##
@@ -213,12 +204,13 @@ MgDb$methods(select = function(object, type, ids = NULL, ...){
 ##
 ### ============================================================================
 
+## See post for functional programming interface for refClass methods http://stackoverflow.com/questions/20649973/functional-interfaces-for-reference-classes
 ### Not sure how to best document and export MgDb methods, wrote wrappers
 ### so they can be used using standard function(value) method
 
 ### Taxa keys function ---------------------------------------------------------
-MgDb$methods(taxa_keys = function(object, keytype){
-                dplyr::select_(object$taxa, keytype) %>% dplyr::collect()
+MgDb$methods(taxa_keys = function(keytype){
+                dplyr::select_(.self$taxa, keytype) %>% dplyr::collect()
           }
 )
 
@@ -234,13 +226,13 @@ MgDb$methods(taxa_keys = function(object, keytype){
 #'
 #' @examples taxa_keys(mgdb, "Class")
 taxa_keys <- function(mgdb_object, keytype){
-    return(mgdb_object$taxa_keys(mgdb_object, keytype))
+    return(mgdb_object$taxa_keys(keytype))
 }
 
 
 ### Taxa columns function ------------------------------------------------------
-MgDb$methods(taxa_columns = function(object){
-        colnames(object$taxa)
+MgDb$methods(taxa_columns = function(){
+        colnames(.self$taxa)
     }
 )
 
@@ -261,8 +253,8 @@ taxa_columns <- function(mgdb_object){
 
 ### taxa keytypes function -----------------------------------------------------
 ## %%TODO%% have return an AnnotatedDataFrame
-MgDb$methods(taxa_keytypes = function(object){
-        colnames(object$taxa)
+MgDb$methods(taxa_keytypes = function(){
+        colnames(.self$taxa)
     }
 )
 
@@ -277,5 +269,5 @@ MgDb$methods(taxa_keytypes = function(object){
 #'
 #' @examples taxa_keytypes(mgdb)
 taxa_keytypes <- function(mgdb_object){
-    return(mgdb_object$taxa_keytypes(mgdb_object))
+    return(mgdb_object$taxa_keytypes())
 }
