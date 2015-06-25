@@ -23,18 +23,15 @@ head(taxa_keys(testMgDb, keytype = c("Kingdom")))
 
 ## Select Methods
 ### Used to retrieve db entries for a specified taxanomic group or id list
-testMgDb$select(testMgDb,
-                type = "taxa",
+testMgDb$select(type = "taxa",
                 keys = c("Vibrio", "Salmonella"),
                 keytype = "Genus")
 
-testMgDb$select(testMgDb,
-                type = "seq",
+testMgDb$select(type = "seq",
                 keys = c("Vibrio", "Salmonella"),
                 keytype = "Genus")
 
-testMgDb$select(testMgDb,
-                type = "both",
+testMgDb$select(type = "both",
                 keys = c("Vibrio", "Salmonella"),
                 keytype = "Genus")
 
