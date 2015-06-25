@@ -63,21 +63,21 @@ MgDb <- setRefClass("MgDb",
 ##                              MgDb show method
 ##
 ### ============================================================================
-
-setMethod("show", "MgDb",
-          function(){
-            cat(class(.self), "object:\n")
-            print("Metadata\n")
-            metadata <-.self$metadata
-                for(i in names(metadata)){
-                    cat("|", i, ": ", metadata[[i]], "\n", sep = "")
-                }
-            print("Sequence Data:\n")
-            print(.self$seq)
-            print("Taxonomy Data:\n")
-            print(.self$taxa)
-        }
-)
+## Need to revise for refClass structure
+# setMethod("show", "MgDb",
+#           function(){
+#             cat(class(.self), "object:\n")
+#             print("Metadata\n")
+#             metadata <-.self$metadata
+#                 for(i in names(metadata)){
+#                     cat("|", i, ": ", metadata[[i]], "\n", sep = "")
+#                 }
+#             print("Sequence Data:\n")
+#             print(.self$seq)
+#             print("Taxonomy Data:\n")
+#             print(.self$taxa)
+#         }
+# )
 
 ### ============================================================================
 ##
@@ -98,9 +98,7 @@ MgDb$methods(
     annotate = function(query, mapping = "arbitrary",...){
         if(mapping == "arbitrary"){
             query_size <- length(query)
-            db_subset <- sample(taxa_keys(.self,
-                                          keytype = c("Keys"))$Keys,
-                                query_size)
+            db_subset <- sample(.self$taxa_keys(keytype = c("Keys"))$Keys,query_size)
             match_df <- data.frame(query_id = names(query_subset),
                                    Keys = db_subset,
                                    stringsAsFactors = FALSE)
