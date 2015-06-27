@@ -106,12 +106,11 @@ MgDb$methods(
         filtered_db <- .self$select(type = "both",
                                      keys = match_df$Keys,
                                      keytype = "Keys")
-
+#
         annotated_db <- dplyr::right_join(match_df, filtered_db$taxa)
-        annoDF <- new("AnnotatedDataFrame", annotated_db)
         anno_metadata <- .self$metadata
         anno_metadata$mapping <- mapping
-
+#
         new("metagenomeAnnotation",
             refDF = annotated_db,
             metadata = anno_metadata,

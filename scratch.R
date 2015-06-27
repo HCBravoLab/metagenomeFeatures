@@ -41,5 +41,7 @@ testMgDb$select(type = "both",
 load("../../annotation/annotation/query.rdata")
 query_subset <- sread(query)[1:100]
 
-testMgAnnoDF <- testMgDb$annotate(testMgDb, query = query_subset, mapping = "arbitrary")
+testMgAnnoDF <- testMgDb$annotate(query = query_subset, mapping = "arbitrary")
+
+testSplit_MgAnno <- split_by(testMgAnnoDF, "Phylum")
 
