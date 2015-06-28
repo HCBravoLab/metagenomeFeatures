@@ -43,5 +43,8 @@ query_subset <- sread(query)[1:100]
 
 testMgAnnoDF <- testMgDb$annotate(query = query_subset, mapping = "arbitrary")
 
-testSplit_MgAnno <- split_by(testMgAnnoDF, "Phylum")
+testSplit_MgAnno <- split_by(testMgAnnoDF, "Class")
 
+
+## make_GreenGenesMgDb
+ggDb <- makeMgDbFromGreenGenes()
