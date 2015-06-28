@@ -9,7 +9,7 @@
 #loading the sqlite database from file
 .load_taxa_db <- function(taxdb){
     db_con <- dplyr::src_sqlite(taxdb)
-    dplyr::tbl(src = db_con, from = "tree")
+    dplyr::tbl(src = db_con, from = "taxa")
 }
 
 #' Metagenome Database class
@@ -64,20 +64,20 @@ MgDb <- setRefClass("MgDb",
 ##
 ### ============================================================================
 ## Need to revise for refClass structure
-# setMethod("show", "MgDb",
-#           function(){
-#             cat(class(.self), "object:\n")
-#             print("Metadata\n")
-#             metadata <-.self$metadata
-#                 for(i in names(metadata)){
-#                     cat("|", i, ": ", metadata[[i]], "\n", sep = "")
-#                 }
-#             print("Sequence Data:\n")
-#             print(.self$seq)
-#             print("Taxonomy Data:\n")
-#             print(.self$taxa)
-#         }
-# )
+setMethod("show", "MgDb",
+          function(object){
+            cat(class(object), "object:\n")
+            print("Metadata\n")
+            metadata <- object $metadata
+                for(i in names(metadata)){
+                    cat("|", i, ": ", metadata[[i]], "\n", sep = "")
+                }
+            print("Sequence Data:\n")
+            print(object$seq)
+            print("Taxonomy Data:\n")
+            print(object$taxa)
+        }
+)
 
 ### ============================================================================
 ##
