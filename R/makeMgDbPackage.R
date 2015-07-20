@@ -59,7 +59,7 @@ makeMxDbPackage <- function(mgdb,
     dbType <- .getMetaDataValue(mgdb,'Db type')
 
     ## there should only be one template
-    template_path <- system.file("mgdb-template",package="MetagenomicFeatures")
+    template_path <- system.file("mgdb-template",package="metagenomicFeatures")
     ## We need to define some symbols in order to have the
     ## template filled out correctly.
     symvals <- list(

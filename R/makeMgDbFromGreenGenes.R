@@ -57,7 +57,7 @@ makeMgDbFromGreenGenes <- function( db_name = "gg_13_5",
 
                             ## getting db_seq
                             seq_file <- .fetch_db(seq_url, tmp_dir)
-                            db_seq <- readDNAStringSet(seq_file)
+                            db_seq <- Biostrings::readDNAStringSet(seq_file)
 
                             ## getting db_taxa
                             db_taxa_file <- paste0(tmp_dir,"/",db_name, ".sqlite3")
