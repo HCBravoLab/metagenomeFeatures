@@ -3,20 +3,22 @@ Title: What the Package Does (one line, title case)
 Version: 0.0.0.9000
 Authors@R: person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
 Description: What the package does (one paragraph)
-Depends:
+Depends: 
     R (>= 3.1.2)
 License: What license is it under?
 LazyData: true
-Imports:
+Imports: 
     ShortRead,
     dplyr,
     stringr,
     lazyeval,
     RSQLite,
     magrittr
-Collate:
+Collate: 
     'makeMgDbFromGreenGenes.R'
     'makeMgDbPackage.R'
     'metagenomeAnnotation-class.R'
     'mgDb-class.R'
     'utils.R'
+Suggests: knitr
+VignetteBuilder: knitr

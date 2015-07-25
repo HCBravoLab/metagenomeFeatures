@@ -1,0 +1,41 @@
+---
+title: "Example 16S Annotation Workflow"
+author: "Nathan D. Olson"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r, echo=FALSE, message=FALSE}
+library(metagenomeFeatures)
+library(greengenes13.5MgDb)
+library(ShortRead)
+```
+
+## Overview
+A demonstration of how to use the metagenomeFeatures package for taxonimic annotation 16S marker gene sequence data.  
+- Retrieve taxonomic information for a set of sequences and generate a metagenomeAnnotation class object
+- Split metagenomeAnnotation class object for a user defined taxonomic level
+- Summary table and graphs for taxonomic information.
+
+
+## Retrieve taxonomic information for a set of sequences.
+```{r}
+load("query.rdata")
+query_subset <- sread(query)[1:30]
+
+MgAnnoDF <- gg13.5MgDb$annotate(query = query_subset, mapping = "arbitrary")
+MgAnnoDF
+```
+
+## metagenomeAnnotation split_by method
+```{r}
+split_by(MgAnnoDF, "Phylumn")
+```
+
+```{r}
+sessionInfo()
+```
