@@ -53,6 +53,8 @@ setValidity("metagenomeAnnotation", function(object) {
     msg <- NULL
     if(!("featureData" %in% ls(object)) || !is(object@featureData, "DNAStringSet"))
         msg <- paste(msg, "'featureData' slot must contain a DNAStringSeq object with sequence data", sep = "\n")
+    if(is.null(names(object@featureData)))
+        msg <- paste(msg, "'featureData' slot must contain a named DNAStringSet object",sep="\n")
     if(!("mgAnnotatedDF" %in% ls(object)) || !is(object@mgAnnotatedDF, "AnnotatedDataFrame"))
         msg <- paste(msg, "'taxa' slot must contain a tbl_sqlite object with taxonomy data", sep = "\n")
     if(!("metadata" %in% ls(.self)) || !is(.self@metadata, "list"))
