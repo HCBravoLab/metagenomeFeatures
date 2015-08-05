@@ -89,11 +89,11 @@ setMethod("show", "metagenomeAnnotation",
 # split_by - splits metagenomeAnnotation object into a list of metagenomeAnnotation
 # objects for each taxa in a specified taxonomic level
 ## user provides a metagenomeAnnotation object,
-## and defines the taxonomy level to split the object by
+## and defines the taxonomy level (e.g. Phylum, Class, Order ect. )to split the object by
 #' Split metagenomeAnnotation Object by Taxa
 #'
-#' @param object
-#' @param taxa_level
+#' @param object metagenomeAnnotation class object
+#' @param taxa_level taxonomic level used to split the metagenomeAnnotation object at
 #'
 #' @return list of metagenomeAnnotation objects
 #' @export
