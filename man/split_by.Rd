@@ -7,9 +7,9 @@
 split_by(object, taxa_level)
 }
 \arguments{
-\item{object}{}
+\item{object}{metagenomeAnnotation class object}
 
-\item{taxa_level}{}
+\item{taxa_level}{taxonomic level used to split the metagenomeAnnotation object at}
 }
 \value{
 list of metagenomeAnnotation objects
