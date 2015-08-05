@@ -24,8 +24,8 @@ A demonstration of how to use the metagenomeFeatures package for taxonimic annot
 
 ## Retrieve taxonomic information for a set of sequences.
 ```{r}
-load("query.rdata")
-query_subset <- sread(query)[1:30]
+data(mgQuery)
+query_subset <- sread(mgQuery)[1:30]
 
 MgAnnoDF <- gg13.5MgDb$annotate(query = query_subset, mapping = "arbitrary")
 MgAnnoDF
