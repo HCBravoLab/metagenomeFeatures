@@ -33,7 +33,7 @@ MgAnnoDF
 
 ## metagenomeAnnotation split_by method
 ```{r}
-split_by(MgAnnoDF, "Phylumn")
+split_by(MgAnnoDF, "Phylum")
 ```
 
 ```{r}
