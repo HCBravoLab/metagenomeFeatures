@@ -178,29 +178,38 @@ MgDb$methods(
 # filtered database not sure if we want to make the select method only generate a
 
 ## either select by ids for taxa information
-MgDb$methods(select = function(type, ids = NULL, ...){
-                if(!(type %in% c("seq","taxa", "both"))){
-                    stop("type must be either 'seq' or 'taxa'")
-                }
+.select <- function(x, type, ids = NULL, ...){
+    if(!(type %in% c("seq","taxa", "both"))){
+        stop("type must be either 'seq' or 'taxa'")
+    }
 
-                if(type == "taxa"|| type == "both" || is.null(ids)){
-                    taxa_df <- .select.taxa(.self$taxa, ...)
-                    if(type == "taxa"){
-                        return(taxa_df)
-                    }
-                    if(is.null(ids)){
-                            ids <- taxa_df$Keys
-                    }
-                }
+    if(type == "taxa"|| type == "both" || is.null(ids)){
+        taxa_df <- .select.taxa(x$taxa, ...)
+        if(type == "taxa"){
+            return(taxa_df)
+        }
+        if(is.null(ids)){
+            ids <- taxa_df$Keys
+        }
+    }
 
-                if(type == "seq" || type == "both"){
-                    seq_obj <- .select.seq(.self$seq, ids, ...)
-                    if(type != "both"){
-                        return(seq_obj)
-                    }
-              }
+    if(type == "seq" || type == "both"){
+        seq_obj <- .select.seq(x$seq, ids, ...)
+        if(type != "both"){
+            return(seq_obj)
+        }
+    }
 
-              return(list(taxa = taxa_df, seq = seq_obj))
+    return(list(taxa = taxa_df, seq = seq_obj))
+}
+
+setGeneric("select", function(x, ...) {
+    standardGeneric("select")
+})
+
+setMethod("select", "MgDb",
+          function(x, type, ids = NULL, ...){
+              .select(x, type, ids = NULL, ...)
           }
 )
 
