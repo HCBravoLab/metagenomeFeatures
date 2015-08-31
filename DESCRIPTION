@@ -27,5 +27,7 @@ Collate:
     'mgDb-class.R'
     'mgQuery.R'
     'utils.R'
-Suggests: knitr
+Suggests:
+    knitr,
+    greengenes13.5MgDb
 VignetteBuilder: knitr
