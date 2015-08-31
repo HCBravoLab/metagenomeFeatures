@@ -1,16 +1,16 @@
-\name{mgDb-class}
-\alias{class:mgDb}
-\alias{mgDb}
+\name{MgDb-class}
+\alias{class:MgDb}
+\alias{MgDb}
 
-\title{mgDb objects}
+\title{MgDb objects}
 
 \description{
-    The \code{mgDb} class is a data object for storing and accessing metagenome marker gene database sequences and their taxonomic annotations.  \code{gg13.5MgDb} in the greengenes13.5MgDb package is an example \code{mgDb} object.
+    The \code{MgDb} class is a data object for storing and accessing metagenome marker gene database sequences and their taxonomic annotations.  \code{gg13.5MgDb} in the greengenes13.5MgDb package is an example \code{MgDb} object.
 }
 
 
 \section{Methods}{
-  In the code snippets below, \code{x} is a mgDb object.
+  In the code snippets below, \code{x} is a MgDb object.
 
   \describe{
     \item{}{
@@ -31,8 +31,13 @@
     }
 
     \item{}{
+        \code{select(x, ...)}:
+            Subsets \code{x}, sequence and/or taxonomic databases based on user defined keytypes, and keys. See \code{?\link{MgDb-select}} for additional documentation.
+    }
+
+    \item{}{
         \code{annotate(x)}:
-            Generates a \code{?\link{metagenomeAnnotation}} object for a
+            Generates a \code{?\link{metagenomeAnnotation-class}} object for a
             given set of sequence data.
     }
 }
