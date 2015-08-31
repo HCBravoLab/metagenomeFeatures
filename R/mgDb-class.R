@@ -16,9 +16,10 @@
 #' @name MgDb
 #' @import methods
 #' @exportClass MgDb
-#' @field taxa taxonomy database
+#'
+#' @field taxa taxonomic information for database sequences
 #' @field seq database reference sequences
-#' @field metadata database metadata
+#' @field metadata associated metadata for the database
 MgDb <- setRefClass("MgDb",
                      contains="DNAStringSet",
                      fields=list(seq="DNAStringSet",
@@ -64,6 +65,15 @@ MgDb <- setRefClass("MgDb",
 ##
 ### ============================================================================
 ## Need to revise for refClass structure
+
+#' show
+#'
+#' @param MgDb
+#'
+#' @return
+#' @export
+#'
+#' @examples
 setMethod("show", "MgDb",
           function(object){
             cat(class(object), "object:\n")
@@ -206,65 +216,41 @@ MgDb$methods(select = function(type, ids = NULL, ...){
 ### so they can be used using standard function(value) method
 
 ### Taxa keys function ---------------------------------------------------------
-MgDb$methods(taxa_keys = function(keytype){
-                dplyr::select_(.self$taxa, keytype) %>% dplyr::collect()
-          }
-)
-
-## Wrapper for taxa_keys method
-
-#' Taxonomy values for a given keytype
-#'
-#' @param mgdb_object object of MgDB class
-#' @param keytype taxonomic classification level
-#'
-#' @return tbl_df
-#' @export
-#'
-#' @examples taxa_keys(mgdb, "Class")
-taxa_keys <- function(mgdb_object, keytype){
-    return(mgdb_object$taxa_keys(keytype))
+.taxa_keys <- function(x, keytype){
+    x$taxa %>%
+        dplyr::select_(keytype) %>%
+        dplyr::collect()
 }
+
+setGeneric("taxa_keys", signature="x",
+           function(x, ...) standardGeneric("taxa_keys"))
+
+
+setMethod("taxa_keys", "MgDb",
+          function(x, ...) .taxa_keys(x, ...))
+
 
 
 ### Taxa columns function ------------------------------------------------------
-MgDb$methods(taxa_columns = function(){
-        colnames(.self$taxa)
-    }
-)
-
-## Wrapper for taxa_columns method
-
-#' Taxonomic levels for a MdDB class
-#'
-#' @param mgdb_object object of MgDB class
-#' @param keytype taxonomic classification level
-#'
-#' @return vector
-#' @export
-#'
-#' @examples taxa_keys(mgdb)
-taxa_columns <- function(mgdb_object){
-    return(mgdb_object$taxa_columns(mgdb_object))
+.taxa_columns = function(x){
+        colnames(x$taxa)
 }
+
+setGeneric("taxa_columns", signature="x",
+           function(x) standardGeneric("taxa_columns"))
+
+
+setMethod("taxa_columns", "MgDb",
+          function(x) .taxa_columns(x))
+
 
 ### taxa keytypes function -----------------------------------------------------
-## %%TODO%% have return an AnnotatedDataFrame
-MgDb$methods(taxa_keytypes = function(){
-        colnames(.self$taxa)
-    }
-)
-
-## Wrapper for taxa_keytypes method
-
-#' Keytypes for the MgDB object
-#'
-#' @param mgdb_object object of MgDB class
-#'
-#' @return vector
-#' @export
-#'
-#' @examples taxa_keytypes(mgdb)
-taxa_keytypes <- function(mgdb_object){
-    return(mgdb_object$taxa_keytypes())
+.taxa_keytypes = function(x){
+        colnames(x$taxa)
 }
+
+setGeneric("taxa_keytypes", signature="x",
+           function(x) standardGeneric("taxa_keytypes"))
+
+setMethod("taxa_keytypes", "MgDb",
+          function(x) .taxa_keytypes(x))
