@@ -76,15 +76,15 @@ MgDb <- setRefClass("MgDb",
 #' @examples
 setMethod("show", "MgDb",
           function(object){
-            cat(class(object), "object:\n")
+            cat(class(object), "object:")
             print("Metadata\n")
             metadata <- object $metadata
                 for(i in names(metadata)){
                     cat("|", i, ": ", metadata[[i]], "\n", sep = "")
                 }
-            print("Sequence Data:\n")
+            print("Sequence Data:")
             print(object$seq)
-            print("Taxonomy Data:\n")
+            print("Taxonomy Data:")
             print(object$taxa)
         }
 )
