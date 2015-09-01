@@ -1,0 +1,71 @@
+library(metagenomeFeatures)
+library(Biostrings)
+## test generate MgDb object
+db_seq <- readDNAStringSet("../testSeq.fasta.gz")
+metadata <- list(ACCESSION_DATE = "3/31/2015",
+                 URL = "https://greengenes.microbio.me",
+                 DB_TYPE_NAME = "GreenGenes",
+                 DB_TYPE_VALUE = "MgDb",
+                 DB_SCHEMA_VERSION = "1.0")
+
+testMgDb <- new("MgDb", seq = db_seq, taxa = "../testTaxa.sqlite3", metadata = metadata)
+
+context("mgDb-class")
+
+## uses expect_equal_to_reference, caches the results from the first time it is run and compares to future runs
+test_that("MgDb-class show", {
+    expect_equal_to_reference(show(testMgDb), file = "MgDb_test_show.rds")
+})
+
+test_that("MgDb-class taxa_keytypes", {
+    expect_equal_to_reference(taxa_keytypes(testMgDb), file = "MgDb_test_taxa_keytypes.rds")
+})
+
+test_that("MgDb-class taxa_columns", {
+    expect_equal_to_reference(taxa_columns(testMgDb), file = "MgDb_test_taxa_columns.rds")
+})
+
+test_that("MgDb-class taxa_keytypes and taxa_columns are identical", {
+    expect_identical(taxa_columns(testMgDb), taxa_keytypes(testMgDb))
+})
+
+test_that("MgDb-class taxa_keys at different taxonomic levels", {
+    expect_equal_to_reference(taxa_keys(testMgDb, keytype = c("Kingdom")),
+                              file = "MgDb_test_taxa_keys_Kingdom.rds")
+    expect_equal_to_reference(taxa_keys(testMgDb, keytype = c("Phylum")),
+                              file = "MgDb_test_taxa_keys_Phylum.rds")
+    expect_equal_to_reference(taxa_keys(testMgDb, keytype = c("Class")),
+                              file = "MgDb_test_taxa_keys_Class.rds")
+    expect_equal_to_reference(taxa_keys(testMgDb, keytype = c("Order")),
+                              file = "MgDb_test_taxa_keys_Order.rds")
+    expect_equal_to_reference(taxa_keys(testMgDb, keytype = c("Family")),
+                              file = "MgDb_test_taxa_keys_Family.rds")
+    expect_equal_to_reference(taxa_keys(testMgDb, keytype = c("Genus")),
+                              file = "MgDb_test_taxa_keys_Genus.rds")
+    expect_equal_to_reference(taxa_keys(testMgDb, keytype = c("Species")),
+                              file = "MgDb_test_taxa_keys_Species.rds")
+})
+
+# test_that("MgDb-class select methods")
+# ## Select Methods
+# ### Used to retrieve db entries for a specified taxanomic group or id list
+# select(testMgDb, type = "taxa",
+#        keys = c("Vibrio", "Salmonella"),
+#        keytype = "Genus")
+#
+# select(testMgDb, type = "seq",
+#        keys = c("Vibrio", "Salmonella"),
+#        keytype = "Genus")
+# select(testMgDb, type = "both",
+#        keys = c("Vibrio", "Salmonella"),
+#        keytype = "Genus")
+#
+# ## Creating an metagenomeAnnotation class object
+# ### example query data - not really matching
+#
+# load("../../annotation/annotation/query.rdata")
+# query_subset <- sread(query)[1:100]
+#
+# testMgAnnoDF <- testMgDb$annotate(query = query_subset, mapping = "arbitrary")
+#
+# testSplit_MgAnno <- split_by(testMgAnnoDF, "Class")
