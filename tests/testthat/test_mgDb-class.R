@@ -46,19 +46,27 @@ test_that("MgDb-class taxa_keys at different taxonomic levels", {
                               file = "MgDb_test_taxa_keys_Species.rds")
 })
 
-# test_that("MgDb-class select methods")
-# ## Select Methods
-# ### Used to retrieve db entries for a specified taxanomic group or id list
-# select(testMgDb, type = "taxa",
-#        keys = c("Vibrio", "Salmonella"),
-#        keytype = "Genus")
-#
-# select(testMgDb, type = "seq",
-#        keys = c("Vibrio", "Salmonella"),
-#        keytype = "Genus")
-# select(testMgDb, type = "both",
-#        keys = c("Vibrio", "Salmonella"),
-#        keytype = "Genus")
+
+## Select Methods
+test_that("MgDb-class select methods",{
+    expect_equal_to_reference(
+        testMgDb$select(type = "taxa",
+                        keys = c("Vibrio", "Salmonella"),
+                        keytype = "Genus"),
+        file = "MgDb_test_select_taxa.rds")
+    expect_equal_to_reference(
+        testMgDb$select(type = "seq",
+                        keys = c("Vibrio", "Salmonella"),
+                        keytype = "Genus"),
+        file = "MgDb_test_select_seq.rds")
+    expect_equal_to_reference(
+        testMgDb$select(type = "both",
+                        keys = c("Vibrio", "Salmonella"),
+                        keytype = "Genus"),
+        file = "MgDb_test_select_both.rds")
+})
+
+
 #
 # ## Creating an metagenomeAnnotation class object
 # ### example query data - not really matching
