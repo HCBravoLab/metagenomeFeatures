@@ -109,9 +109,10 @@ MgDb$methods(
         if(mapping == "arbitrary"){
             warning("Arbitrary mapping method is for development purposes, mappings are to the first entries in the database and not intended to represent actual sequence taxonomic assignment")
             query_size <- length(query)
-            db_subset <- taxa_keys(.self, keytype = c("Keys"))$Keys[1:query_size]
-            match_df <- data.frame(query_id = names(query_subset),
-                                   Keys = db_subset,
+            keys <- taxa_keys(.self, keytype = c("Keys"))$Keys
+            key_subset <- keys[1:query_size]
+            match_df <- data.frame(query_id = names(sread(query)),
+                                   Keys = key_subset,
                                    stringsAsFactors = FALSE)
         }else{
             stop("Only arbirary mapping method is currently implemented")
@@ -127,7 +128,7 @@ MgDb$methods(
         new("metagenomeAnnotation",
             refDF = annotated_db,
             metadata = anno_metadata,
-            feature_data = query
+            feature_data = sread(query)
         )
 
     }
