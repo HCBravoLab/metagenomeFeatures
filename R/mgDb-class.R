@@ -104,31 +104,38 @@ setMethod("show", "MgDb",
 ## mapping - defines method to map user provided sequences to database
 ##              arbitrary - for developmental use only randomly selects random subset of sequences in the database to assign as matching sequences to the first 100 sequences in the query set
 
-MgDb$methods(
-    annotate = function(query, mapping = "arbitrary",...){
+.mgDb_annotate <- function(x, query, mapping = "arbitrary",...){
         if(mapping == "arbitrary"){
             query_size <- length(query)
-            db_subset <- sample(.self$taxa_keys(keytype = c("Keys"))$Keys,query_size)
+            db_subset <- sample(x$taxa_keys(keytype = c("Keys"))$Keys,query_size)
             match_df <- data.frame(query_id = names(query_subset),
                                    Keys = db_subset,
                                    stringsAsFactors = FALSE)
         }
-        filtered_db <- .self$select(type = "both",
+        filtered_db <- select(x, type = "both",
                                      keys = match_df$Keys,
                                      keytype = "Keys")
-#
+
         annotated_db <- dplyr::right_join(match_df, filtered_db$taxa)
-        anno_metadata <- .self$metadata
+        anno_metadata <- x$metadata
         anno_metadata$mapping <- mapping
-#
+
         new("metagenomeAnnotation",
             refDF = annotated_db,
             metadata = anno_metadata,
             feature_data = query
         )
 
-    }
+}
+
+setGeneric("annotate",
+           function(x, ...) {standardGeneric("annotate")}
 )
+
+setMethod("annotate", "MgDb",
+          function(x, ...){ .mgDb_annotate(x, ...)}
+)
+
 
 
 .select.seq <- function(seqObj, ids, ...){
