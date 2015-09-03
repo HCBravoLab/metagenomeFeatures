@@ -13,9 +13,6 @@
 }
 
 #' Metagenome Database class
-#' @name MgDb
-#' @import methods
-#' @exportClass MgDb
 #'
 #' @field taxa taxonomic information for database sequences
 #' @field seq database reference sequences
@@ -66,14 +63,7 @@ MgDb <- setRefClass("MgDb",
 ### ============================================================================
 ## Need to revise for refClass structure
 
-#' show
-#'
-#' @param MgDb
-#'
-#' @return
 #' @export
-#'
-#' @examples
 setMethod("show", "MgDb",
           function(object){
             cat(class(object), "object:")
@@ -95,64 +85,11 @@ setMethod("show", "MgDb",
 ##
 ### ============================================================================
 
-## Methods to generate metagenomeAnnotation object %%TODO%% modify features to
-## include additional information about metagenomeAnnotation class, specifically
-## filter command and other approriate metadata, e.g. method used for mapping
-## returns a metagenomeAnnotation class object
-## query - is a DNAStringSet with user provided sequences
-##      potentially modify to accept a fasta/ fastq file
-## mapping - defines method to map user provided sequences to database
-##              arbitrary - for developmental use only randomly selects random subset of sequences in the database to assign as matching sequences to the first 100 sequences in the query set
-
-.mgDb_annotate <- function(x, query, mapping = "arbitrary",...){
-        if(mapping == "arbitrary"){
-            query_size <- length(query)
-            db_subset <- sample(x$taxa_keys(keytype = c("Keys"))$Keys,query_size)
-            match_df <- data.frame(query_id = names(query_subset),
-                                   Keys = db_subset,
-                                   stringsAsFactors = FALSE)
-        }
-        filtered_db <- select(x, type = "both",
-                                     keys = match_df$Keys,
-                                     keytype = "Keys")
-
-        annotated_db <- dplyr::right_join(match_df, filtered_db$taxa)
-        anno_metadata <- x$metadata
-        anno_metadata$mapping <- mapping
-
-        new("metagenomeAnnotation",
-            refDF = annotated_db,
-            metadata = anno_metadata,
-            feature_data = query
-        )
-
-}
-
-setGeneric("annotate",
-           function(x, ...) {standardGeneric("annotate")}
-)
-
-setMethod("annotate", "MgDb",
-          function(x, ...){ .mgDb_annotate(x, ...)}
-)
-
-
-
-.select.seq <- function(seqObj, ids, ...){
+.select.seq <- function(seqObj, ids){
     seqObj[names(seqObj) %in% ids,]
 }
 
-#' Function for querying the marker gene taxonomy database.
-#'
-#' @param ids sequence ids to select
-#'
-#' @param columns quoted vector of table columns returned, all returned by default
-#'
-#' @param sqlite database connection, see src_sqlite in dplyr
-#'
-#' @param dbtable database table name, defaults to tree.
-#'
-#' @return generates database, function does not return anything
+
 .select.taxa<- function(taxaDb, keys, keytype,
                         columns="all"){
 
@@ -185,13 +122,13 @@ setMethod("annotate", "MgDb",
 # filtered database not sure if we want to make the select method only generate a
 
 ## either select by ids for taxa information
-.select <- function(x, type, ids = NULL, ...){
+.select <- function(x, type, keys, keytype, columns = "all", ids = NULL){
     if(!(type %in% c("seq","taxa", "both"))){
         stop("type must be either 'seq' or 'taxa'")
     }
 
     if(type == "taxa"|| type == "both" || is.null(ids)){
-        taxa_df <- .select.taxa(x$taxa, ...)
+        taxa_df <- .select.taxa(x$taxa, keys, keytype, columns)
         if(type == "taxa"){
             return(taxa_df)
         }
@@ -201,7 +138,7 @@ setMethod("annotate", "MgDb",
     }
 
     if(type == "seq" || type == "both"){
-        seq_obj <- .select.seq(x$seq, ids, ...)
+        seq_obj <- .select.seq(x$seq, ids)
         if(type != "both"){
             return(seq_obj)
         }
@@ -210,63 +147,76 @@ setMethod("annotate", "MgDb",
     return(list(taxa = taxa_df, seq = seq_obj))
 }
 
-setGeneric("select", function(x, ...) {
+setGeneric("select", function(x, type, keys, keytype, ids = NULL, ...) {
     standardGeneric("select")
 })
 
+#' Function for querying MgDb class objects
+#' @param x MgDb class object
+#'
+#' @param type either "taxa", "seq", or "both". "taxa" and "seq" only queries the taxonomy and sequences databases respectively. "both" queries both the taxonomy and sequence database.
+#' @param keys specific taxonomic groups to select for
+#' @param keytype taxonomic level of keys
+#' @param columns keytypes in taxonomy databse to return, all by default
+#' @param ids sequence ids to select
+#' @return generates database, function does not return anything
+#' @export
 setMethod("select", "MgDb",
-          function(x, type, ids = NULL, ...){
-              .select(x, type, ids = NULL, ...)
+          function(x, type, keys, keytype, ids = NULL, ...){
+              .select(x, type, keys, keytype, ids = NULL, ...)
           }
 )
 
 
 ### ============================================================================
 ##
-##                              MgDb Taxa methods
+##                              MgDb annotate method
 ##
 ### ============================================================================
 
-## See post for functional programming interface for refClass methods http://stackoverflow.com/questions/20649973/functional-interfaces-for-reference-classes
-### Not sure how to best document and export MgDb methods, wrote wrappers
-### so they can be used using standard function(value) method
+## Methods to generate metagenomeAnnotation object %%TODO%% modify features to
+## include additional information about metagenomeAnnotation class, specifically
+## filter command and other approriate metadata, e.g. method used for mapping
+## returns a metagenomeAnnotation class object
+## query - is a DNAStringSet with user provided sequences
+##      potentially modify to accept a fasta/ fastq file
+## mapping - defines method to map user provided sequences to database
+##              arbitrary - for developmental use only randomly selects random subset of sequences in the database to assign as matching sequences to the first 100 sequences in the query set
 
-### Taxa keys function ---------------------------------------------------------
-.taxa_keys <- function(x, keytype){
-    x$taxa %>%
-        dplyr::select_(keytype) %>%
-        dplyr::collect()
+.mgDb_annotate <- function(x, query, mapping = "arbitrary",...){
+    if(mapping == "arbitrary"){
+        query_size <- length(query)
+        db_subset <- sample(taxa_keys(x, keytype = c("Keys"))$Keys,query_size)
+        match_df <- data.frame(query_id = names(query_subset),
+                               Keys = db_subset,
+                               stringsAsFactors = FALSE)
+    }
+    filtered_db <- select(x, type = "both",
+                          keys = match_df$Keys,
+                          keytype = "Keys")
+
+    annotated_db <- dplyr::right_join(match_df, filtered_db$taxa)
+    anno_metadata <- x$metadata
+    anno_metadata$mapping <- mapping
+
+    new("metagenomeAnnotation",
+        refDF = annotated_db,
+        metadata = anno_metadata,
+        feature_data = query
+    )
+
 }
 
-setGeneric("taxa_keys", signature="x",
-           function(x, ...) standardGeneric("taxa_keys"))
+setGeneric("annotate",
+           function(x, ...) {standardGeneric("annotate")}
+)
 
-
-setMethod("taxa_keys", "MgDb",
-          function(x, ...) .taxa_keys(x, ...))
-
-
-
-### Taxa columns function ------------------------------------------------------
-.taxa_columns = function(x){
-        colnames(x$taxa)
-}
-
-setGeneric("taxa_columns", signature="x",
-           function(x) standardGeneric("taxa_columns"))
-
-
-setMethod("taxa_columns", "MgDb",
-          function(x) .taxa_columns(x))
-
-
-### taxa keytypes function -----------------------------------------------------
-.taxa_keytypes = function(x){
-        colnames(x$taxa)
-}
-
-setGeneric("taxa_keytypes", signature="x",
-           function(x) standardGeneric("taxa_keytypes"))
-
-setMethod("taxa_keytypes", "MgDb",
-          function(x) .taxa_keytypes(x))
+#' annotating a set of sequences with taxonomic information from a MgDb class object
+#' @param x MgDb class object
+#' @param query ShortRead-class object with marker gene sequences
+#' @param mapping method used to map sequences to database
+#' @return metagenomeAnnotation class object
+#' @export
+setMethod("annotate", "MgDb",
+          function(x, query, mapping, ...){ .mgDb_annotate(x, query, mapping, ...)}
+)
