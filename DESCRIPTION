@@ -1,6 +1,6 @@
 Package: metagenomeFeatures
 Title: Exploration of marker-gene sequence taxonomic annotations
-Version: 0.0.0.9002
+Version: 0.0.0.9003
 Author: Joseph Nathaniel Paulson, Nathan D. Olson, Hector Corrada
     Bravo
 Maintainer: Nathan D. Olson <nolson@umiacs.umd.edu>
@@ -9,18 +9,18 @@ Description: metagenomeFeatures was developed for use in exploring
     dataset. The package can be used to explore the taxonomic
     composition of a marker-gene database or annotated sequences from
     marker-gene metagenome experiment.
-Depends: 
+Depends:
     R (>= 3.1.2)
 License: Artistic-2.0
 LazyData: true
-Imports: 
+Imports:
     ShortRead,
     dplyr,
     stringr,
     lazyeval,
     RSQLite,
     magrittr
-Collate: 
+Collate:
     'makeMgDbFromGreenGenes.R'
     'makeMgDbPackage.R'
     'metagenomeAnnotation-class.R'
@@ -28,7 +28,7 @@ Collate:
     'mgDb-taxa_accessors.R'
     'mgQuery.R'
     'utils.R'
-Suggests: 
+Suggests:
     knitr,
     greengenes13.5MgDb,
     testthat
