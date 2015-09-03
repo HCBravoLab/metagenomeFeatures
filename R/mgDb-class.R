@@ -17,6 +17,7 @@
 #' @field taxa taxonomic information for database sequences
 #' @field seq database reference sequences
 #' @field metadata associated metadata for the database
+#' @exportClass
 MgDb <- setRefClass("MgDb",
                      contains="DNAStringSet",
                      fields=list(seq="DNAStringSet",
@@ -63,7 +64,7 @@ MgDb <- setRefClass("MgDb",
 ### ============================================================================
 ## Need to revise for refClass structure
 
-#' @export
+#' @exportMethod
 setMethod("show", "MgDb",
           function(object){
             cat(class(object), "object:")
@@ -161,7 +162,7 @@ setGeneric("select", function(x, type, keys, keytype, ids = NULL, ...) {
 #' @param columns keytypes in taxonomy databse to return, all by default
 #' @param ids sequence ids to select
 #' @return generates database, function does not return anything
-#' @export
+#' @exportMethod
 setMethod("select", "MgDb",
           function(x, type, keys, keytype, ids = NULL, ...){
               .select(x, type, keys, keytype, ids = NULL, ...)
@@ -221,7 +222,7 @@ setGeneric("annotate",
 #' @param query ShortRead-class object with marker gene sequences
 #' @param mapping method used to map sequences to database
 #' @return metagenomeAnnotation class object
-#' @export
+#' @exportMethod
 setMethod("annotate", "MgDb",
           function(x, query, mapping, ...){ .mgDb_annotate(x, query, mapping, ...)}
 )
