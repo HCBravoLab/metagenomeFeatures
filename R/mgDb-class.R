@@ -186,11 +186,15 @@ setMethod("select", "MgDb",
 
 .mgDb_annotate <- function(x, query, mapping = "arbitrary",...){
     if(mapping == "arbitrary"){
+        warning("Arbitrary mapping method is for development purposes, mappings are to the first entries in the database and not intended to represent actual sequence taxonomic assignment")
         query_size <- length(query)
-        db_subset <- sample(taxa_keys(x, keytype = c("Keys"))$Keys,query_size)
-        match_df <- data.frame(query_id = names(query_subset),
-                               Keys = db_subset,
+        keys <- taxa_keys(x, keytype = c("Keys"))$Keys
+        key_subset <- keys[1:query_size]
+        match_df <- data.frame(query_id = names(sread(query)),
+                               Keys = key_subset,
                                stringsAsFactors = FALSE)
+    }else{
+        stop("Only arbirary mapping method is currently implemented")
     }
     filtered_db <- select(x, type = "both",
                           keys = match_df$Keys,
@@ -203,7 +207,7 @@ setMethod("select", "MgDb",
     new("metagenomeAnnotation",
         refDF = annotated_db,
         metadata = anno_metadata,
-        feature_data = query
+        feature_data = sread(query)
     )
 
 }
