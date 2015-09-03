@@ -55,17 +55,17 @@ test_that("MgDb-class taxa_keys at different taxonomic levels", {
 ## Select Methods
 test_that("MgDb-class select methods",{
     expect_equal_to_reference(
-        testMgDb$select(type = "taxa",
+        select(testMgDb, type = "taxa",
                         keys = c("Vibrio", "Salmonella"),
                         keytype = "Genus"),
         file = "cache/MgDb_test_select_taxa.rds")
     expect_equal_to_reference(
-        testMgDb$select(type = "seq",
+        select(testMgDb, type = "seq",
                         keys = c("Vibrio", "Salmonella"),
                         keytype = "Genus"),
         file = "cache/MgDb_test_select_seq.rds")
     expect_equal_to_reference(
-        testMgDb$select(type = "both",
+        select(testMgDb, type = "both",
                         keys = c("Vibrio", "Salmonella"),
                         keytype = "Genus"),
         file = "cache/MgDb_test_select_both.rds")
@@ -73,7 +73,7 @@ test_that("MgDb-class select methods",{
 
 test_that("MgDb-class annotate",{
     expect_equal_to_reference(
-        testMgDb$annotate(query = mgQuery[1:20],
+        annotate(testMgDb, query = mgQuery[1:20],
                           mapping = "arbitrary"),
         file = "cache/MgDb_test_annotate.rds")
 })
