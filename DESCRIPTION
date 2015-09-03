@@ -19,7 +19,9 @@ Imports:
     stringr,
     lazyeval,
     RSQLite,
-    magrittr
+    magrittr,
+    methods,
+    Biobase
 Collate:
     'makeMgDbFromGreenGenes.R'
     'makeMgDbPackage.R'
