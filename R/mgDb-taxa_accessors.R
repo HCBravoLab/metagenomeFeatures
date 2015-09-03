@@ -24,7 +24,7 @@ setGeneric("taxa_keys", signature="x",
 #' @param keytype taxonomic classification level
 #'
 #' @return tbl_df
-#' @exportMethod
+#' @export
 #'
 #' @examples taxa_keys(mgdb, keytype = "Class")
 setMethod("taxa_keys", "MgDb",
@@ -48,7 +48,7 @@ setGeneric("taxa_columns", signature="x",
 #' @param keytype taxonomic classification level
 #'
 #' @return tbl_df
-#' @exportMethod
+#' @export
 #'
 #' @examples taxa_column(mgdb)
 setMethod("taxa_columns", "MgDb",
@@ -71,7 +71,7 @@ setGeneric("taxa_keytypes", signature="x",
 #' @param keytype taxonomic classification level
 #'
 #' @return tbl_df
-#' @exportMethod
+#' @export
 #'
 #' @examples taxa_keytypes(mgdb)
 setMethod("taxa_keytypes", "MgDb",
