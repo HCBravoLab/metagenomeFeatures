@@ -13,11 +13,11 @@ annotated marker gene sequence object class
 \section{Slots}{
 
 \describe{
-\item{\code{mgAnnotatedDF}}{AnnotatedDataFrame.}
+\item{\code{mgAnnotatedDF}}{AnnotatedDataFrame}
 
 \item{\code{metadata}}{list}
 
-\item{\code{featureData}}{DNAStringSet.}
+\item{\code{featureData}}{DNAStringSet}
 }}
 \examples{
 new("metagenomeAnnotation", mgAnnotatedDF, metadata, featureData)

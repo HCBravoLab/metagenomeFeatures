@@ -13,9 +13,9 @@
 
 #' annotated marker gene sequence object class
 #'
-#' @slot mgAnnotatedDF AnnotatedDataFrame.
+#' @slot mgAnnotatedDF AnnotatedDataFrame
 #' @slot metadata list
-#' @slot featureData DNAStringSet.
+#' @slot featureData DNAStringSet
 #'
 #' @return metagenomeAnnotation class object
 #' @export
