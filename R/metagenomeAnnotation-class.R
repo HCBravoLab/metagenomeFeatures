@@ -28,14 +28,14 @@ setClass("metagenomeAnnotation",
          contains = c("AnnotatedDataFrame","DNAStringSet")
 )
 
-# ## defining non-specified slots - empty for now
-# setMethod("prototype", "metagenomeAnnotation",
-#           function(.Object,...){
-#               mgAnnotatedDF <- new("AnnotatedDataFrame")
-#               metadata <- list()
-#               featureData <- new("DNAStringSet")
-#           }
-# )
+## defining non-specified slots - empty for now
+setMethod("prototype", "metagenomeAnnotation",
+          function(.Object,...){
+              mgAnnotatedDF <- new("AnnotatedDataFrame")
+              metadata <- list()
+              featureData <- new("DNAStringSet")
+          }
+)
 
 ## for use in creating a new object
 setMethod("initialize","metagenomeAnnotation",
