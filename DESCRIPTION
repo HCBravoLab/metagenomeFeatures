@@ -25,6 +25,7 @@ Collate:
     'makeMgDbPackage.R'
     'metagenomeAnnotation-class.R'
     'mgDb-class.R'
+    'mgDb-taxa_accessors.R'
     'mgQuery.R'
     'utils.R'
 Suggests: 
