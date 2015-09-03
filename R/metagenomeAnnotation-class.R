@@ -10,6 +10,17 @@
 ##  annotation metadata - ref db package, mapping method,
 ##  user defined features, e.g. annotate function parameters
 ##  feature data - cluster sequences, cluster IDs
+
+#' annotated marker gene sequence object class
+#'
+#' @slot mgAnnotatedDF AnnotatedDataFrame.
+#' @slot metadata list
+#' @slot featureData DNAStringSet.
+#'
+#' @return metagenomeAnnotation class object
+#' @export
+#'
+#' @examples
 setClass("metagenomeAnnotation",
          representation = list(mgAnnotatedDF = "AnnotatedDataFrame",
                                metadata = "list",
@@ -63,7 +74,7 @@ setValidity("metagenomeAnnotation", function(object) {
 })
 
 
-## %%TODO%% - format for user friendly output
+#' @export
 setMethod("show", "metagenomeAnnotation",
           function(object){
               metadata <-object@metadata
@@ -101,7 +112,7 @@ setMethod("show", "metagenomeAnnotation",
 #' @export
 #'
 #' @examples split_by(mgAnno, "Phylum")
-split_by <- function(object, taxa_level) {
+.split_by <- function(object, taxa_level) {
                 split_mgAnnoList <- list()
                 for( tax in unique(object@mgAnnotatedDF[[taxa_level]])){
                     annotated_db <- object@mgAnnotatedDF[object@mgAnnotatedDF[[taxa_level]] == tax,]
