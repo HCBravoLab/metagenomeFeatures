@@ -23,16 +23,16 @@ gg13.5MgDb
 ## MgDb Methods
 taxa_keytypes
 ```{r}
-gg13.5MgDb$taxa_keytypes()
+taxa_keytypes(gg13.5MgDb)
 ```
 
 
 ```{r}
-gg13.5MgDb$taxa_columns()
+taxa_columns(gg13.5MgDb)
 ```
 
 ```{r}
-head(gg13.5MgDb$taxa_keys(keytype = c("Kingdom")))
+head(taxa_keys(gg13.5MgDb, keytype = c("Kingdom")))
 ```
 
 
@@ -41,14 +41,14 @@ Used to retrieve db entries for a specified taxanomic group or id list, can retu
 
 ### Selecting taxonomic information
 ```{r}
-gg13.5MgDb$select(type = "taxa",
+select(gg13.5MgDbtype = "taxa",
                 keys = c("Vibrio", "Salmonella"),
                 keytype = "Genus")
 ```
 
 ### Selecting sequence information
 ```{r}
-gg13.5MgDb$select(type = "seq",
+select(gg13.5MgDb, type = "seq",
                 keys = c("Vibrio", "Salmonella"),
                 keytype = "Genus")
 ```
@@ -57,7 +57,7 @@ gg13.5MgDb$select(type = "seq",
 
 ### Selecting both
 ```{r}
-gg13.5MgDb$select(type = "both",
+select(gg13.5MgDb, type = "both",
                 keys = c("Vibrio", "Salmonella"),
                 keytype = "Genus")
 ```
