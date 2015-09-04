@@ -94,11 +94,11 @@ setMethod("show", "MgDb",
 
 .select.taxa<- function(taxaDb, keys, keytype,
                         columns="all"){
-
+    print(keys)
     # selecting desired rows
     if(keytype !=  "Keys"){
-        level_id <- tolower(stringr::str_sub(string = keytype,
-                                             start = 1,end = 1))
+        level_id <- rep(tolower(stringr::str_sub(string = keytype,
+                                             start = 1,end = 1)), length(keys))
         keys <- stringr::str_c(level_id,keys,sep = "__")
     }
     if(length(keys) == 1){
@@ -124,13 +124,14 @@ setMethod("show", "MgDb",
 # filtered database not sure if we want to make the select method only generate a
 
 ## either select by ids for taxa information
-.select <- function(mgdb, type, keys=NULL, keytype=NULL, ids = NULL, columns = "all", ...){
+.select <- function(x, type, keys = NULL, keytype = NULL, ids = NULL, columns = "all"){
+    mgdb <- x
     if(!(type %in% c("seq","taxa", "both"))){
         stop("type must be either 'seq', 'taxa', or both")
     }
 
     if(type == "taxa"|| type == "both" || is.null(ids)){
-        taxa_df <- .select.taxa(mgdb$taxa, keys, keytype, columns)
+        taxa_df <- .select.taxa(mgdb$taxa, keys = keys, keytype = keytype, columns = columns)
         if(type == "taxa"){
             return(taxa_df)
         }
@@ -149,13 +150,13 @@ setMethod("show", "MgDb",
     return(list(taxa = taxa_df, seq = seq_obj))
 }
 
-setGeneric("select", function(mgdb, type, ...) {
-    standardGeneric("select")
+setGeneric("select", signature="x",
+    function(x, type, ...) { standardGeneric("select")
 })
 
 #' Function for querying MgDb class objects
-#' @param mgdb MgDb class object
 #'
+#' @param x MgDb class object
 #' @param type either "taxa", "seq", or "both". "taxa" and "seq" only queries the taxonomy and sequences databases respectively. "both" queries both the taxonomy and sequence database.
 #' @param keys specific taxonomic groups to select for
 #' @param keytype taxonomic level of keys
@@ -164,8 +165,8 @@ setGeneric("select", function(mgdb, type, ...) {
 #' @return generates database, function does not return anything
 #' @export
 setMethod("select", "MgDb",
-          function(mgdb, type, keys = NULL, keytype = NULL, ids = NULL, columns = "all"){
-              .select(mgdb, type, keys = NULL, keytype = NULL, ids = NULL, columns = "all")
+          function(x, type, ...){
+              .select(x, type, ...)
           }
 )
 
@@ -213,7 +214,7 @@ setMethod("select", "MgDb",
 
 }
 
-setGeneric("annotate",
+setGeneric("annotate", signature = "mgdb",
            function(mgdb, query, ...) {standardGeneric("annotate")}
 )
 
