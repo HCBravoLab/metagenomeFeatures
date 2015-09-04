@@ -124,13 +124,13 @@ setMethod("show", "MgDb",
 # filtered database not sure if we want to make the select method only generate a
 
 ## either select by ids for taxa information
-.select <- function(x, type, keys, keytype, columns = "all", ids = NULL){
+.select <- function(mgdb, type, keys=NULL, keytype=NULL, ids = NULL, columns = "all", ...){
     if(!(type %in% c("seq","taxa", "both"))){
-        stop("type must be either 'seq' or 'taxa'")
+        stop("type must be either 'seq', 'taxa', or both")
     }
 
     if(type == "taxa"|| type == "both" || is.null(ids)){
-        taxa_df <- .select.taxa(x$taxa, keys, keytype, columns)
+        taxa_df <- .select.taxa(mgdb$taxa, keys, keytype, columns)
         if(type == "taxa"){
             return(taxa_df)
         }
@@ -140,7 +140,7 @@ setMethod("show", "MgDb",
     }
 
     if(type == "seq" || type == "both"){
-        seq_obj <- .select.seq(x$seq, ids)
+        seq_obj <- .select.seq(mgdb$seq, ids)
         if(type != "both"){
             return(seq_obj)
         }
@@ -149,23 +149,23 @@ setMethod("show", "MgDb",
     return(list(taxa = taxa_df, seq = seq_obj))
 }
 
-setGeneric("select", function(mgdb, ...) {
+setGeneric("select", function(mgdb, type, ...) {
     standardGeneric("select")
 })
 
 #' Function for querying MgDb class objects
-#' @param x MgDb class object
+#' @param mgdb MgDb class object
 #'
 #' @param type either "taxa", "seq", or "both". "taxa" and "seq" only queries the taxonomy and sequences databases respectively. "both" queries both the taxonomy and sequence database.
 #' @param keys specific taxonomic groups to select for
 #' @param keytype taxonomic level of keys
-#' @param columns keytypes in taxonomy databse to return, all by default
 #' @param ids sequence ids to select
+#' @param columns keytypes in taxonomy databse to return, all by default
 #' @return generates database, function does not return anything
 #' @export
 setMethod("select", "MgDb",
-          function(mgdb, type, keys = NULL, keytype = NULL, ids = NULL, ...){
-              .select(mgdb, type, keys = NULL, keytype = NULL, ids = NULL, ...)
+          function(mgdb, type, keys = NULL, keytype = NULL, ids = NULL, columns = "all"){
+              .select(mgdb, type, keys = NULL, keytype = NULL, ids = NULL, columns = "all")
           }
 )
 
@@ -185,11 +185,11 @@ setMethod("select", "MgDb",
 ## mapping - defines method to map user provided sequences to database
 ##              arbitrary - for developmental use only randomly selects random subset of sequences in the database to assign as matching sequences to the first 100 sequences in the query set
 
-.mgDb_annotate <- function(x, query, mapping = "arbitrary",...){
+.mgDb_annotate <- function(mgdb, query, mapping = "arbitrary"){
     if(mapping == "arbitrary"){
         warning("Arbitrary mapping method is for development purposes, mappings are to the first entries in the database and not intended to represent actual sequence taxonomic assignment")
         query_size <- length(query)
-        keys <- taxa_keys(x, keytype = c("Keys"))$Keys
+        keys <- taxa_keys(mgdb, keytype = c("Keys"))$Keys
         key_subset <- keys[1:query_size]
         match_df <- data.frame(query_id = names(sread(query)),
                                Keys = key_subset,
@@ -197,12 +197,12 @@ setMethod("select", "MgDb",
     }else{
         stop("Only arbirary mapping method is currently implemented")
     }
-    filtered_db <- select(x, type = "both",
+    filtered_db <- select(mgdb, type = "both",
                           keys = match_df$Keys,
                           keytype = "Keys")
 
     annotated_db <- dplyr::right_join(match_df, filtered_db$taxa)
-    anno_metadata <- x$metadata
+    anno_metadata <- mgdb$metadata
     anno_metadata$mapping <- mapping
 
     new("metagenomeAnnotation",
@@ -214,15 +214,16 @@ setMethod("select", "MgDb",
 }
 
 setGeneric("annotate",
-           function(x, ...) {standardGeneric("annotate")}
+           function(mgdb, query, ...) {standardGeneric("annotate")}
 )
 
 #' annotating a set of sequences with taxonomic information from a MgDb class object
-#' @param x MgDb class object
+#' @param mgdb MgDb class object
 #' @param query ShortRead-class object with marker gene sequences
 #' @param mapping method used to map sequences to database
 #' @return metagenomeAnnotation class object
 #' @export
 setMethod("annotate", "MgDb",
-          function(x, query, mapping, ...){ .mgDb_annotate(x, query, mapping, ...)}
+          function(mgdb, query, mapping = "arbitrary"){
+              .mgDb_annotate(mgdb, query, mapping = "arbitrary")}
 )

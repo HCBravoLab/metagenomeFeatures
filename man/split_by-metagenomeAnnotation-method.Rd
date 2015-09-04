@@ -5,10 +5,10 @@
 \alias{split_by,metagenomeAnnotation-method}
 \title{Split metagenomeAnnotation Object by Taxa}
 \usage{
-split_by(mgAnno, taxa_level = "Phylum")
+\S4method{split_by}{metagenomeAnnotation}(mgAnno, taxa_level)
 }
 \arguments{
-\item{object}{metagenomeAnnotation class object}
+\item{mgAnno}{metagenomeAnnotation class object}
 
 \item{taxa_level}{taxonomic level used to split the metagenomeAnnotation object at}
 }

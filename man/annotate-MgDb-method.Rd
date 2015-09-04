@@ -5,10 +5,10 @@
 \alias{annotate,MgDb-method}
 \title{annotating a set of sequences with taxonomic information from a MgDb class object}
 \usage{
-\S4method{annotate}{MgDb}(x, query, mapping, ...)
+\S4method{annotate}{MgDb}(mgdb, query, mapping = "arbitrary")
 }
 \arguments{
-\item{x}{MgDb class object}
+\item{mgdb}{MgDb class object}
 
 \item{query}{ShortRead-class object with marker gene sequences}
 

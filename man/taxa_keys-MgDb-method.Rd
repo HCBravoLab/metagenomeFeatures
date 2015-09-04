@@ -5,7 +5,7 @@
 \alias{taxa_keys,MgDb-method}
 \title{Taxonomy values for a given keytype}
 \usage{
-taxa_keys(mgdb, keytype = "Class")
+\S4method{taxa_keys}{MgDb}(mgdb, keytype)
 }
 \arguments{
 \item{mgdb}{object of MgDb class}

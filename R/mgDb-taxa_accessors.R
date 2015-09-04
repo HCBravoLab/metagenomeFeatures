@@ -16,7 +16,7 @@
 }
 
 setGeneric("taxa_keys", signature="mgdb",
-           function(mgdb, ...) standardGeneric("taxa_keys"))
+           function(mgdb, keytype) standardGeneric("taxa_keys"))
 
 #' Taxonomy values for a given keytype
 #'
@@ -26,9 +26,8 @@ setGeneric("taxa_keys", signature="mgdb",
 #' @return tbl_df
 #' @export
 #'
-#' @usage taxa_keys(mgdb, keytype = "Class")
 setMethod("taxa_keys", "MgDb",
-          function(mgdb, ...) .taxa_keys(mgdb, ...))
+          function(mgdb, keytype) .taxa_keys(mgdb, keytype))
 
 
 
@@ -45,12 +44,10 @@ setGeneric("taxa_columns", signature="mgdb",
 #' Column names for MgDb taxonomy slot object
 #'
 #' @param mgdb object of MgDB class
-#' @param keytype taxonomic classification level
 #'
 #' @return tbl_df
 #' @export
 #'
-#' @usage taxa_column(mgdb)
 setMethod("taxa_columns", "MgDb",
           function(mgdb) .taxa_columns(mgdb))
 
@@ -68,11 +65,9 @@ setGeneric("taxa_keytypes", signature="mgdb",
 #' Column names for MgDb taxonomy slot object
 #'
 #' @param mgdb object of MgDB class
-#' @param keytype taxonomic classification level
 #'
 #' @return tbl_df
 #' @export
 #'
-#' @usage taxa_keytypes(mgdb)
 setMethod("taxa_keytypes", "MgDb",
           function(mgdb) .taxa_keytypes(mgdb))

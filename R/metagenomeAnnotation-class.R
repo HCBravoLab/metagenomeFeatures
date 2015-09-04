@@ -13,10 +13,10 @@
 
 #' annotated marker gene sequence object class
 #'
+#' @aliases mgAnno
 #' @slot mgAnnotatedDF AnnotatedDataFrame
 #' @slot metadata list
 #' @slot featureData DNAStringSet
-#' @aliases mgAnno
 #' @return metagenomeAnnotation class object
 #' @export
 setClass("metagenomeAnnotation",
@@ -102,15 +102,15 @@ setMethod("show", "metagenomeAnnotation",
 ## user provides a metagenomeAnnotation object,
 ## and defines the taxonomy level (e.g. Phylum, Class, Order ect. )to split the object by
 
-.split_by <- function(object, taxa_level) {
+.split_by <- function(mgAnno, taxa_level) {
                 split_mgAnnoList <- list()
-                for( tax in unique(object@mgAnnotatedDF[[taxa_level]])){
-                    annotated_db <- object@mgAnnotatedDF[object@mgAnnotatedDF[[taxa_level]] == tax,]
+                for( tax in unique(mgAnno@mgAnnotatedDF[[taxa_level]])){
+                    annotated_db <- mgAnno@mgAnnotatedDF[mgAnno@mgAnnotatedDF[[taxa_level]] == tax,]
 
-                    query_id <- object@mgAnnotatedDF$query_id[object@mgAnnotatedDF[[taxa_level]] == tax]
-                    feature_data <- object@featureData[names(object@featureData) %in% query_id,]
+                    query_id <- mgAnno@mgAnnotatedDF$query_id[mgAnno@mgAnnotatedDF[[taxa_level]] == tax]
+                    feature_data <- mgAnno@featureData[names(mgAnno@featureData) %in% query_id,]
 
-                    anno_metadata <- object@metadata
+                    anno_metadata <- mgAnno@metadata
                     anno_metadata$split_by <- c(level = taxa_level, taxa = tax)
 
                     split_mgAnnoList[[tax]] <- new("metagenomeAnnotation",
@@ -122,22 +122,21 @@ setMethod("show", "metagenomeAnnotation",
                 return(split_mgAnnoList)
 }
 
-setGeneric("split_by", function(object, taxa_level, ...) {
+setGeneric("split_by", function(mgAnno, taxa_level) {
     standardGeneric("split_by")
 })
 
 #' Split metagenomeAnnotation Object by Taxa
 #'
-#' @param object metagenomeAnnotation class object
+#' @param mgAnno metagenomeAnnotation class object
 #' @param taxa_level taxonomic level used to split the metagenomeAnnotation object at
 #'
 #' @return list of metagenomeAnnotation objects
 #' @export
 #'
-#' @usage split_by(mgAnno, taxa_level = "Phylum")
 setMethod("split_by", "metagenomeAnnotation",
-          function(object, taxa_level, ...){
-              .split_by(object, taxa_level, ...)
+          function(mgAnno, taxa_level){
+              .split_by(mgAnno, taxa_level)
           }
 )
 # mgTree - generates a tree from annotated dataframe

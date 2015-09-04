@@ -5,12 +5,10 @@
 \alias{taxa_keytypes,MgDb-method}
 \title{Column names for MgDb taxonomy slot object}
 \usage{
-taxa_keytypes(mgdb)
+\S4method{taxa_keytypes}{MgDb}(mgdb)
 }
 \arguments{
 \item{mgdb}{object of MgDB class}
-
-\item{keytype}{taxonomic classification level}
 }
 \value{
 tbl_df
