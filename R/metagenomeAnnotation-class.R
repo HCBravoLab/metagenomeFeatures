@@ -16,11 +16,9 @@
 #' @slot mgAnnotatedDF AnnotatedDataFrame
 #' @slot metadata list
 #' @slot featureData DNAStringSet
-#'
+#' @aliases mgAnno
 #' @return metagenomeAnnotation class object
 #' @export
-#'
-#' @examples new("metagenomeAnnotation", mgAnnotatedDF, metadata, featureData)
 setClass("metagenomeAnnotation",
          representation = list(mgAnnotatedDF = "AnnotatedDataFrame",
                                metadata = "list",
@@ -136,7 +134,7 @@ setGeneric("split_by", function(object, taxa_level, ...) {
 #' @return list of metagenomeAnnotation objects
 #' @export
 #'
-#' @examples split_by(mgAnno, "Phylum")
+#' @usage split_by(mgAnno, taxa_level = "Phylum")
 setMethod("split_by", "metagenomeAnnotation",
           function(object, taxa_level, ...){
               .split_by(object, taxa_level, ...)

@@ -4,6 +4,7 @@
 \name{MgDb-class}
 \alias{MgDb}
 \alias{MgDb-class}
+\alias{mgdb}
 \title{Metagenome Database class}
 \description{
 Metagenome Database class

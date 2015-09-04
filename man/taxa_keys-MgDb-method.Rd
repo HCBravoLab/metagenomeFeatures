@@ -5,10 +5,10 @@
 \alias{taxa_keys,MgDb-method}
 \title{Taxonomy values for a given keytype}
 \usage{
-\S4method{taxa_keys}{MgDb}(x, ...)
+taxa_keys(mgdb, keytype = "Class")
 }
 \arguments{
-\item{mgdb}{object of MgDB class}
+\item{mgdb}{object of MgDb class}
 
 \item{keytype}{taxonomic classification level}
 }
@@ -17,8 +17,5 @@ tbl_df
 }
 \description{
 Taxonomy values for a given keytype
-}
-\examples{
-taxa_keys(mgdb, keytype = "Class")
 }
 

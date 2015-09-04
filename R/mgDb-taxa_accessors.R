@@ -9,36 +9,36 @@
 ### so they can be used using standard function(value) method
 
 ### Taxa keys function ---------------------------------------------------------
-.taxa_keys <- function(x, keytype){
-    x$taxa %>%
+.taxa_keys <- function(mgdb, keytype){
+    mgdb$taxa %>%
         dplyr::select_(keytype) %>%
         dplyr::collect()
 }
 
-setGeneric("taxa_keys", signature="x",
-           function(x, ...) standardGeneric("taxa_keys"))
+setGeneric("taxa_keys", signature="mgdb",
+           function(mgdb, ...) standardGeneric("taxa_keys"))
 
 #' Taxonomy values for a given keytype
 #'
-#' @param mgdb object of MgDB class
+#' @param mgdb object of MgDb class
 #' @param keytype taxonomic classification level
 #'
 #' @return tbl_df
 #' @export
 #'
-#' @examples taxa_keys(mgdb, keytype = "Class")
+#' @usage taxa_keys(mgdb, keytype = "Class")
 setMethod("taxa_keys", "MgDb",
-          function(x, ...) .taxa_keys(x, ...))
+          function(mgdb, ...) .taxa_keys(mgdb, ...))
 
 
 
 ### Taxa columns function ------------------------------------------------------
-.taxa_columns = function(x){
-    colnames(x$taxa)
+.taxa_columns = function(mgdb){
+    colnames(mgdb$taxa)
 }
 
-setGeneric("taxa_columns", signature="x",
-           function(x) standardGeneric("taxa_columns"))
+setGeneric("taxa_columns", signature="mgdb",
+           function(mgdb) standardGeneric("taxa_columns"))
 
 ## MgDb taxa_columns method
 
@@ -50,18 +50,18 @@ setGeneric("taxa_columns", signature="x",
 #' @return tbl_df
 #' @export
 #'
-#' @examples taxa_column(mgdb)
+#' @usage taxa_column(mgdb)
 setMethod("taxa_columns", "MgDb",
-          function(x) .taxa_columns(x))
+          function(mgdb) .taxa_columns(mgdb))
 
 
 ### taxa keytypes function -----------------------------------------------------
-.taxa_keytypes = function(x){
-    colnames(x$taxa)
+.taxa_keytypes = function(mgdb){
+    colnames(mgdb$taxa)
 }
 
-setGeneric("taxa_keytypes", signature="x",
-           function(x) standardGeneric("taxa_keytypes"))
+setGeneric("taxa_keytypes", signature="mgdb",
+           function(mgdb) standardGeneric("taxa_keytypes"))
 
 ## MgDb taxa_keytypes method
 
@@ -73,6 +73,6 @@ setGeneric("taxa_keytypes", signature="x",
 #' @return tbl_df
 #' @export
 #'
-#' @examples taxa_keytypes(mgdb)
+#' @usage taxa_keytypes(mgdb)
 setMethod("taxa_keytypes", "MgDb",
-          function(x) .taxa_keytypes(x))
+          function(mgdb) .taxa_keytypes(mgdb))

@@ -3,6 +3,7 @@
 \docType{class}
 \name{metagenomeAnnotation-class}
 \alias{metagenomeAnnotation-class}
+\alias{mgAnno}
 \title{annotated marker gene sequence object class}
 \value{
 metagenomeAnnotation class object
@@ -19,7 +20,4 @@ annotated marker gene sequence object class
 
 \item{\code{featureData}}{DNAStringSet}
 }}
-\examples{
-new("metagenomeAnnotation", mgAnnotatedDF, metadata, featureData)
-}
 

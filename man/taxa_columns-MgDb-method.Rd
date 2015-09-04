@@ -5,7 +5,7 @@
 \alias{taxa_columns,MgDb-method}
 \title{Column names for MgDb taxonomy slot object}
 \usage{
-\S4method{taxa_columns}{MgDb}(x)
+taxa_column(mgdb)
 }
 \arguments{
 \item{mgdb}{object of MgDB class}
@@ -17,8 +17,5 @@ tbl_df
 }
 \description{
 Column names for MgDb taxonomy slot object
-}
-\examples{
-taxa_column(mgdb)
 }
 

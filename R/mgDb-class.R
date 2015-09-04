@@ -13,7 +13,7 @@
 }
 
 #' Metagenome Database class
-#'
+#' @aliases mgdb
 #' @field taxa taxonomic information for database sequences
 #' @field seq database reference sequences
 #' @field metadata associated metadata for the database
@@ -149,7 +149,7 @@ setMethod("show", "MgDb",
     return(list(taxa = taxa_df, seq = seq_obj))
 }
 
-setGeneric("select", function(x, type, keys, keytype, ids = NULL, ...) {
+setGeneric("select", function(mgdb, ...) {
     standardGeneric("select")
 })
 
@@ -164,8 +164,8 @@ setGeneric("select", function(x, type, keys, keytype, ids = NULL, ...) {
 #' @return generates database, function does not return anything
 #' @export
 setMethod("select", "MgDb",
-          function(x, type, keys, keytype, ids = NULL, ...){
-              .select(x, type, keys, keytype, ids = NULL, ...)
+          function(mgdb, type, keys = NULL, keytype = NULL, ids = NULL, ...){
+              .select(mgdb, type, keys = NULL, keytype = NULL, ids = NULL, ...)
           }
 )
 
