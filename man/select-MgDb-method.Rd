@@ -5,7 +5,8 @@
 \alias{select,MgDb-method}
 \title{Function for querying MgDb class objects}
 \usage{
-\S4method{select}{MgDb}(x, type, ...)
+\S4method{select}{MgDb}(x, type, keys = NULL, keytype = NULL, ids = NULL,
+  columns = "all")
 }
 \arguments{
 \item{x}{MgDb class object}

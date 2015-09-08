@@ -124,14 +124,14 @@ setMethod("show", "MgDb",
 # filtered database not sure if we want to make the select method only generate a
 
 ## either select by ids for taxa information
-.select <- function(x, type, keys = NULL, keytype = NULL, ids = NULL, columns = "all"){
+.select <- function(x, type, keys, keytype, ids, columns){
     mgdb <- x
     if(!(type %in% c("seq","taxa", "both"))){
         stop("type must be either 'seq', 'taxa', or both")
     }
 
     if(type == "taxa"|| type == "both" || is.null(ids)){
-        taxa_df <- .select.taxa(mgdb$taxa, keys = keys, keytype = keytype, columns = columns)
+        taxa_df <- .select.taxa(mgdb$taxa, keys, keytype, columns)
         if(type == "taxa"){
             return(taxa_df)
         }
@@ -165,8 +165,8 @@ setGeneric("select", signature="x",
 #' @return generates database, function does not return anything
 #' @export
 setMethod("select", "MgDb",
-          function(x, type, ...){
-              .select(x, type, ...)
+          function(x, type, keys = NULL, keytype = NULL, ids = NULL, columns = "all"){
+              .select(x, type, keys, keytype, ids, columns)
           }
 )
 
