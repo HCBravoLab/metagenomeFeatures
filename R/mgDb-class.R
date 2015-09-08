@@ -64,11 +64,14 @@ MgDb <- setRefClass("MgDb",
 ### ============================================================================
 ## Need to revise for refClass structure
 
+#' Display summary of MgDb-class object
+#' @param object MgDb-class object
+#'
 #' @export
 setMethod("show", "MgDb",
           function(object){
             cat(class(object), "object:")
-            print("Metadata\n")
+            print("Metadata")
             metadata <- object $metadata
                 for(i in names(metadata)){
                     cat("|", i, ": ", metadata[[i]], "\n", sep = "")
@@ -124,8 +127,7 @@ setMethod("show", "MgDb",
 # filtered database not sure if we want to make the select method only generate a
 
 ## either select by ids for taxa information
-.select <- function(x, type, keys, keytype, ids, columns){
-    mgdb <- x
+.select <- function(mgdb, type, keys, keytype, ids, columns){
     if(!(type %in% c("seq","taxa", "both"))){
         stop("type must be either 'seq', 'taxa', or both")
     }
@@ -150,8 +152,8 @@ setMethod("show", "MgDb",
     return(list(taxa = taxa_df, seq = seq_obj))
 }
 
-setGeneric("select", signature="x",
-    function(x, type, ...) { standardGeneric("select")
+setGeneric("select", signature="mgdb",
+    function(mgdb, type, ...) { standardGeneric("select")
 })
 
 #' Function for querying MgDb class objects
@@ -165,8 +167,8 @@ setGeneric("select", signature="x",
 #' @return generates database, function does not return anything
 #' @export
 setMethod("select", "MgDb",
-          function(x, type, keys = NULL, keytype = NULL, ids = NULL, columns = "all"){
-              .select(x, type, keys, keytype, ids, columns)
+          function(mgdb, type, keys = NULL, keytype = NULL, ids = NULL, columns = "all"){
+              .select(mgdb, type, keys, keytype, ids, columns)
           }
 )
 

@@ -67,27 +67,26 @@ setValidity("metagenomeAnnotation", function(object) {
 })
 
 
+#' Display summary of metagenomeAnnotaiton-class object
+#' @param object metagenomeAnnotation-class object
+#'
 #' @export
 setMethod("show", "metagenomeAnnotation",
           function(object){
               metadata <-object@metadata
               print_metadata <- ""
               for(i in names(metadata)){
-                  print_metadata <- paste0(print_metadata,
-                                           paste0("|", i, ": ",
-                                                  metadata[[i]], "\n", sep = ""))
+                  print_metadata <-
+                      paste0(print_metadata,
+                             paste0("|", i, ": ",
+                                    metadata[[i]], "\n", sep = ""))
               }
-              cat(class(object), "object:\n",
-                  "\nMetadata\n",
-                  print_metadata,
-                  "\nFeature Data:\n",
-                  #show(object@featureData), - format output ....
-                  "\nAnnotation Data:\n"#,
-                  #show(object@mgAnnotatedDF)
-              )
-              #for use while testing code
-              show(object@featureData)
-              show(object@mgAnnotatedDF)
+              print("Metadata:")
+              print(print_metadata)
+              print("Feature Data:")
+              print(show(object@featureData))
+              print("Annotation Data:")
+              print(show(object@mgAnnotatedDF))
           }
 )
 

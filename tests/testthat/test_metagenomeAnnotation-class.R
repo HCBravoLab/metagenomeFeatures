@@ -2,6 +2,11 @@ library(metagenomeFeatures)
 library(ShortRead)
 testMgAnno <- readRDS("../testMgAnnoDF.rds")
 
+test_that("metagenomeAnnoation-class show", {
+    expect_equal_to_reference(
+        show(testMgAnno),file = "cache/metagenomeAnnotation_test_show.rds")
+})
+
 context("metagenomeAnnotation-class")
 test_that("metagenomeAnnotation method split_by", {
     expect_equal_to_reference(
