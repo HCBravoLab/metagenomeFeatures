@@ -1,6 +1,6 @@
 Package: metagenomeFeatures
 Title: Exploration of marker-gene sequence taxonomic annotations
-Version: 0.0.0.9002
+Version: 0.0.0.9003
 Author: Joseph Nathaniel Paulson, Nathan D. Olson, Hector Corrada
     Bravo
 Maintainer: Nathan D. Olson <nolson@umiacs.umd.edu>
@@ -19,15 +19,18 @@ Imports:
     stringr,
     lazyeval,
     RSQLite,
-    magrittr
+    magrittr,
+    methods
 Collate:
     'makeMgDbFromGreenGenes.R'
     'makeMgDbPackage.R'
     'metagenomeAnnotation-class.R'
     'mgDb-class.R'
+    'mgDb-taxa_accessors.R'
     'mgQuery.R'
     'utils.R'
 Suggests:
     knitr,
-    greengenes13.5MgDb
+    greengenes13.5MgDb,
+    testthat
 VignetteBuilder: knitr
