@@ -1,8 +1,7 @@
 Package: metagenomeFeatures
 Title: Exploration of marker-gene sequence taxonomic annotations
-Version: 0.0.0.9003
-Author: Joseph Nathaniel Paulson, Nathan D. Olson, Hector Corrada
-    Bravo
+Version: 0.0.0.9004
+Author: Nathan D. Olson, Joseph Nathaniel Paulson,  Hector Corrada Bravo
 Maintainer: Nathan D. Olson <nolson@umiacs.umd.edu>
 Description: metagenomeFeatures was developed for use in exploring
     the taxonomic annotations for a marker-gene metagenomic sequence
