@@ -97,7 +97,6 @@ setMethod("show", "MgDb",
 
 .select.taxa<- function(taxaDb, keys, keytype,
                         columns="all"){
-    print(keys)
     # selecting desired rows
     if(keytype !=  "Keys"){
         level_id <- rep(tolower(stringr::str_sub(string = keytype,
