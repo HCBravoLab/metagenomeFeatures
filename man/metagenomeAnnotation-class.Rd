@@ -14,7 +14,7 @@ annotated marker gene sequence object class
 \section{Slots}{
 
 \describe{
-\item{\code{mgAnnotatedDF}}{AnnotatedDataFrame}
+\item{\code{annotationData}}{AnnotatedDataFrame}
 
 \item{\code{metadata}}{list}
 

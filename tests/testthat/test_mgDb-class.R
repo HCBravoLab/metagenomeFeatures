@@ -143,10 +143,10 @@ test_that("MgDb-class annotate",{
         test_annotate,
         file = "cache/MgDb_test_annotate.rds")
     expect_is(test_annotate, "metagenomeAnnotation")
-    expect_is(test_annotate@mgAnnotatedDF, "AnnotatedDataFrame")
+    expect_is(test_annotate@annotationData, "AnnotatedDataFrame")
     expect_is(test_annotate@metadata, "list")
     expect_is(test_annotate@featureData, "DNAStringSet")
-    expect_equivalent(nrow(test_annotate@mgAnnotatedDF),
+    expect_equivalent(nrow(test_annotate@annotationData),
                      length(test_annotate@featureData))
 })
 

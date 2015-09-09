@@ -208,7 +208,7 @@ setMethod("select", "MgDb",
     anno_metadata$mapping <- mapping
 
     new("metagenomeAnnotation",
-        refDF = annotated_db,
+        annotation_data = annotated_db,
         metadata = anno_metadata,
         feature_data = sread(query)
     )
