@@ -196,17 +196,17 @@ setMethod("select", "MgDb",
 ##              arbitrary - for developmental use only randomly selects random subset of sequences in the database to assign as matching sequences to the first 100 sequences in the query set
 
 .mgDb_annotate <- function(mgdb, query, mapping = "arbitrary"){
-    if(mapping == "arbitrary"){
-        warning("Arbitrary mapping method is for development purposes, mappings are to the first entries in the database and not intended to represent actual sequence taxonomic assignment")
-        query_size <- length(query)
-        keys <- taxa_keys(mgdb, keytype = c("Keys"))$Keys
-        key_subset <- keys[1:query_size]
-        match_df <- data.frame(query_id = names(ShortRead::sread(query)),
-                               Keys = key_subset,
-                               stringsAsFactors = FALSE)
-    }else{
-        stop("Only arbirary mapping method is currently implemented")
-    }
+#     if(mapping == "arbitrary"){
+#         warning("Arbitrary mapping method is for development purposes, mappings are to the first entries in the database and not intended to represent actual sequence taxonomic assignment")
+#         query_size <- length(query)
+#         keys <- taxa_keys(mgdb, keytype = c("Keys"))$Keys
+#         key_subset <- keys[1:query_size]
+#         match_df <- data.frame(query_id = names(ShortRead::sread(query)),
+#                                Keys = key_subset,
+#                                stringsAsFactors = FALSE)
+#     }else{
+#         stop("Only arbirary mapping method is currently implemented")
+#     }
     filtered_db <- select(mgdb, type = "both",
                           keys = match_df$Keys,
                           keytype = "Keys")
