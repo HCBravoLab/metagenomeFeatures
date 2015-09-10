@@ -128,23 +128,22 @@ setMethod("show", "MgDb",
 # filtered database not sure if we want to make the select method only generate a
 
 ## either select by ids for taxa information
-.select <- function(mgdb, type, keys, keytype, ids, columns){
+.select <- function(mgdb, type, keys, keytype, columns){
     if(!(type %in% c("seq","taxa", "both"))){
         stop("type must be either 'seq', 'taxa', or both")
     }
 
-    if(type == "taxa"|| type == "both" || is.null(ids)){
-        taxa_df <- .select.taxa(mgdb$taxa, keys, keytype, columns)
-        if(type == "taxa"){
-            return(taxa_df)
-        }
-        if(is.null(ids)){
-            ids <- taxa_df$Keys
-        }
+    if(is.null(keys) + is.null(keytype) == 1){
+        stop("must define both keys and keytypes, or neither")
+    }
+    taxa_df <- .select.taxa(mgdb$taxa, keys, keytype, columns)
+    if(type == "taxa"){
+        return(taxa_df)
     }
 
+
     if(type == "seq" || type == "both"){
-        seq_obj <- .select.seq(mgdb$seq, ids)
+        seq_obj <- .select.seq(mgdb$seq, taxa_df$Keys)
         if(type != "both"){
             return(seq_obj)
         }
@@ -154,12 +153,13 @@ setMethod("show", "MgDb",
 }
 
 #' Function for querying MgDb class objects
-#'
+#'  Use keys - keytype sets to define subset.
+#'  keytype - is the taxonomic level with the taxa of interest, use "Keys" if selecting based on selecting based on sequence IDs.
+#'  keys - is a vector of values of keytype
 #' @param mgdb MgDb class object
 #' @param type either "taxa", "seq", or "both". "taxa" and "seq" only queries the taxonomy and sequences databases respectively. "both" queries both the taxonomy and sequence database.
 #' @param keys specific taxonomic groups to select for
 #' @param keytype taxonomic level of keys
-#' @param ids sequence ids to select
 #' @param columns keytypes in taxonomy databse to return, all by default
 #' @param ... additional arguments passed to select function
 #' @return generates database, function does not return anything
@@ -174,8 +174,8 @@ setGeneric("select", signature="mgdb",
 #' @aliases select,MgDb-method
 #' @rdname select-MgDb-method
 setMethod("select", "MgDb",
-          function(mgdb, type, keys = NULL, keytype = NULL, ids = NULL, columns = "all"){
-              .select(mgdb, type, keys, keytype, ids, columns)
+          function(mgdb, type, keys = NULL, keytype = NULL, columns = "all"){
+              .select(mgdb, type, keys, keytype, columns)
           }
 )
 

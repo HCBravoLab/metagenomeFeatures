@@ -93,7 +93,9 @@ test_that("MgDb-class taxa_keys at different taxonomic levels", {
 
 ## Select Methods
 test_that("MgDb-class select",{
-  expect_error(select(testMgDb, type = "not a type"))
+    expect_error(select(testMgDb, type = "not a type"))
+    expect_error(select(testMgDb, type = "both", keytype = "Keys"))
+    expect_error(select(testMgDb, type = "both", keys = "Streptomyces"))
 })
 
 test_select_taxa <- select(testMgDb, type = "taxa",
