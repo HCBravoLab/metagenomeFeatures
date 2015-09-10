@@ -18,6 +18,7 @@
 #' @field seq database reference sequences
 #' @field metadata associated metadata for the database
 #' @export
+#' @rdname MgDb-class
 MgDb <- setRefClass("MgDb",
                      contains="DNAStringSet",
                      fields=list(seq="DNAStringSet",
@@ -68,6 +69,7 @@ MgDb <- setRefClass("MgDb",
 #' @param object MgDb-class object
 #'
 #' @export
+#' @rdname MgDb-class
 setMethod("show", "MgDb",
           function(object){
             cat(class(object), "object:")
@@ -97,7 +99,6 @@ setMethod("show", "MgDb",
 
 .select.taxa<- function(taxaDb, keys, keytype,
                         columns="all"){
-    print(keys)
     # selecting desired rows
     if(keytype !=  "Keys"){
         level_id <- rep(tolower(stringr::str_sub(string = keytype,
@@ -152,20 +153,26 @@ setMethod("show", "MgDb",
     return(list(taxa = taxa_df, seq = seq_obj))
 }
 
-setGeneric("select", signature="mgdb",
-    function(mgdb, type, ...) { standardGeneric("select")
-})
-
 #' Function for querying MgDb class objects
 #'
-#' @param x MgDb class object
+#' @param mgdb MgDb class object
 #' @param type either "taxa", "seq", or "both". "taxa" and "seq" only queries the taxonomy and sequences databases respectively. "both" queries both the taxonomy and sequence database.
 #' @param keys specific taxonomic groups to select for
 #' @param keytype taxonomic level of keys
 #' @param ids sequence ids to select
 #' @param columns keytypes in taxonomy databse to return, all by default
+#' @param ... additional arguments passed to select function
 #' @return generates database, function does not return anything
 #' @export
+#' @rdname select-MgDb-method
+setGeneric("select", signature="mgdb",
+    function(mgdb, type, ...) { standardGeneric("select")
+})
+
+
+
+#' @aliases select,MgDb-method
+#' @rdname select-MgDb-method
 setMethod("select", "MgDb",
           function(mgdb, type, keys = NULL, keytype = NULL, ids = NULL, columns = "all"){
               .select(mgdb, type, keys, keytype, ids, columns)
@@ -194,7 +201,7 @@ setMethod("select", "MgDb",
         query_size <- length(query)
         keys <- taxa_keys(mgdb, keytype = c("Keys"))$Keys
         key_subset <- keys[1:query_size]
-        match_df <- data.frame(query_id = names(sread(query)),
+        match_df <- data.frame(query_id = names(ShortRead::sread(query)),
                                Keys = key_subset,
                                stringsAsFactors = FALSE)
     }else{
@@ -209,16 +216,12 @@ setMethod("select", "MgDb",
     anno_metadata$mapping <- mapping
 
     new("metagenomeAnnotation",
-        refDF = annotated_db,
+        annotation_data = annotated_db,
         metadata = anno_metadata,
-        feature_data = sread(query)
+        feature_data = ShortRead::sread(query)
     )
 
 }
-
-setGeneric("annotate", signature = "mgdb",
-           function(mgdb, query, ...) {standardGeneric("annotate")}
-)
 
 #' annotating a set of sequences with taxonomic information from a MgDb class object
 #' @param mgdb MgDb class object
@@ -226,6 +229,13 @@ setGeneric("annotate", signature = "mgdb",
 #' @param mapping method used to map sequences to database
 #' @return metagenomeAnnotation class object
 #' @export
+#' @rdname annotate-MgDb-method
+setGeneric("annotate", signature = "mgdb",
+           function(mgdb, query, mapping) {standardGeneric("annotate")}
+)
+
+#' @aliases annotate,MgDb-method
+#' @rdname annotate-MgDb-method
 setMethod("annotate", "MgDb",
           function(mgdb, query, mapping = "arbitrary"){
               .mgDb_annotate(mgdb, query, mapping = "arbitrary")}

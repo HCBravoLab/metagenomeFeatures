@@ -5,9 +5,18 @@
 \alias{MgDb}
 \alias{MgDb-class}
 \alias{mgdb}
+\alias{show,MgDb-method}
 \title{Metagenome Database class}
+\usage{
+\S4method{show}{MgDb}(object)
+}
+\arguments{
+\item{object}{MgDb-class object}
+}
 \description{
 Metagenome Database class
+
+Display summary of MgDb-class object
 }
 \section{Fields}{
 

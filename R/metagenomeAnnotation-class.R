@@ -14,30 +14,32 @@
 #' annotated marker gene sequence object class
 #'
 #' @aliases mgAnno
-#' @slot mgAnnotatedDF AnnotatedDataFrame
+#' @slot annotationData AnnotatedDataFrame
 #' @slot metadata list
 #' @slot featureData DNAStringSet
 #' @return metagenomeAnnotation class object
 #' @export
+#' @rdname metagenomeAnnotation-class
 setClass("metagenomeAnnotation",
-         representation = list(mgAnnotatedDF = "AnnotatedDataFrame",
+         representation = list(annotationData = "AnnotatedDataFrame",
                                metadata = "list",
                                featureData = "DNAStringSet"),
          contains = c("AnnotatedDataFrame","DNAStringSet"),
          prototype = prototype(
-             mgAnnotatedDF = new("AnnotatedDataFrame"),
+             annotationData = new("AnnotatedDataFrame"),
              metadata = list(),
              featureData = new("DNAStringSet"))
 )
 
 ## for use in creating a new object
 setMethod("initialize","metagenomeAnnotation",
-          function(.Object,refDF,metadata, feature_data, ...){
+          function(.Object, annotation_data, metadata, feature_data, ...){
               ## mgAnnoatedDF
-              if(class(refDF) == "AnnotatedDataFrame"){
-                  .Object@mgAnnotatedDF
+              if(class(annotation_data) == "AnnotatedDataFrame"){
+                  .Object@annotationData <- annotation_data
               }else{
-                  .Object@mgAnnotatedDF <- new("AnnotatedDataFrame",data = refDF)
+                  .Object@annotationData <- new("AnnotatedDataFrame",
+                                                data = annotation_data)
               }
 
               ## metadata
@@ -59,7 +61,7 @@ setValidity("metagenomeAnnotation", function(object) {
         msg <- paste(msg, "'featureData' slot must contain a DNAStringSeq object with sequence data", sep = "\n")
     if(is.null(names(object@featureData)))
         msg <- paste(msg, "'featureData' slot must contain a named DNAStringSet object",sep="\n")
-    if(!("mgAnnotatedDF" %in% ls(object)) || !is(object@mgAnnotatedDF, "AnnotatedDataFrame"))
+    if(!("annotationData" %in% ls(object)) || !is(object@annotationData, "AnnotatedDataFrame"))
         msg <- paste(msg, "'taxa' slot must contain a tbl_sqlite object with taxonomy data", sep = "\n")
     if(!("metadata" %in% ls(.self)) || !is(.self@metadata, "list"))
         msg <- paste(msg, "'metadata' slot must contain a list", sep = "\n")
@@ -71,6 +73,7 @@ setValidity("metagenomeAnnotation", function(object) {
 #' @param object metagenomeAnnotation-class object
 #'
 #' @export
+#' @rdname metagenomeAnnotation-class
 setMethod("show", "metagenomeAnnotation",
           function(object){
               metadata <-object@metadata
@@ -84,9 +87,9 @@ setMethod("show", "metagenomeAnnotation",
               print("Metadata:")
               print(print_metadata)
               print("Feature Data:")
-              print(show(object@featureData))
+              show(object@featureData)
               print("Annotation Data:")
-              print(show(object@mgAnnotatedDF))
+              show(object@annotationData)
           }
 )
 
@@ -98,27 +101,23 @@ setMethod("show", "metagenomeAnnotation",
 
 .split_by <- function(mgAnno, taxa_level) {
                 split_mgAnnoList <- list()
-                for( tax in unique(mgAnno@mgAnnotatedDF[[taxa_level]])){
-                    annotated_db <- mgAnno@mgAnnotatedDF[mgAnno@mgAnnotatedDF[[taxa_level]] == tax,]
+                for( tax in unique(mgAnno@annotationData[[taxa_level]])){
+                    annotated_db <- mgAnno@annotationData[mgAnno@annotationData[[taxa_level]] == tax,]
 
-                    query_id <- mgAnno@mgAnnotatedDF$query_id[mgAnno@mgAnnotatedDF[[taxa_level]] == tax]
+                    query_id <- mgAnno@annotationData$query_id[mgAnno@annotationData[[taxa_level]] == tax]
                     feature_data <- mgAnno@featureData[names(mgAnno@featureData) %in% query_id,]
 
                     anno_metadata <- mgAnno@metadata
-                    anno_metadata$split_by <- c(level = taxa_level, taxa = tax)
+                    anno_metadata$split_by <- list(level = taxa_level, taxa = tax)
 
                     split_mgAnnoList[[tax]] <- new("metagenomeAnnotation",
-                                                   refDF = annotated_db,
+                                                   annotation_data = annotated_db,
                                                    metadata = anno_metadata,
                                                    feature_data = feature_data
                     )
                 }
                 return(split_mgAnnoList)
 }
-
-setGeneric("split_by", function(mgAnno, taxa_level) {
-    standardGeneric("split_by")
-})
 
 #' Split metagenomeAnnotation Object by Taxa
 #'
@@ -127,7 +126,12 @@ setGeneric("split_by", function(mgAnno, taxa_level) {
 #'
 #' @return list of metagenomeAnnotation objects
 #' @export
-#'
+#' @rdname split_by-metagenomeAnnotation-method
+setGeneric("split_by", function(mgAnno, taxa_level) {
+    standardGeneric("split_by")
+})
+
+#' @rdname split_by-metagenomeAnnotation-method
 setMethod("split_by", "metagenomeAnnotation",
           function(mgAnno, taxa_level){
               .split_by(mgAnno, taxa_level)

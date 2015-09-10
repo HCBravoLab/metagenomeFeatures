@@ -1,16 +1,27 @@
 library(metagenomeFeatures)
 library(ShortRead)
-testMgAnno <- readRDS("../testMgAnnoDF.rds")
+testMgAnno <- readRDS("../testMgAnno.rds")
 
-test_that("metagenomeAnnoation-class show", {
-    expect_equal_to_reference(
-        show(testMgAnno),file = "cache/metagenomeAnnotation_test_show.rds")
-})
+# not really testing show method
+# test_that("metagenomeAnnoation-class show", {
+#     expect_equal_to_reference(
+#         show(testMgAnno),file = "cache/metagenomeAnnotation_test_show.rds")
+# })
+
 
 context("metagenomeAnnotation-class")
-test_that("metagenomeAnnotation method split_by", {
+split_kingdom <- split_by(testMgAnno, "Kingdom")
+test_that("metagenomeAnnotation method split_by",{
+    expect_is(split_kingdom, "list")
+    expect_is(split_kingdom$k__Bacteria, "metagenomeAnnotation")
+    expect_is(split_kingdom$k__Bacteria@metadata, "list")
+    expect_is(split_kingdom$k__Bacteria@featureData, "DNAStringSet")
+    expect_is(split_kingdom$k__Bacteria@annotationData, "AnnotatedDataFrame")
+})
+
+test_that("metagenomeAnnotation method split_by taxa levels", {
     expect_equal_to_reference(
-        split_by(testMgAnno, "Kingdom"),
+        split_kingdom,
         file = "cache/metagenomeAnnotation_split_by_Kingdon.rds")
     expect_equal_to_reference(
         split_by(testMgAnno,"Phylum"),
