@@ -10,6 +10,17 @@
 
 ### Taxa keys function ---------------------------------------------------------
 .taxa_keys <- function(mgdb, keytype){
+    nonvalid_keytype <- c()
+    for(i in keytype){
+        if(!(i %in% taxa_keytypes(mgdb))){
+            nonvalid_keytype <- c(nonvalid_keytype, i)
+        }
+    }
+    if(length(nonvalid_keytype) > 0){
+        msg <- paste(nonvalid_keytype, "not a valid keytype, use `taxa_keytypes()` for valid keytypes")
+        stop(msg)
+    }
+
     mgdb$taxa %>%
         dplyr::select_(keytype) %>%
         dplyr::collect()

@@ -67,6 +67,7 @@ test_that("MgDb-class taxa_keytypes and taxa_columns are identical", {
 })
 
 test_that("MgDb-class taxa_keys at different taxonomic levels", {
+    expect_error(taxa_keys(testMgDb, keytype = c("not a type")))
     expect_equal_to_reference(taxa_keys(testMgDb, keytype = c("Kingdom")),
                               file = "cache/MgDb_test_taxa_keys_Kingdom.rds")
     expect_equal_to_reference(taxa_keys(testMgDb, keytype = c("Phylum")),
