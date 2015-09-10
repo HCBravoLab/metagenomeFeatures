@@ -151,9 +151,11 @@ setMethod("show", "MgDb",
     return(list(taxa = taxa_df, seq = seq_obj))
 }
 
+
 setGeneric("select", signature="mgdb",
     function(mgdb, type, ...) { standardGeneric("select")
 })
+
 
 #' Function for querying MgDb class objects
 #'
@@ -214,6 +216,7 @@ setMethod("select", "MgDb",
     )
 
 }
+
 
 setGeneric("annotate", signature = "mgdb",
            function(mgdb, query, ...) {standardGeneric("annotate")}

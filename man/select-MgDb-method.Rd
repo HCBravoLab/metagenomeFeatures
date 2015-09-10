@@ -9,6 +9,8 @@
   ids = NULL, columns = "all")
 }
 \arguments{
+\item{mgdb}{MgDb class object}
+
 \item{type}{either "taxa", "seq", or "both". "taxa" and "seq" only queries the taxonomy and sequences databases respectively. "both" queries both the taxonomy and sequence database.}
 
 \item{keys}{specific taxonomic groups to select for}
@@ -18,8 +20,6 @@
 \item{ids}{sequence ids to select}
 
 \item{columns}{keytypes in taxonomy databse to return, all by default}
-
-\item{x}{MgDb class object}
 }
 \value{
 generates database, function does not return anything

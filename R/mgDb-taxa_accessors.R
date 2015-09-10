@@ -83,6 +83,5 @@ setGeneric("taxa_keytypes", signature="mgdb",
 #'
 #' @return tbl_df
 #' @export
-#'
 setMethod("taxa_keytypes", "MgDb",
           function(mgdb) .taxa_keytypes(mgdb))
