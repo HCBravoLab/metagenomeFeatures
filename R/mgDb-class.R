@@ -157,7 +157,7 @@ setGeneric("select", signature="mgdb",
 
 #' Function for querying MgDb class objects
 #'
-#' @param x MgDb class object
+#' @param mgdb MgDb class object
 #' @param type either "taxa", "seq", or "both". "taxa" and "seq" only queries the taxonomy and sequences databases respectively. "both" queries both the taxonomy and sequence database.
 #' @param keys specific taxonomic groups to select for
 #' @param keytype taxonomic level of keys
