@@ -30,9 +30,6 @@
     }
 }
 
-setGeneric("taxa_keys", signature="mgdb",
-           function(mgdb, keytype) standardGeneric("taxa_keys"))
-
 #' Taxonomy values for a given keytype
 #'
 #' @param mgdb object of MgDb class
@@ -41,6 +38,11 @@ setGeneric("taxa_keys", signature="mgdb",
 #' @return tbl_df
 #' @export
 #'
+#' @rdname taxa_keys-MgDb-method
+setGeneric("taxa_keys", signature="mgdb",
+           function(mgdb, keytype) standardGeneric("taxa_keys"))
+
+#' @rdname taxa_keys-MgDb-method
 setMethod("taxa_keys", "MgDb",
           function(mgdb, keytype) .taxa_keys(mgdb, keytype))
 
@@ -51,11 +53,6 @@ setMethod("taxa_keys", "MgDb",
     colnames(mgdb$taxa)
 }
 
-setGeneric("taxa_columns", signature="mgdb",
-           function(mgdb) standardGeneric("taxa_columns"))
-
-## MgDb taxa_columns method
-
 #' Column names for MgDb taxonomy slot object
 #'
 #' @param mgdb object of MgDB class
@@ -63,6 +60,13 @@ setGeneric("taxa_columns", signature="mgdb",
 #' @return tbl_df
 #' @export
 #'
+#' @rdname taxa_columns-MgDb-method
+setGeneric("taxa_columns", signature="mgdb",
+           function(mgdb) standardGeneric("taxa_columns"))
+
+## MgDb taxa_columns method
+
+#' @rdname taxa_columns-MgDb-method
 setMethod("taxa_columns", "MgDb",
           function(mgdb) .taxa_columns(mgdb))
 
@@ -72,16 +76,18 @@ setMethod("taxa_columns", "MgDb",
     colnames(mgdb$taxa)
 }
 
-setGeneric("taxa_keytypes", signature="mgdb",
-           function(mgdb) standardGeneric("taxa_keytypes"))
-
-## MgDb taxa_keytypes method
-
 #' Column names for MgDb taxonomy slot object
 #'
 #' @param mgdb object of MgDB class
 #'
 #' @return tbl_df
 #' @export
+#' @rdname taxa_keytypes-MgDb-method
+setGeneric("taxa_keytypes", signature="mgdb",
+           function(mgdb) standardGeneric("taxa_keytypes"))
+
+## MgDb taxa_keytypes method
+
+#' @rdname taxa_keytypes-MgDb-method
 setMethod("taxa_keytypes", "MgDb",
           function(mgdb) .taxa_keytypes(mgdb))

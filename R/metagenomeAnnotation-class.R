@@ -72,6 +72,7 @@ setValidity("metagenomeAnnotation", function(object) {
 #' @param object metagenomeAnnotation-class object
 #'
 #' @export
+#' @noRd
 setMethod("show", "metagenomeAnnotation",
           function(object){
               metadata <-object@metadata
@@ -117,10 +118,6 @@ setMethod("show", "metagenomeAnnotation",
                 return(split_mgAnnoList)
 }
 
-setGeneric("split_by", function(mgAnno, taxa_level) {
-    standardGeneric("split_by")
-})
-
 #' Split metagenomeAnnotation Object by Taxa
 #'
 #' @param mgAnno metagenomeAnnotation class object
@@ -128,7 +125,12 @@ setGeneric("split_by", function(mgAnno, taxa_level) {
 #'
 #' @return list of metagenomeAnnotation objects
 #' @export
-#'
+#' @rdname split_by-metagenomeAnnotation-method
+setGeneric("split_by", function(mgAnno, taxa_level) {
+    standardGeneric("split_by")
+})
+
+#' @rdname split_by-metagenomeAnnotation-method
 setMethod("split_by", "metagenomeAnnotation",
           function(mgAnno, taxa_level){
               .split_by(mgAnno, taxa_level)

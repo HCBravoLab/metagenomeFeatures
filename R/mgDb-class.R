@@ -68,6 +68,7 @@ MgDb <- setRefClass("MgDb",
 #' @param object MgDb-class object
 #'
 #' @export
+#' @noRd
 setMethod("show", "MgDb",
           function(object){
             cat(class(object), "object:")
@@ -151,10 +152,11 @@ setMethod("show", "MgDb",
     return(list(taxa = taxa_df, seq = seq_obj))
 }
 
-
+#' @rdname select-MgDb-method
 setGeneric("select", signature="mgdb",
     function(mgdb, type, ...) { standardGeneric("select")
 })
+
 
 
 #' Function for querying MgDb class objects
@@ -167,6 +169,7 @@ setGeneric("select", signature="mgdb",
 #' @param columns keytypes in taxonomy databse to return, all by default
 #' @return generates database, function does not return anything
 #' @export
+#' @rdname select-MgDb-method
 setMethod("select", "MgDb",
           function(mgdb, type, keys = NULL, keytype = NULL, ids = NULL, columns = "all"){
               .select(mgdb, type, keys, keytype, ids, columns)
@@ -212,15 +215,10 @@ setMethod("select", "MgDb",
     new("metagenomeAnnotation",
         annotation_data = annotated_db,
         metadata = anno_metadata,
-        feature_data = sread(query)
+        feature_data = ShortRead::sread(query)
     )
 
 }
-
-
-setGeneric("annotate", signature = "mgdb",
-           function(mgdb, query, ...) {standardGeneric("annotate")}
-)
 
 #' annotating a set of sequences with taxonomic information from a MgDb class object
 #' @param mgdb MgDb class object
@@ -228,6 +226,12 @@ setGeneric("annotate", signature = "mgdb",
 #' @param mapping method used to map sequences to database
 #' @return metagenomeAnnotation class object
 #' @export
+#' @rdname annotate-MgDb-method
+setGeneric("annotate", signature = "mgdb",
+           function(mgdb, query, mapping) {standardGeneric("annotate")}
+)
+
+#' @rdname annotate-MgDb-method
 setMethod("annotate", "MgDb",
           function(mgdb, query, mapping = "arbitrary"){
               .mgDb_annotate(mgdb, query, mapping = "arbitrary")}

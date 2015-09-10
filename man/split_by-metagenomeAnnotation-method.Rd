@@ -21,8 +21,4 @@ list of metagenomeAnnotation objects
 \description{
 Split metagenomeAnnotation Object by Taxa
 }
-\section{Methods (by class)}{
-\itemize{
-\item \code{metagenomeAnnotation}: 
-}}
 
