@@ -195,7 +195,7 @@ setMethod("select", "MgDb",
         query_size <- length(query)
         keys <- taxa_keys(mgdb, keytype = c("Keys"))$Keys
         key_subset <- keys[1:query_size]
-        match_df <- data.frame(query_id = names(sread(query)),
+        match_df <- data.frame(query_id = names(ShortRead::sread(query)),
                                Keys = key_subset,
                                stringsAsFactors = FALSE)
     }else{
