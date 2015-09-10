@@ -15,7 +15,7 @@ test_that("metagenomeAnnotation method split_by",{
     expect_is(split_kingdom, "list")
     expect_is(split_kingdom$k__Bacteria, "metagenomeAnnotation")
     expect_is(split_kingdom$k__Bacteria@metadata, "list")
-    expect_is(split_kingdom$k__Bacteria@featureDataData, "DNAStringSet")
+    expect_is(split_kingdom$k__Bacteria@featureData, "DNAStringSet")
     expect_is(split_kingdom$k__Bacteria@annotationData, "AnnotatedDataFrame")
 })
 
