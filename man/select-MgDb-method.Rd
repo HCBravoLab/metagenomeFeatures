@@ -16,6 +16,8 @@ select(mgdb, type, ...)
 
 \item{type}{either "taxa", "seq", or "both". "taxa" and "seq" only queries the taxonomy and sequences databases respectively. "both" queries both the taxonomy and sequence database.}
 
+\item{...}{additional arguments passed to select function}
+
 \item{keys}{specific taxonomic groups to select for}
 
 \item{keytype}{taxonomic level of keys}

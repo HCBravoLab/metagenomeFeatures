@@ -19,6 +19,7 @@
 #' @slot featureData DNAStringSet
 #' @return metagenomeAnnotation class object
 #' @export
+#' @rdname metagenomeAnnotation-class
 setClass("metagenomeAnnotation",
          representation = list(annotationData = "AnnotatedDataFrame",
                                metadata = "list",
@@ -72,7 +73,7 @@ setValidity("metagenomeAnnotation", function(object) {
 #' @param object metagenomeAnnotation-class object
 #'
 #' @export
-#' @noRd
+#' @rdname metagenomeAnnotation-class
 setMethod("show", "metagenomeAnnotation",
           function(object){
               metadata <-object@metadata

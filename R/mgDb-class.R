@@ -18,6 +18,7 @@
 #' @field seq database reference sequences
 #' @field metadata associated metadata for the database
 #' @export
+#' @rdname MgDb-class
 MgDb <- setRefClass("MgDb",
                      contains="DNAStringSet",
                      fields=list(seq="DNAStringSet",
@@ -68,7 +69,7 @@ MgDb <- setRefClass("MgDb",
 #' @param object MgDb-class object
 #'
 #' @export
-#' @noRd
+#' @rdname MgDb-class
 setMethod("show", "MgDb",
           function(object){
             cat(class(object), "object:")
@@ -152,13 +153,6 @@ setMethod("show", "MgDb",
     return(list(taxa = taxa_df, seq = seq_obj))
 }
 
-#' @rdname select-MgDb-method
-setGeneric("select", signature="mgdb",
-    function(mgdb, type, ...) { standardGeneric("select")
-})
-
-
-
 #' Function for querying MgDb class objects
 #'
 #' @param mgdb MgDb class object
@@ -167,8 +161,17 @@ setGeneric("select", signature="mgdb",
 #' @param keytype taxonomic level of keys
 #' @param ids sequence ids to select
 #' @param columns keytypes in taxonomy databse to return, all by default
+#' @param ... additional arguments passed to select function
 #' @return generates database, function does not return anything
 #' @export
+#' @rdname select-MgDb-method
+setGeneric("select", signature="mgdb",
+    function(mgdb, type, ...) { standardGeneric("select")
+})
+
+
+
+#' @aliases select,MgDb-method
 #' @rdname select-MgDb-method
 setMethod("select", "MgDb",
           function(mgdb, type, keys = NULL, keytype = NULL, ids = NULL, columns = "all"){
@@ -231,6 +234,7 @@ setGeneric("annotate", signature = "mgdb",
            function(mgdb, query, mapping) {standardGeneric("annotate")}
 )
 
+#' @aliases annotate,MgDb-method
 #' @rdname annotate-MgDb-method
 setMethod("annotate", "MgDb",
           function(mgdb, query, mapping = "arbitrary"){

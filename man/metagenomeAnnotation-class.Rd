@@ -4,12 +4,21 @@
 \name{metagenomeAnnotation-class}
 \alias{metagenomeAnnotation-class}
 \alias{mgAnno}
+\alias{show,metagenomeAnnotation-method}
 \title{annotated marker gene sequence object class}
+\usage{
+\S4method{show}{metagenomeAnnotation}(object)
+}
+\arguments{
+\item{object}{metagenomeAnnotation-class object}
+}
 \value{
 metagenomeAnnotation class object
 }
 \description{
 annotated marker gene sequence object class
+
+Display summary of metagenomeAnnotaiton-class object
 }
 \section{Slots}{
 
