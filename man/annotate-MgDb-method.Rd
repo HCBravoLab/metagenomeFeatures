@@ -6,21 +6,31 @@
 \alias{annotate,MgDb-method}
 \title{annotating a set of sequences with taxonomic information from a MgDb class object}
 \usage{
-annotate(mgdb, query, mapping)
+annotate(mgdb, ...)
 
-\S4method{annotate}{MgDb}(mgdb, query, mapping = "arbitrary")
+\S4method{annotate}{MgDb}(mgdb, db_keys = NULL, query_df = NULL,
+  query_seq = NULL, mapping = "user provided ids")
 }
 \arguments{
 \item{mgdb}{MgDb class object}
 
-\item{query}{ShortRead-class object with marker gene sequences}
+\item{...}{additional arguments passed to select function}
 
-\item{mapping}{method used to map sequences to database}
+\item{db_keys}{(Optional) vector of database Keys of entries to include in metagenomeAnnotation class object}
+
+\item{query_df}{(Optional) data frame with experimental data to annotate with taxonomic information, must include column named "Key" with data base Keys of entries to include in the new metagenomeAnnotation class object}
+
+\item{query_seq}{(Optional) DNAStringSet object with experiment marker gene sequences}
+
+\item{mapping}{(Optional) method used to map sequences to database, user provided}
 }
 \value{
 metagenomeAnnotation class object
 }
 \description{
 annotating a set of sequences with taxonomic information from a MgDb class object
+}
+\note{
+Must include either db_keys or query_df arguments
 }
 

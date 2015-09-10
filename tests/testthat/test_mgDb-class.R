@@ -145,8 +145,24 @@ test_that("MgDb-class select both",{
     expect_equal(test_select_both$seq, test_select_seq)
 })
 
-test_annotate <- annotate(testMgDb, query = mgQuery[1:20],
-         mapping = "arbitrary")
+test_db_keys <- c("4324716", "246960", "222675", "156874", "4383832",
+            "4383502", "315344", "2655590", "552241", "4327819",
+            "328031", "4452386", "259209", "110470", "515223",
+            "3453905", "4363471", "329924", "4373197", "3755712")
+test_query_df <- data.frame(Keys = test_db_keys)
+test_query_seq = ShortRead::sread(mgQuery[1:20])
+test_annotate <- annotate(testMgDb, query_seq = test_query_seq,
+                          query_df = test_query_df)
+test_annotate_no_query_seq <-  annotate(testMgDb, db_keys = test_db_keys)
+test_that("MgDb-class annotate check arguments", {
+    expect_error(annotate(testMgDb, query_seq = test_query_seq))
+    expect_error(annotate(testMgDb, query_df = data.frame(NotKeys = test_db_keys)))
+    expect_message(annotate(testMgDb, db_keys = test_db_keys))
+})
+## Add tests for query_df
+##  make sure able to filter
+##  make sure added to dataframe
+
 test_that("MgDb-class annotate",{
     expect_equal_to_reference(
         test_annotate,
@@ -157,6 +173,8 @@ test_that("MgDb-class annotate",{
     expect_is(test_annotate@featureData, "DNAStringSet")
     expect_equivalent(nrow(test_annotate@annotationData),
                      length(test_annotate@featureData))
+    expect_false(nrow(test_annotate_no_query_seq@annotationData) ==
+                 length(test_annotate_no_query_seq@featureData))
 })
 
 test_that("MgDb-class annotate metadata", {
@@ -171,5 +189,5 @@ test_that("MgDb-class annotate metadata", {
     expect_equal(test_annotate@metadata$DB_SCHEMA_VERSION,
                  testMgDb$metadata$DB_SCHEMA_VERSION)
     expect_equal(test_annotate@metadata$mapping,
-                 "arbitrary")
+                 "user provided ids")
 })
