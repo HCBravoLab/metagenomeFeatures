@@ -19,8 +19,8 @@
 #' @slot featureData DNAStringSet
 #' @return metagenomeAnnotation class object
 #' @export
-#' @importClassesFrom Biobase AnnotatedDataFrame
-#' @importClassesFrom Biostrings DNAStringSet
+# @importClassesFrom Biobase AnnotatedDataFrame
+# @importClassesFrom Biostrings DNAStringSet
 #' @rdname metagenomeAnnotation-class
 setClass("metagenomeAnnotation",
          representation = list(annotationData = "AnnotatedDataFrame",

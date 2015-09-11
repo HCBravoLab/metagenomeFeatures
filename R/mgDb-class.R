@@ -18,7 +18,7 @@
 #' @field seq database reference sequences
 #' @field metadata associated metadata for the database
 #' @export
-#' @importClassesFrom Biostrings DNAStringSet
+# @importClassesFrom Biostrings DNAStringSet
 #' @rdname MgDb-class
 MgDb <- setRefClass("MgDb",
                      contains="DNAStringSet",
