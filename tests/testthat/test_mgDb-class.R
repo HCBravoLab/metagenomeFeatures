@@ -1,5 +1,6 @@
 library(metagenomeFeatures)
 library(Biostrings)
+library(ShortRead)
 ## test generate MgDb object
 db_seq <- readDNAStringSet("../testSeq.fasta.gz")
 metadata <- list(ACCESSION_DATE = "3/31/2015",
@@ -93,7 +94,9 @@ test_that("MgDb-class taxa_keys at different taxonomic levels", {
 
 ## Select Methods
 test_that("MgDb-class select",{
-  expect_error(select(testMgDb, type = "not a type"))
+    expect_error(select(testMgDb, type = "not a type"))
+    expect_error(select(testMgDb, type = "both", keytype = "Keys"))
+    expect_error(select(testMgDb, type = "both", keys = "Streptomyces"))
 })
 
 test_select_taxa <- select(testMgDb, type = "taxa",
@@ -143,19 +146,49 @@ test_that("MgDb-class select both",{
     expect_equal(test_select_both$seq, test_select_seq)
 })
 
-test_annotate <- annotate(testMgDb, query = mgQuery[1:20],
-         mapping = "arbitrary")
-test_that("MgDb-class annotate",{
+test_db_keys <- c("4324716", "246960", "222675", "156874", "4383832")
+test_query_df <- data.frame(Keys = test_db_keys)
+test_query_seq = ShortRead::sread(mgQuery[1:5])
+test_annotate <- annotate(testMgDb, query_seq = test_query_seq,
+                          query_df = test_query_df)
+test_annotate_no_query_seq <-  annotate(testMgDb, db_keys = test_db_keys)
+test_that("MgDb-class annotate check arguments-query_seq only", {
+    expect_error(annotate(testMgDb, query_seq = test_query_seq))
+})
+
+test_that("MgDb-class annotate check arguments-query_df no Keys Column", {
+    expect_error(annotate(testMgDb, query_df = data.frame(NotKeys = test_db_keys)))
+})
+
+test_that("MgDb-class annotate check arguments-db_keys only", {
+    expect_message(annotate(testMgDb, db_keys = test_db_keys))
+})
+# ## Add tests for query_df
+# ##  make sure able to filter
+# ##  make sure added to dataframe
+#
+test_that("MgDb-class annotate regression test",{
     expect_equal_to_reference(
         test_annotate,
         file = "cache/MgDb_test_annotate.rds")
+})
+
+## should this be moved to validity check?
+test_that("MgDb-class annotate test class types",{
     expect_is(test_annotate, "metagenomeAnnotation")
     expect_is(test_annotate@annotationData, "AnnotatedDataFrame")
     expect_is(test_annotate@metadata, "list")
     expect_is(test_annotate@featureData, "DNAStringSet")
-    expect_equivalent(nrow(test_annotate@annotationData),
-                     length(test_annotate@featureData))
 })
+
+
+test_that("MgDb-class annotate test selected data size",{
+    expect_equivalent(nrow(test_annotate@annotationData),
+                      length(test_annotate@featureData))
+    expect_equivalent(length(test_annotate_no_query_seq@featureData), 0)
+    expect_equivalent(nrow(test_annotate_no_query_seq@annotationData), 5)
+})
+
 
 test_that("MgDb-class annotate metadata", {
     expect_equal(test_annotate@metadata$ACCESSION_DATE,
@@ -169,5 +202,5 @@ test_that("MgDb-class annotate metadata", {
     expect_equal(test_annotate@metadata$DB_SCHEMA_VERSION,
                  testMgDb$metadata$DB_SCHEMA_VERSION)
     expect_equal(test_annotate@metadata$mapping,
-                 "arbitrary")
+                 "user provided ids")
 })

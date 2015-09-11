@@ -4,12 +4,15 @@
 \name{select}
 \alias{select}
 \alias{select,MgDb-method}
-\title{Function for querying MgDb class objects}
+\title{Function for querying MgDb class objects
+ Use keys - keytype sets to define subset.
+ keytype - is the taxonomic level with the taxa of interest, use "Keys" if selecting based on selecting based on sequence IDs.
+ keys - is a vector of values of keytype}
 \usage{
 select(mgdb, type, ...)
 
 \S4method{select}{MgDb}(mgdb, type, keys = NULL, keytype = NULL,
-  ids = NULL, columns = "all")
+  columns = "all")
 }
 \arguments{
 \item{mgdb}{MgDb class object}
@@ -22,8 +25,6 @@ select(mgdb, type, ...)
 
 \item{keytype}{taxonomic level of keys}
 
-\item{ids}{sequence ids to select}
-
 \item{columns}{keytypes in taxonomy databse to return, all by default}
 }
 \value{
@@ -31,5 +32,8 @@ generates database, function does not return anything
 }
 \description{
 Function for querying MgDb class objects
+ Use keys - keytype sets to define subset.
+ keytype - is the taxonomic level with the taxa of interest, use "Keys" if selecting based on selecting based on sequence IDs.
+ keys - is a vector of values of keytype
 }
 
