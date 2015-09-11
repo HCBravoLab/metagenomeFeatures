@@ -12,22 +12,23 @@ vignette: >
 ```{r, echo=FALSE, message=FALSE}
 library(metagenomeFeatures)
 library(greengenes13.5MgDb)
-library(ShortRead)
 ```
 
 ## Overview
 A demonstration of how to use the metagenomeFeatures package for taxonimic annotation 16S marker gene sequence data.  
-- Retrieve taxonomic information for a set of sequences and generate a metagenomeAnnotation class object
+- Retrieve taxonomic information for a set of database Key values and generate a metagenomeAnnotation class object
 - Split metagenomeAnnotation class object for a user defined taxonomic level
 - Summary table and graphs for taxonomic information.
 
 
 ## Retrieve taxonomic information for a set of sequences.
 ```{r}
-data(mgQuery)
-query_subset <- mgQuery[1:30]
-
-MgAnnoDF <- annotate(gg13.5MgDb, query = query_subset, mapping = "arbitrary")
+query_data <- data.frame(Keys = c("4324716", "246960", "222675", "156874", "4383832",
+            "4383502", "315344", "2655590", "552241", "4327819",
+            "328031", "4452386", "259209", "110470", "515223",
+            "3453905", "4363471", "329924", "4373197", "3755712"),
+                        otu_counts = 1:20)
+MgAnnoDF <- annotate(gg13.5MgDb, query_df = query_data)
 MgAnnoDF
 ```
 
