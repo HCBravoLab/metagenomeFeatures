@@ -201,7 +201,7 @@ setMethod("select", "MgDb",
 ## 1. add tests
 ## 2. update documentation
 ## 3. adding db seq slot to metagenomeFeatures class definition
-.mgDb_annotate <- function(mgdb, db_keys, query_df, query_seq, mapping){#mapping = "arbitrary"){
+.mgDb_annotate <- function(mgdb, db_keys, query_df, query_seq, mapping){
 #     if(mapping == "arbitrary"){
 #         warning("Arbitrary mapping method is for development purposes, mappings are to the first entries in the database and not intended to represent actual sequence taxonomic assignment")
 #         query_size <- length(query)
@@ -217,12 +217,10 @@ setMethod("select", "MgDb",
     if(is.null(db_keys)){
         if(is.null(query_df)){
             stop("must provide either 'db_keys' or 'query_df'")
+        }else if("Keys" %in% colnames(query_df)){
+            select_keys <- query_df$Keys
         }else{
-            if("Keys" %in% colnames(query_df)){
-                select_keys <- query_df$Keys
-            }else{
-                stop("Need column in 'query_df' with database seq ids with name 'Keys'")
-            }
+            stop("Need column in 'query_df' with database seq ids with name 'Keys'")
         }
     }else{
         message("Using 'db_keys' for subset database")
@@ -233,17 +231,16 @@ setMethod("select", "MgDb",
                           keys = select_keys,
                           keytype = "Keys")
     if(is.null(query_df)){
-        annotated_db <- filtered_db$taxa
+        annotated_db <- as.data.frame(filtered_db$taxa)
     }else{
         annotated_db <- dplyr::right_join(query_df, filtered_db$taxa)
     }
 
     if(is.null(query_seq)){
         exp_seq_data <- new("DNAStringSet")
-    }else{
-        if(is(query_seq, "DNAStringSet")){
+    }else if(is(query_seq, "DNAStringSet")){
             exp_seq_data <- query_seq
-        }
+    }else{
         warning("query_seq is not a 'DNAStringSet' class object, not including in the metagenomeAnnotation object" )
         exp_seq_data <- new("DNAStringSet")
     }

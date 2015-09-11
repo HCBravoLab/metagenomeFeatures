@@ -19,6 +19,8 @@
 #' @slot featureData DNAStringSet
 #' @return metagenomeAnnotation class object
 #' @export
+#' @importClassesFrom Biobase AnnotatedDataFrame
+#' @importClassesFrom Biostrings DNAStringSet
 #' @rdname metagenomeAnnotation-class
 setClass("metagenomeAnnotation",
          representation = list(annotationData = "AnnotatedDataFrame",
@@ -35,7 +37,7 @@ setClass("metagenomeAnnotation",
 setMethod("initialize","metagenomeAnnotation",
           function(.Object, annotation_data, metadata, feature_data, ...){
               ## mgAnnoatedDF
-              if(class(annotation_data) == "AnnotatedDataFrame"){
+              if(is(annotation_data, "AnnotatedDataFrame")){
                   .Object@annotationData <- annotation_data
               }else{
                   .Object@annotationData <- new("AnnotatedDataFrame",
