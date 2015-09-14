@@ -33,3 +33,6 @@ Suggests:
     greengenes13.5MgDb,
     testthat
 VignetteBuilder: knitr
+URL: https://github.com/HCBravoLab/metagenomeFeatures
+BugReports: https://github.com/HCBravoLab/metagenomeFeatures/issues
+biocViews: Microbiome, Metagenomics, Annotation, Infrastructure, Sequencing, Software
