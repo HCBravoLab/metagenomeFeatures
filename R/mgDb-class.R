@@ -250,9 +250,9 @@ setMethod("select", "MgDb",
     anno_metadata$mapping <- mapping
 
     new("metagenomeAnnotation",
-        annotation_data = new("AnnotatedDataFrame", annotated_db),
+        annotated_db,
         metadata = anno_metadata,
-        feature_data = exp_seq_data
+        experimentSeqData = exp_seq_data
     )
 
 }

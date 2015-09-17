@@ -176,16 +176,15 @@ test_that("MgDb-class annotate regression test",{
 ## should this be moved to validity check?
 test_that("MgDb-class annotate test class types",{
     expect_is(test_annotate, "metagenomeAnnotation")
-    expect_is(test_annotate@annotationData, "AnnotatedDataFrame")
     expect_is(test_annotate@metadata, "list")
-    expect_is(test_annotate@featureData, "DNAStringSet")
+    expect_is(test_annotate@experimentSeqData, "DNAStringSet")
 })
 
 
 test_that("MgDb-class annotate test selected data size",{
     expect_equivalent(nrow(test_annotate@annotationData),
-                      length(test_annotate@featureData))
-    expect_equivalent(length(test_annotate_no_query_seq@featureData), 0)
+                      length(test_annotate@experimentSeqData))
+    expect_equivalent(length(test_annotate_no_query_seq@experimentSeqData), 0)
     expect_equivalent(nrow(test_annotate_no_query_seq@annotationData), 5)
 })
 

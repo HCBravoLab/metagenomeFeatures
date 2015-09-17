@@ -3,30 +3,30 @@
 \docType{class}
 \name{metagenomeAnnotation-class}
 \alias{metagenomeAnnotation-class}
-\alias{mgAnno}
-\alias{show,metagenomeAnnotation-method}
-\title{annotated marker gene sequence object class}
-\usage{
-\S4method{show}{metagenomeAnnotation}(object)
-}
-\arguments{
-\item{object}{metagenomeAnnotation-class object}
-}
+\title{metagenomeAnnotation-class object
+Object contains marker gene sequence object with taxonomic annotation data
+for set of sequences.  The class extends the AnnotatedDataFrame class with
+a slot for metadata including information on the database source and methods
+used to perform the taxonomic assignment. Additionally, the user can include
+cluster sequence experiment sequence data in the object for use in downstream
+analysis.}
 \value{
 metagenomeAnnotation class object
 }
 \description{
-annotated marker gene sequence object class
-
-Display summary of metagenomeAnnotaiton-class object
+metagenomeAnnotation-class object
+Object contains marker gene sequence object with taxonomic annotation data
+for set of sequences.  The class extends the AnnotatedDataFrame class with
+a slot for metadata including information on the database source and methods
+used to perform the taxonomic assignment. Additionally, the user can include
+cluster sequence experiment sequence data in the object for use in downstream
+analysis.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{annotationData}}{AnnotatedDataFrame}
-
 \item{\code{metadata}}{list}
 
-\item{\code{featureData}}{DNAStringSet}
+\item{\code{experimentSeqData}}{DNAStringSet}
 }}
 
