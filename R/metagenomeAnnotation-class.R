@@ -23,8 +23,6 @@
 #' @slot experimentSeqData DNAStringSet
 #' @return metagenomeAnnotation class object
 #' @export
-#' @importFrom Biobase classVersion
-#' @importClassesFrom Biostrings DNAStringSet
 #' @rdname metagenomeAnnotation-class
 setClass("metagenomeAnnotation",
         slots = list(metadata = "list", experimentSeqData = "DNAStringSet"),
