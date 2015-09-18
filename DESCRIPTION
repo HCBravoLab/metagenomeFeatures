@@ -31,6 +31,7 @@ Collate:
 Suggests:
     knitr,
     greengenes13.5MgDb,
+    Biostrings,
     testthat
 VignetteBuilder: knitr
 URL: https://github.com/HCBravoLab/metagenomeFeatures

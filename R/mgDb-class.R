@@ -18,6 +18,8 @@
 #' @field seq database reference sequences
 #' @field metadata associated metadata for the database
 #' @export
+#' @examples
+#' # see vignette
 #' @rdname MgDb-class
 MgDb <- setRefClass("MgDb",
                      #contains="DNAStringSet",
@@ -287,6 +289,8 @@ setGeneric("annotate", signature = "mgdb",
 )
 
 #' @export
+#' @examples
+#' # see vignette
 #' @aliases annotate,MgDb-method
 #' @rdname annotate-MgDb-method
 setMethod("annotate", "MgDb",

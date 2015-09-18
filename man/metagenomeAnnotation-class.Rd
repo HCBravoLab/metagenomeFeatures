@@ -29,4 +29,7 @@ analysis.
 
 \item{\code{experimentSeqData}}{DNAStringSet}
 }}
+\examples{
+# see vignette
+}
 

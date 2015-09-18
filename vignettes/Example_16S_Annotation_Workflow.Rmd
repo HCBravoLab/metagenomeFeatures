@@ -9,32 +9,42 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
-```{r, echo=FALSE, message=FALSE}
+## Overview
+This is demonstration of how to use the metagenomeFeatures package for taxonimic annotation of 16S marker gene sequence.  For the demonstration the `msd16s` data will be used along with the Greengenes taxonomic database version 13.5 (http://greengenes.secondgenome.com/).  
+
+First a metagenomeAnnotation class object from cluster centers with associated database ids will be generated. Then the resulting metagenomeAnnotation class object will be split into a list of metagenomeAnnotation object based on the assigned Phylum level.
+
+
+## Generate a metagenomeAnnotation-class object
+We will use the `msd16s` data for this example.  A named `DNAStringSet` object is first created using the `msd16s` cluster centers.
+```{r}
 library(metagenomeFeatures)
 library(greengenes13.5MgDb)
+library(Biostrings)
+library(msd16s)
+data(msd16s)
+
+msdSeq <- DNAStringSet(fData(msd16s)$clusterCenter)
+otu_ids = rownames(fData(msd16s))
+names(msdSeq) <- rownames(fData(msd16s))
 ```
 
-## Overview
-A demonstration of how to use the metagenomeFeatures package for taxonimic annotation 16S marker gene sequence data.  
-- Retrieve taxonomic information for a set of database Key values and generate a metagenomeAnnotation class object
-- Split metagenomeAnnotation class object for a user defined taxonomic level
-- Summary table and graphs for taxonomic information.
 
-
-## Retrieve taxonomic information for a set of sequences.
+Then along with the DNAStringSet object a data frame with the OTU ids and database is used to produce the metagenomeAnnotation object.
 ```{r}
-query_data <- data.frame(Keys = c("4324716", "246960", "222675", "156874", "4383832",
-            "4383502", "315344", "2655590", "552241", "4327819",
-            "328031", "4452386", "259209", "110470", "515223",
-            "3453905", "4363471", "329924", "4373197", "3755712"),
-                        otu_counts = 1:20)
-MgAnnoDF <- annotate(gg13.5MgDb, query_df = query_data)
-MgAnnoDF
+msdTax <- readRDS("msd16sIDs.rds")
+#note the column name with the database id must be names 'Keys'
+head(msdTax)
+
+msdMgAnno <- annotate(gg13.5MgDb, query_df = msdTax, query_seq = msdSeq)
+msdMgAnno
 ```
+
 
 ## metagenomeAnnotation split_by method
 ```{r}
-split_by(MgAnnoDF, "Phylum")
+msd_phylum_split <- split_by(msdMgAnno, "Phylum")
+head(msd_phylum_split)
 ```
 
 ```{r}
