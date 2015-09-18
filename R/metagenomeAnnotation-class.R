@@ -102,12 +102,12 @@ setClass("metagenomeAnnotation",
 #' @param taxa_level taxonomic level used to split the metagenomeAnnotation object at
 #'
 #' @return list of metagenomeAnnotation objects
-#' @export
 #' @rdname split_by-metagenomeAnnotation-method
 setGeneric("split_by", function(mgAnno, taxa_level) {
     standardGeneric("split_by")
 })
 
+#' @export
 #' @rdname split_by-metagenomeAnnotation-method
 setMethod("split_by", "metagenomeAnnotation",
           function(mgAnno, taxa_level){

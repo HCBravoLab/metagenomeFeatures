@@ -163,14 +163,29 @@ setMethod("show", "MgDb",
 #' @param columns keytypes in taxonomy databse to return, all by default
 #' @param ... additional arguments passed to select function
 #' @return generates database, function does not return anything
-#' @export
+#' @examples
+#' library(greengenes13.5MgDb)
+#' # select taxa only
+#' select(gg13.5MgDb, type = "taxa",
+#'      keys = c("Vibrio", "Salmonella"),
+#'      keytype = "Genus")
+#'
+#'  # select seq only
+#' select(gg13.5MgDb, type = "seq",
+#'       keys = c("Vibrio", "Salmonella"),
+#'       keytype = "Genus")
+#'
+#' # select both taxa and seq
+#' select(gg13.5MgDb, type = "both",
+#'        keys = c("Vibrio", "Salmonella"),
+#'        keytype = "Genus")
 #' @rdname select-MgDb-method
 setGeneric("select", signature="mgdb",
     function(mgdb, type, ...) { standardGeneric("select")
 })
 
 
-
+#' @export
 #' @aliases select,MgDb-method
 #' @rdname select-MgDb-method
 setMethod("select", "MgDb",
@@ -265,13 +280,13 @@ setMethod("select", "MgDb",
 #' @param ... additional arguments passed to select function
 #' @return metagenomeAnnotation class object
 #' @note Must include either db_keys or query_df arguments
-#' @export
 #' @rdname annotate-MgDb-method
 setGeneric("annotate", signature = "mgdb",
            function(mgdb, ...) {
                standardGeneric("annotate")}
 )
 
+#' @export
 #' @aliases annotate,MgDb-method
 #' @rdname annotate-MgDb-method
 setMethod("annotate", "MgDb",

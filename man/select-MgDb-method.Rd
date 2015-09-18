@@ -36,4 +36,21 @@ Function for querying MgDb class objects
  keytype - is the taxonomic level with the taxa of interest, use "Keys" if selecting based on selecting based on sequence IDs.
  keys - is a vector of values of keytype
 }
+\examples{
+library(greengenes13.5MgDb)
+# select taxa only
+select(gg13.5MgDb, type = "taxa",
+     keys = c("Vibrio", "Salmonella"),
+     keytype = "Genus")
+
+ # select seq only
+select(gg13.5MgDb, type = "seq",
+      keys = c("Vibrio", "Salmonella"),
+      keytype = "Genus")
+
+# select both taxa and seq
+select(gg13.5MgDb, type = "both",
+       keys = c("Vibrio", "Salmonella"),
+       keytype = "Genus")
+}
 

@@ -36,12 +36,14 @@
 #' @param keytype taxonomic classification level
 #'
 #' @return tbl_df
-#' @export
-#'
+#' @examples
+#' library(metagenomeFeatures)
+#' library(greengenes13.5MgDb)
+#' taxa_keys(gg13.5MgDb, keytype = "Phylum")
 #' @rdname taxa_keys-MgDb-method
 setGeneric("taxa_keys", signature="mgdb",
            function(mgdb, keytype) standardGeneric("taxa_keys"))
-
+#' @export
 #' @aliases taxa_keys,MgDb-method
 #' @rdname taxa_keys-MgDb-method
 setMethod("taxa_keys", "MgDb",
@@ -54,7 +56,6 @@ setMethod("taxa_keys", "MgDb",
     colnames(mgdb$taxa)
 }
 
-#' @export
 #' @aliases taxa_columns
 #' @rdname taxa_keytypes-MgDb-method
 setGeneric("taxa_columns", signature="mgdb",
@@ -62,6 +63,7 @@ setGeneric("taxa_columns", signature="mgdb",
 
 ## MgDb taxa_columns method
 
+#' @export
 #' @aliases taxa_columns,MgDb-method
 #' @rdname taxa_keytypes-MgDb-method
 setMethod("taxa_columns", "MgDb",
@@ -78,14 +80,16 @@ setMethod("taxa_columns", "MgDb",
 #' @param mgdb object of MgDB class
 #'
 #' @return tbl_df
-#' @export
+#' @examples
+#' library(greengenes13.5MgDb)
+#' taxa_keytypes(gg13.5MgDb)
 #' @rdname taxa_keytypes-MgDb-method
 setGeneric("taxa_keytypes", signature="mgdb",
            function(mgdb) standardGeneric("taxa_keytypes"))
 
 ## MgDb taxa_keytypes method
 
-
+#' @export
 #' @rdname taxa_keytypes-MgDb-method
 setMethod("taxa_keytypes", "MgDb",
           function(mgdb) .taxa_columns(mgdb))
