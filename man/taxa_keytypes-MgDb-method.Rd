@@ -25,4 +25,8 @@ tbl_df
 \description{
 Column names for MgDb taxonomy slot object
 }
+\examples{
+library(greengenes13.5MgDb)
+taxa_keytypes(gg13.5MgDb)
+}
 

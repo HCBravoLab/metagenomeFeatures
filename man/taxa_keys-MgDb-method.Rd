@@ -21,4 +21,9 @@ tbl_df
 \description{
 Taxonomy values for a given keytype
 }
+\examples{
+library(metagenomeFeatures)
+library(greengenes13.5MgDb)
+taxa_keys(gg13.5MgDb, keytype = "Phylum")
+}
 
