@@ -13,6 +13,7 @@ metadata <- list(ACCESSION_DATE = "3/31/2015",
 testMgDb <- new("MgDb", seq = db_seq,
                 taxa = "../../tests/testTaxa.sqlite3",
                 metadata = metadata)
-query_subset <- mgQuery[1:100]
-testMgAnno <- annotate(testMgDb, query = query_subset, mapping = "arbitrary")
+query_subset <- sread(mgQuery[1:100])
+query_ids <- taxa_keys(testMgDb,keytype = "Keys")$Keys[1:100]
+testMgAnno <- annotate(testMgDb, db_keys = query_ids, query_seq = query_subset)
 saveRDS(testMgAnno, "../../tests/testMgAnno.rds")
