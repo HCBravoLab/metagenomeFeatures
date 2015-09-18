@@ -23,45 +23,28 @@
 #' @slot experimentSeqData DNAStringSet
 #' @return metagenomeAnnotation class object
 #' @export
+#' @importFrom Biobase classVersion
+#' @importClassesFrom Biostrings DNAStringSet
 #' @rdname metagenomeAnnotation-class
 setClass("metagenomeAnnotation",
-         representation = list(metadata = "list",
-                               experimentSeqData = "DNAStringSet"),
-         contains = c("AnnotatedDataFrame"),
-         prototype = prototype(
-             metadata = list(),
-             experimentSeqData = new("DNAStringSet"))
-)
-
-## for use in creating a new object
-setMethod("initialize","metagenomeAnnotation",
-          function(.Object, metadata, feature_data, ...){
-
-              ## for initialization of superclasses
-              callNextMethod(.Object,...)
-
-              ## metadata
-              .Object@metadata <- metadata
-
-              ## experimentSeqData
-              .Object@experimentSeqData <- new("DNAStringSet", feature_data)
-
-
-              .Object
-          }
+        slots = list(metadata = "list", experimentSeqData = "DNAStringSet"),
+        contains = c("AnnotatedDataFrame"),
+        prototype = new("VersionedBiobase",
+                        versions = c(Biobase::classVersion("AnnotatedDataFrame"),
+                                     metageenomeAnnotation = "1.0.0"))
 )
 
 ## making sure new object conforms to class definition
-setValidity("metagenomeAnnotation", function(mgAnno) {
-    msg <- NULL
-    if(!("experimentSeqData" %in% ls(mgAnno)) || !is(mgAnno@experimentSeqData, "DNAStringSet"))
-        msg <- paste(msg,
-                     "'experimentSeqData' slot must contain a DNAStringSeq object with sequence data",
-                     sep = "\n")
-    if(!("metadata" %in% ls(mgAnno)) || !is(mgAnno@metadata, "list"))
-        msg <- paste(msg, "'metadata' slot must contain a list", sep = "\n")
-    if (is.null(msg)) TRUE else msg
-})
+# setValidity("metagenomeAnnotation", function(mgAnno) {
+#     msg <- NULL
+#     if(!("experimentSeqData" %in% ls(mgAnno)) || !is(mgAnno@experimentSeqData, "DNAStringSet"))
+#         msg <- paste(msg,
+#                      "'experimentSeqData' slot must contain a DNAStringSeq object with sequence data",
+#                      sep = "\n")
+#     if(!("metadata" %in% ls(mgAnno)) || !is(mgAnno@metadata, "list"))
+#         msg <- paste(msg, "'metadata' slot must contain a list", sep = "\n")
+#     if (is.null(msg)) TRUE else msg
+# })
 
 
 ## No longer needed???

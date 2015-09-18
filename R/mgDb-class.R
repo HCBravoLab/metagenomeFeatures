@@ -21,7 +21,7 @@
 # @importClassesFrom Biostrings DNAStringSet
 #' @rdname MgDb-class
 MgDb <- setRefClass("MgDb",
-                     contains="DNAStringSet",
+                     #contains="DNAStringSet",
                      fields=list(seq="DNAStringSet",
                                  taxa = "ANY",
                                  metadata= "list"),
@@ -250,7 +250,7 @@ setMethod("select", "MgDb",
     anno_metadata$mapping <- mapping
 
     new("metagenomeAnnotation",
-        annotated_db,
+        data = annotated_db,
         metadata = anno_metadata,
         experimentSeqData = exp_seq_data
     )

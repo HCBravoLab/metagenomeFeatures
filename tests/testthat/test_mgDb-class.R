@@ -182,10 +182,10 @@ test_that("MgDb-class annotate test class types",{
 
 
 test_that("MgDb-class annotate test selected data size",{
-    expect_equivalent(nrow(test_annotate@annotationData),
+    expect_equivalent(nrow(test_annotate),
                       length(test_annotate@experimentSeqData))
     expect_equivalent(length(test_annotate_no_query_seq@experimentSeqData), 0)
-    expect_equivalent(nrow(test_annotate_no_query_seq@annotationData), 5)
+    expect_equivalent(nrow(test_annotate_no_query_seq), 5)
 })
 
 
