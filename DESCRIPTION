@@ -27,6 +27,8 @@ Collate:
     'mgDb-class.R'
     'mgDb-taxa_accessors.R'
     'mgQuery.R'
+    'msd16s_metagenomeAnnotation.R'
+    'msd16s_query_df.R'
     'utils.R'
 Suggests:
     knitr,

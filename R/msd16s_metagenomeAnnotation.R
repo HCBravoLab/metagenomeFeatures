@@ -1,0 +1,10 @@
+#' Example metagenomeAnnotation class object
+#'
+#' A Sequence containing the msd16s OTU centers from a 16S marker gene survey.
+#' Specifically, the OTU centers came from 'Healthy and moderate to severe
+#' diarrhea 16S expression data' - bioconductor dataset 'msd16s'.
+#'
+#' @format A metagenomeAnnotation class object.
+#'
+#' @source \url{http://bioconductor.org/packages/release/data/experiment/html/msd16s.html}
+"msd16s_metagenomeAnnotation"

@@ -1,0 +1,10 @@
+#' Example Query Data Frame for creating metagenomeAnnotation object
+#'
+#' A dataset containing the msd16s OTU ids and Greengenes database version 13.5 ids.
+#' Specifically, the OTU centers came from 'Healthy and moderate to severe
+#' diarrhea 16S expression data' - bioconductor dataset 'msd16s'.
+#'
+#' @format data.frame
+#'
+#' @source \url{http://bioconductor.org/packages/release/data/experiment/html/msd16s.html}
+"msd16s_query_df"

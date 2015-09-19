@@ -32,11 +32,11 @@ names(msdSeq) <- rownames(fData(msd16s))
 
 Then along with the DNAStringSet object a data frame with the OTU ids and database is used to produce the metagenomeAnnotation object.
 ```{r}
-msdTax <- readRDS("msd16sIDs.rds")
+data(msd16s_query_df)
 #note the column name with the database id must be names 'Keys'
-head(msdTax)
+head(msd16s_query_df)
 
-msdMgAnno <- annotate(gg13.5MgDb, query_df = msdTax, query_seq = msdSeq)
+msdMgAnno <- annotate(gg13.5MgDb, query_df = msd16s_query_df, query_seq = msdSeq)
 msdMgAnno
 ```
 
