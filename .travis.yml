@@ -1,6 +1,10 @@
 # Sample .travis.yml for R projects
 
 language: r
+env:
+  global:
+    - R_BUILD_ARGS=--no-manual
+    - R_CHECK_ARGS=--no-manual --as-cran
 bioc_required: true
 r_binary_packages:
  - testthat
@@ -15,5 +19,3 @@ bioc_packages:
  - ShortRead
 warnings_are_errors: true
 sudo: required
-r_build_args:
- - --no-build-vignettes
