@@ -1,0 +1,15 @@
+# Sample .travis.yml for R projects
+
+language: r
+bioc_required: true
+r_binary_packages:
+ - testthat
+ - dplyr
+ - stringr
+ - lazyeval
+ - RSQLite
+ - magrittr
+bioc_packages:
+ - ShortRead
+warnings_are_errors: true
+sudo: required
