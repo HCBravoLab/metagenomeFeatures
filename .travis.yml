@@ -9,6 +9,8 @@ r_binary_packages:
  - lazyeval
  - RSQLite
  - magrittr
+ - knitr
+ - rmarkdown
 bioc_packages:
  - ShortRead
 warnings_are_errors: true
