@@ -1,6 +1,6 @@
 Package: metagenomeFeatures
 Title: Exploration of marker-gene sequence taxonomic annotations
-Version: 0.0.0.9006
+Version: 0.0.0.9007
 Author: Nathan D. Olson, Joseph Nathaniel Paulson,  Hector Corrada Bravo
 Maintainer: Nathan D. Olson <nolson@umiacs.umd.edu>
 Description: metagenomeFeatures was developed for use in exploring
@@ -33,6 +33,7 @@ Collate:
 Suggests:
     knitr,
     greengenes13.5MgDb,
+    msd16s,
     Biostrings,
     testthat
 VignetteBuilder: knitr
