@@ -31,6 +31,7 @@ after_script:
 env:
   global:
     - R_BUILD_ARGS="--no-build-vignettes --no-manual --no-resave-data"
-    - R_CHECK_ARGS=" --no-build-vignettes --no-manual --timings _R_CHECK_FORCE_SUGGESTS_='FALSE'"
+    - R_CHECK_ARGS=" --no-build-vignettes --no-manual --timings"
     - R_CHECK_TIME="TRUE"
     - R_CHECK_TESTS="TRUE"
+    - R_CHECK_FORCE_SUGGESTS="FALSE"
