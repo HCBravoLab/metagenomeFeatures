@@ -37,6 +37,8 @@ Function for querying MgDb class objects
  keys - is a vector of values of keytype
 }
 \examples{
+\dontrun{
+# need to install greengenes13.5MgDb from github https://github.com/HCBravoLab/greengenes13.5MgDb untill package is released on bioconductor
 library(greengenes13.5MgDb)
 # select taxa only
 select(gg13.5MgDb, type = "taxa",
@@ -52,5 +54,6 @@ select(gg13.5MgDb, type = "seq",
 select(gg13.5MgDb, type = "both",
        keys = c("Vibrio", "Salmonella"),
        keytype = "Genus")
+}
 }
 
