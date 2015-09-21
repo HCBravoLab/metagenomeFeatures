@@ -26,7 +26,10 @@ tbl_df
 Column names for MgDb taxonomy slot object
 }
 \examples{
+\dontrun{
+# need to install greengenes13.5MgDb from github https://github.com/HCBravoLab/greengenes13.5MgDb untill package is released on bioconductor
 library(greengenes13.5MgDb)
 taxa_keytypes(gg13.5MgDb)
+}
 }
 

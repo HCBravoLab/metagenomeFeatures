@@ -33,4 +33,7 @@ annotating a set of sequences with taxonomic information from a MgDb class objec
 \note{
 Must include either db_keys or query_df arguments
 }
+\examples{
+# see vignette
+}
 

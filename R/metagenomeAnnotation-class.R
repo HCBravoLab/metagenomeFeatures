@@ -23,6 +23,8 @@
 #' @slot experimentSeqData DNAStringSet
 #' @return metagenomeAnnotation class object
 #' @export
+#' @examples
+#' # see vignette
 #' @rdname metagenomeAnnotation-class
 setClass("metagenomeAnnotation",
         slots = list(metadata = "list", experimentSeqData = "DNAStringSet"),
@@ -108,6 +110,8 @@ setGeneric("split_by", function(mgAnno, taxa_level) {
 })
 
 #' @export
+#' @examples
+#' # see vignette
 #' @rdname split_by-metagenomeAnnotation-method
 setMethod("split_by", "metagenomeAnnotation",
           function(mgAnno, taxa_level){

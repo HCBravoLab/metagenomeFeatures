@@ -27,4 +27,7 @@ Display summary of MgDb-class object
 
 \item{\code{metadata}}{associated metadata for the database}
 }}
+\examples{
+# see vignette
+}
 

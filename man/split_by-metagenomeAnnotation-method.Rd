@@ -21,4 +21,7 @@ list of metagenomeAnnotation objects
 \description{
 Split metagenomeAnnotation Object by Taxa
 }
+\examples{
+# see vignette
+}
 
