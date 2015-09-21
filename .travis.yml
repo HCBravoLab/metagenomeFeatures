@@ -17,6 +17,7 @@ install:
   - ./travis-tool.sh install_r lazyeval
   - ./travis-tool.sh install_r RSQLite
   - ./travis-tool.sh install_r magrittr
+  - ./travis-tool.sh install_r covr
   - ./travis-tool.sh install_bioc_deps
 
 script: ./travis-tool.sh run_tests
@@ -27,6 +28,9 @@ on_failure:
 after_script:
   - ./travis-tool.sh dump_logs_by_extension "timings"
   - ./travis-tool.sh dump_sysinfo
+
+after_success:
+  - Rscript -e 'covr::codecov()'
 
 env:
   global:

@@ -1,4 +1,5 @@
 [![Travis-CI Build Status](https://travis-ci.org/HCBravoLab/metagenomeFeatures.svg?branch=master)](https://travis-ci.org/HCBravoLab/metagenomeFeatures)
+[![Coverage Status](https://img.shields.io/codecov/c/github/HCBravoLab/metagenomeFeatures/master.svg)](https://codecov.io/github/HCBravoLab/metagenomeFeatures?branch=master)
 
 metagenomeFeatures is an R package with annotating 16S metagenomic sequence data using the metagenomeFeatures package (https://github.com/HCBravoLab/metagenomeFeatures.git). A package for the greengenes database version 13.5 was developed, `greengenes13.5MgDb`(https://github.com/HCBravoLab/greengenes13.5MgDb), for annotating 16S datasets using metagenomeFeatures.    
 
