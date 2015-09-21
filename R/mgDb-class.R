@@ -166,6 +166,8 @@ setMethod("show", "MgDb",
 #' @param ... additional arguments passed to select function
 #' @return generates database, function does not return anything
 #' @examples
+#' \dontrun{
+#' # need to install greengenes13.5MgDb from github https://github.com/HCBravoLab/greengenes13.5MgDb untill package is released on bioconductor
 #' library(greengenes13.5MgDb)
 #' # select taxa only
 #' select(gg13.5MgDb, type = "taxa",
@@ -181,6 +183,7 @@ setMethod("show", "MgDb",
 #' select(gg13.5MgDb, type = "both",
 #'        keys = c("Vibrio", "Salmonella"),
 #'        keytype = "Genus")
+#' }
 #' @rdname select-MgDb-method
 setGeneric("select", signature="mgdb",
     function(mgdb, type, ...) { standardGeneric("select")

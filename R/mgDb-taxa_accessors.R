@@ -37,9 +37,11 @@
 #'
 #' @return tbl_df
 #' @examples
-#' library(metagenomeFeatures)
+#' \dontrun{
+#' # need to install greengenes13.5MgDb from github https://github.com/HCBravoLab/greengenes13.5MgDb untill package is released on bioconductor
 #' library(greengenes13.5MgDb)
 #' taxa_keys(gg13.5MgDb, keytype = "Phylum")
+#' }
 #' @rdname taxa_keys-MgDb-method
 setGeneric("taxa_keys", signature="mgdb",
            function(mgdb, keytype) standardGeneric("taxa_keys"))
@@ -81,8 +83,11 @@ setMethod("taxa_columns", "MgDb",
 #'
 #' @return tbl_df
 #' @examples
+#' \dontrun{
+#' # need to install greengenes13.5MgDb from github https://github.com/HCBravoLab/greengenes13.5MgDb untill package is released on bioconductor
 #' library(greengenes13.5MgDb)
 #' taxa_keytypes(gg13.5MgDb)
+#' }
 #' @rdname taxa_keytypes-MgDb-method
 setGeneric("taxa_keytypes", signature="mgdb",
            function(mgdb) standardGeneric("taxa_keytypes"))
