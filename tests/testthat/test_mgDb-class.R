@@ -167,11 +167,11 @@ test_that("MgDb-class annotate check arguments-db_keys only", {
 # ##  make sure able to filter
 # ##  make sure added to dataframe
 #
-test_that("MgDb-class annotate regression test",{
-    expect_equal_to_reference(
-        test_annotate,
-        file = "cache/MgDb_test_annotate.rds")
-})
+# test_that("MgDb-class annotate regression test",{
+#     expect_equal_to_reference(
+#         test_annotate,
+#         file = "cache/MgDb_test_annotate.rds")
+# })
 
 ## should this be moved to validity check?
 test_that("MgDb-class annotate test class types",{
