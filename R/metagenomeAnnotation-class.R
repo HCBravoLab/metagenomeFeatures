@@ -12,12 +12,12 @@
 ##  feature data - cluster sequences, cluster IDs
 
 #' metagenomeAnnotation-class object
-#' Object contains marker gene sequence object with taxonomic annotation data
-#' for set of sequences.  The class extends the AnnotatedDataFrame class with
-#' a slot for metadata including information on the database source and methods
-#' used to perform the taxonomic assignment. Additionally, the user can include
-#' cluster sequence experiment sequence data in the object for use in downstream
-#' analysis.
+#'
+#' Object contains taxonomic annotation and sequence data for an experiment .
+#' The class extends the \link[Biobase]{AnnotatedDataFrame} class with a slot
+#' for metadata including information on the database source and methods used to
+#' perform the taxonomic assignment. Additionally, the user can include
+#' experiment sequence data in the object for use in downstream analysis.
 #'
 #' @slot metadata list
 #' @slot experimentSeqData DNAStringSet
@@ -35,42 +35,16 @@ setClass("metagenomeAnnotation",
 )
 
 ## making sure new object conforms to class definition
-# setValidity("metagenomeAnnotation", function(mgAnno) {
-#     msg <- NULL
-#     if(!("experimentSeqData" %in% ls(mgAnno)) || !is(mgAnno@experimentSeqData, "DNAStringSet"))
-#         msg <- paste(msg,
-#                      "'experimentSeqData' slot must contain a DNAStringSeq object with sequence data",
-#                      sep = "\n")
-#     if(!("metadata" %in% ls(mgAnno)) || !is(mgAnno@metadata, "list"))
-#         msg <- paste(msg, "'metadata' slot must contain a list", sep = "\n")
-#     if (is.null(msg)) TRUE else msg
-# })
-
-
-## No longer needed???
-# # Display summary of metagenomeAnnotaiton-class object
-# # param object metagenomeAnnotation-class object
-# #
-# # export
-# # rdname metagenomeAnnotation-class
-# setMethod("show", "metagenomeAnnotation",
-#           function(object){
-#               metadata <-object@metadata
-#               print_metadata <- ""
-#               for(i in names(metadata)){
-#                   print_metadata <-
-#                       paste0(print_metadata,
-#                              paste0("|", i, ": ",
-#                                     metadata[[i]], "\n", sep = ""))
-#               }
-#               print("Metadata:")
-#               print(print_metadata)
-#               print("Feature Data:")
-#               show(object@experimentSeqData)
-#               print("Annotation Data:")
-#               show(object@annotationData)
-#           }
-# )
+setValidity("metagenomeAnnotation", function(object) {
+     msg <- NULL
+     if(!("experimentSeqData" %in% slotNames(object)) || !is(object@experimentSeqData, "DNAStringSet"))
+         msg <- paste(msg,
+                      "'experimentSeqData' slot must contain a DNAStringSeq object with sequence data",
+                      sep = "\n")
+     if(!("metadata" %in% slotNames(object)) || !is(object@metadata, "list"))
+         msg <- paste(msg, "'metadata' slot must contain a list", sep = "\n")
+     if (is.null(msg)) TRUE else msg
+})
 
 ################################# Methods ######################################
 # split_by - splits metagenomeAnnotation object into a list of metagenomeAnnotation
@@ -100,8 +74,14 @@ setClass("metagenomeAnnotation",
 
 #' Split metagenomeAnnotation Object by Taxa
 #'
+#' Function takes a \link[=metagenomeAnnotation]{metagenomeAnnotation-class}
+#' object and splits it based on a user provided taxonomic level, returning a
+#' list of \link[=metagenomeAnnotation]{metagenomeAnnotation-class} objects for
+#' each unique taxa at that level.
+#'
 #' @param mgAnno metagenomeAnnotation class object
-#' @param taxa_level taxonomic level used to split the metagenomeAnnotation object at
+#' @param taxa_level taxonomic level used to split the metagenomeAnnotation
+#'   object at
 #'
 #' @return list of metagenomeAnnotation objects
 #' @rdname split_by-metagenomeAnnotation-method
