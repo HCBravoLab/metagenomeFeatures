@@ -26,8 +26,6 @@
 #' @examples
 #' # see vignette
 #' @rdname metagenomeAnnotation-class
-#' @importFrom Biobase classVersion
-#' @importClassesFrom Biostrings DNAStringSet
 setClass("metagenomeAnnotation",
         slots = list(metadata = "list", experimentSeqData = "DNAStringSet"),
         contains = c("AnnotatedDataFrame"),
@@ -90,7 +88,7 @@ setGeneric("split_by", function(mgAnno, taxa_level) {
     standardGeneric("split_by")
 })
 
-#' @export
+#' @exportMethod split_by
 #' @describeIn split_by
 setMethod("split_by", "metagenomeAnnotation",
           function(mgAnno, taxa_level){

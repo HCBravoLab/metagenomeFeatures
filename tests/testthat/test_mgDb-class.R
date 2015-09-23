@@ -1,7 +1,7 @@
 library(metagenomeFeatures)
-library(Biostrings)
+
 ## test generate MgDb object
-db_seq <- readDNAStringSet("../testSeq.fasta.gz")
+db_seq <- Biostrings::readDNAStringSet("../testSeq.fasta.gz")
 metadata <- list(ACCESSION_DATE = "3/31/2015",
                  URL = "https://greengenes.microbio.me",
                  DB_TYPE_NAME = "GreenGenes",

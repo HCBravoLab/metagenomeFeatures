@@ -9,16 +9,19 @@ Description: metagenomeFeatures was developed for use in exploring
     composition of a marker-gene database or annotated sequences from a
     marker-gene metagenome experiment.
 Depends:
-    R (>= 3.1.2), Biobase (>= 2.17.8), Biostrings
+    R (>= 3.1.2)
 License: Artistic-2.0
 LazyData: true
 Imports:
-    dplyr,
-    stringr,
-    lazyeval,
-    RSQLite,
-    magrittr,
-    methods
+    Biobase (>= 2.17.8),
+    Biostrings (>= 2.36.4),
+    dplyr (>= 0.4.3),
+    stringr (>= 1.0.0),
+    lazyeval (>= 0.1.10),
+    RSQLite (>= 1.0.0),
+    magrittr (>= 1.5),
+    methods,
+    lattice
 Collate:
     'makeMgDbFromGreenGenes.R'
     'makeMgDbPackage.R'
@@ -30,10 +33,10 @@ Collate:
     'msd16s_query_df.R'
     'utils.R'
 Suggests:
-    testthat,
-    knitr,
-    greengenes13.5MgDb,
-    msd16s
+    knitr (>= 1.11),
+    greengenes13.5MgDb (>= 0.0.0.9),
+    msd16s (>= 0.102.0),
+    testthat (>= 0.10.0)
 VignetteBuilder: knitr
 URL: https://github.com/HCBravoLab/metagenomeFeatures
 BugReports: https://github.com/HCBravoLab/metagenomeFeatures/issues
