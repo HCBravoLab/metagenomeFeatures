@@ -26,6 +26,8 @@
 #' @examples
 #' # see vignette
 #' @rdname metagenomeAnnotation-class
+#' @importFrom Biobase classVersion
+#' @importClassesFrom Biostrings DNAStringSet
 setClass("metagenomeAnnotation",
         slots = list(metadata = "list", experimentSeqData = "DNAStringSet"),
         contains = c("AnnotatedDataFrame"),
