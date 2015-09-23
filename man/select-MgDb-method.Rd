@@ -4,10 +4,7 @@
 \name{select}
 \alias{select}
 \alias{select,MgDb-method}
-\title{Function for querying MgDb class objects
- Use keys - keytype sets to define subset.
- keytype - is the taxonomic level with the taxa of interest, use "Keys" if selecting based on selecting based on sequence IDs.
- keys - is a vector of values of keytype}
+\title{Querying MgDb objects}
 \usage{
 select(mgdb, type, ...)
 
@@ -17,7 +14,9 @@ select(mgdb, type, ...)
 \arguments{
 \item{mgdb}{MgDb class object}
 
-\item{type}{either "taxa", "seq", or "both". "taxa" and "seq" only queries the taxonomy and sequences databases respectively. "both" queries both the taxonomy and sequence database.}
+\item{type}{either "taxa", "seq", or "both". "taxa" and "seq" only queries
+the taxonomy and sequences databases respectively. "both" queries both the
+taxonomy and sequence database.}
 
 \item{...}{additional arguments passed to select function}
 
@@ -31,10 +30,11 @@ select(mgdb, type, ...)
 generates database, function does not return anything
 }
 \description{
-Function for querying MgDb class objects
- Use keys - keytype sets to define subset.
- keytype - is the taxonomic level with the taxa of interest, use "Keys" if selecting based on selecting based on sequence IDs.
- keys - is a vector of values of keytype
+Function for querying \code{\link{MgDb}} class objects, user defines the
+taxonomic levels (\code{keytype}) and a vector of taxonomic names
+(\code{keys}) being selected. If specific database ids are being selected for
+use \code{keytype="Keys"}. Additionally, users can specify whether they want
+only the taxonomic and sequence data, or both.
 }
 \examples{
 \dontrun{
