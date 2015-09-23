@@ -74,9 +74,9 @@ setValidity("metagenomeAnnotation", function(object) {
 
 #' Split metagenomeAnnotation Object by Taxa
 #'
-#' Function takes a \link[=metagenomeAnnotation]{metagenomeAnnotation-class}
+#' Function takes a \link{metagenomeAnnotation-class}
 #' object and splits it based on a user provided taxonomic level, returning a
-#' list of \link[=metagenomeAnnotation]{metagenomeAnnotation-class} objects for
+#' list of \link{metagenomeAnnotation-class} objects for
 #' each unique taxa at that level.
 #'
 #' @param mgAnno metagenomeAnnotation class object
@@ -84,15 +84,12 @@ setValidity("metagenomeAnnotation", function(object) {
 #'   object at
 #'
 #' @return list of metagenomeAnnotation objects
-#' @rdname split_by-metagenomeAnnotation-method
 setGeneric("split_by", function(mgAnno, taxa_level) {
     standardGeneric("split_by")
 })
 
 #' @export
-#' @examples
-#' # see vignette
-#' @rdname split_by-metagenomeAnnotation-method
+#' @describeIn split_by
 setMethod("split_by", "metagenomeAnnotation",
           function(mgAnno, taxa_level){
               .split_by(mgAnno, taxa_level)

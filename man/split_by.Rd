@@ -20,12 +20,13 @@ split_by(mgAnno, taxa_level)
 list of metagenomeAnnotation objects
 }
 \description{
-Function takes a \link[=metagenomeAnnotation]{metagenomeAnnotation-class}
+Function takes a \link{metagenomeAnnotation-class}
 object and splits it based on a user provided taxonomic level, returning a
-list of \link[=metagenomeAnnotation]{metagenomeAnnotation-class} objects for
+list of \link{metagenomeAnnotation-class} objects for
 each unique taxa at that level.
 }
-\examples{
-# see vignette
-}
+\section{Methods (by class)}{
+\itemize{
+\item \code{metagenomeAnnotation}: 
+}}
 

@@ -38,7 +38,9 @@
 #' @return tbl_df
 #' @examples
 #' \dontrun{
-#' # need to install greengenes13.5MgDb from github https://github.com/HCBravoLab/greengenes13.5MgDb untill package is released on bioconductor
+#' ## need to install greengenes13.5MgDb from github
+#' ## https://github.com/HCBravoLab/greengenes13.5MgDb
+#' ## untill package is released on bioconductor
 #' library(greengenes13.5MgDb)
 #' taxa_keys(gg13.5MgDb, keytype = "Phylum")
 #' }
@@ -65,8 +67,9 @@ setMethod("taxa_keys", "MgDb",
 #' @note Same function as \code{\link{taxa_keytypes}}.
 #' @examples
 #' \dontrun{
-#' # need to install greengenes13.5MgDb from github https://github.com/HCBravoLab/greengenes13.5MgDb untill package is released on bioconductor
-#' library(greengenes13.5MgDb)
+#' ## need to install greengenes13.5MgDb from github
+#' ## https://github.com/HCBravoLab/greengenes13.5MgDb
+#' ## untill package is released on bioconductor#' library(greengenes13.5MgDb)
 #' taxa_columns(gg13.5MgDb)
 #' }
 #' @family MgDb_accessors
@@ -94,8 +97,9 @@ setMethod("taxa_columns", "MgDb",
 #' @return tbl_df
 #' @examples
 #' \dontrun{
-#' # need to install greengenes13.5MgDb from github https://github.com/HCBravoLab/greengenes13.5MgDb untill package is released on bioconductor
-#' library(greengenes13.5MgDb)
+#' ## need to install greengenes13.5MgDb from github
+#' ## https://github.com/HCBravoLab/greengenes13.5MgDb
+#' ## untill package is released on bioconductor#' library(greengenes13.5MgDb)
 #' taxa_keytypes(gg13.5MgDb)
 #' }
 #' @family MgDb_accessors

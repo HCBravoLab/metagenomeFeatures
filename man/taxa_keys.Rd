@@ -27,7 +27,9 @@ Taxonomy values for a given keytype
 }}
 \examples{
 \dontrun{
-# need to install greengenes13.5MgDb from github https://github.com/HCBravoLab/greengenes13.5MgDb untill package is released on bioconductor
+## need to install greengenes13.5MgDb from github
+## https://github.com/HCBravoLab/greengenes13.5MgDb
+## untill package is released on bioconductor
 library(greengenes13.5MgDb)
 taxa_keys(gg13.5MgDb, keytype = "Phylum")
 }
