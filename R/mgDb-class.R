@@ -225,13 +225,13 @@ setMethod("select", "MgDb",
         if(is.null(query_df)){
             stop("must provide either 'db_keys' or 'query_df'")
         }else if("Keys" %in% colnames(query_df)){
-            select_keys <- query_df$Keys
+            select_keys <- as.character(query_df$Keys)
         }else{
             stop("Need column in 'query_df' with database seq ids with name 'Keys'")
         }
     }else{
         message("Using 'db_keys' for subset database")
-        select_keys <- db_keys
+        select_keys <- as.character(db_keys)
     }
 
     filtered_db <- select(mgdb, type = "both",
@@ -240,6 +240,7 @@ setMethod("select", "MgDb",
     if(is.null(query_df)){
         annotated_db <- as.data.frame(filtered_db$taxa)
     }else{
+        query_df$Keys <- as.character(query_df$Keys)
         annotated_db <- dplyr::right_join(query_df, filtered_db$taxa)
     }
 
