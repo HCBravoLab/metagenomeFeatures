@@ -1,13 +1,5 @@
 library(metagenomeFeatures)
-library(ShortRead)
 testMgAnno <- readRDS("../testMgAnno.rds")
-
-# not really testing show method
-# test_that("metagenomeAnnoation-class show", {
-#     expect_equal_to_reference(
-#         show(testMgAnno),file = "cache/metagenomeAnnotation_test_show.rds")
-# })
-
 
 context("metagenomeAnnotation-class")
 split_kingdom <- split_by(testMgAnno, "Kingdom")

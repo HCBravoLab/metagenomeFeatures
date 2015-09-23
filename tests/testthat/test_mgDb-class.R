@@ -1,6 +1,5 @@
 library(metagenomeFeatures)
 library(Biostrings)
-library(ShortRead)
 ## test generate MgDb object
 db_seq <- readDNAStringSet("../testSeq.fasta.gz")
 metadata <- list(ACCESSION_DATE = "3/31/2015",
