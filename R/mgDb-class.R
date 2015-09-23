@@ -42,17 +42,16 @@ MgDb <- setRefClass("MgDb",
                          }))
 
 ## MgDb Validity ---------------------------------------------------------------
-## not sure how to set validity for refClass
-# setValidity("MgDb", function() {
-#     msg <- NULL
-#     if(!("seq" %in% ls(.self)) || !is(.self@seq, "DNAStringSet"))
-#         msg <- paste(msg, "'seq' slot must contain a DNAStringSeq object with sequence data", sep = "\n")
-#     if(!("taxa" %in% ls(.self)) || !is(.self@taxa, "tbl_sqlite"))
-#         msg <- paste(msg, "'taxa' slot must contain a tbl_sqlite object with taxonomy data", sep = "\n")
-#     if(!("metadata" %in% ls(.self)) || !is(.self@metadata, "list"))
-#         msg <- paste(msg, "'metadata' slot must contain a list", sep = "\n")
-#     if (is.null(msg)) TRUE else msg
-# })
+setValidity("MgDb", function(object) {
+    msg <- NULL
+    if(!("seq" %in% ls(object)) || !is(object$seq, "DNAStringSet"))
+        msg <- paste(msg, "'seq' slot must contain a DNAStringSeq object with sequence data", sep = "\n")
+    if(!("taxa" %in% ls(object)) || !is(object$taxa, "tbl_sqlite"))
+        msg <- paste(msg, "'taxa' slot must contain a tbl_sqlite object with taxonomy data", sep = "\n")
+    if(!("metadata" %in% ls(object)) || !is(object$metadata, "list"))
+        msg <- paste(msg, "'metadata' slot must contain a list", sep = "\n")
+    if (is.null(msg)) TRUE else msg
+})
 
 ################################################################################
 ################################################################################
@@ -169,7 +168,9 @@ setMethod("show", "MgDb",
 #' @return generates database, function does not return anything
 #' @examples
 #' \dontrun{
-#' # need to install greengenes13.5MgDb from github https://github.com/HCBravoLab/greengenes13.5MgDb untill package is released on bioconductor
+#' ## need to install greengenes13.5MgDb from github
+#' ## https://github.com/HCBravoLab/greengenes13.5MgDb
+#' ## untill package is released on bioconductor
 #' library(greengenes13.5MgDb)
 #' # select taxa only
 #' select(gg13.5MgDb, type = "taxa",
