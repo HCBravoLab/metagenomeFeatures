@@ -30,8 +30,8 @@ setClass("metagenomeAnnotation",
         slots = list(metadata = "list", experimentSeqData = "DNAStringSet"),
         contains = c("AnnotatedDataFrame"),
         prototype = new("VersionedBiobase",
-                        versions = c(Biobase::classVersion("AnnotatedDataFrame"),
-                                     metageenomeAnnotation = "1.0.0"))
+                        versions = c(classVersion("AnnotatedDataFrame"),
+                                     metagenomeAnnotation = "1.0.0"))
 )
 
 ## making sure new object conforms to class definition

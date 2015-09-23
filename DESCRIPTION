@@ -9,11 +9,10 @@ Description: metagenomeFeatures was developed for use in exploring
     composition of a marker-gene database or annotated sequences from a
     marker-gene metagenome experiment.
 Depends:
-    R (>= 3.1.2)
+    R (>= 3.1.2), Biobase (>= 2.17.8)
 License: Artistic-2.0
 LazyData: true
 Imports:
-    Biobase (>= 2.17.8),
     Biostrings (>= 2.36.4),
     dplyr (>= 0.4.3),
     stringr (>= 1.0.0),
