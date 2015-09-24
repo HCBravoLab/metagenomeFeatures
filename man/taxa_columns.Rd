@@ -27,12 +27,8 @@ Column names for MgDb taxonomy slot object
 Same function as \code{\link{taxa_keytypes}}.
 }
 \examples{
-\dontrun{
-## need to install greengenes13.5MgDb from github
-## https://github.com/HCBravoLab/greengenes13.5MgDb
-## untill package is released on bioconductor#' library(greengenes13.5MgDb)
+library(greengenes13.5MgDb)
 taxa_columns(gg13.5MgDb)
-}
 }
 \seealso{
 Other MgDb_accessors: \code{\link{taxa_keys}},

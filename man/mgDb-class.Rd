@@ -11,8 +11,8 @@
 }
 \description{
 The MgDb-class object contains sequence and taxonomic data for a 16S rRNA
-taxonomic database, see the \pkg{greengenes13.5MgDb} package as
-an example database.
+taxonomic database, see the \pkg{greengenes13.5MgDb} package as an example
+database.
 }
 \section{Fields}{
 
@@ -24,7 +24,9 @@ an example database.
 \item{\code{metadata}}{associated metadata for the database}
 }}
 \note{
-Currently the only database with a MgDb package is the \href{http://greengenes.secondgenome.com/}{Greengenes database} (version 13.5), additional packages are planned.
+Currently the only database with a MgDb package is the
+  \href{http://greengenes.secondgenome.com/}{Greengenes database} (version
+  13.5), additional packages are planned.
 }
 \examples{
 # see vignette

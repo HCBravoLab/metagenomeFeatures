@@ -15,18 +15,19 @@
 #' Metagenome Database class
 #'
 #' The MgDb-class object contains sequence and taxonomic data for a 16S rRNA
-#' taxonomic database, see the \pkg{greengenes13.5MgDb} package as
-#' an example database.
+#' taxonomic database, see the \pkg{greengenes13.5MgDb} package as an example
+#' database.
 #' @aliases mgdb
 #' @field taxa taxonomic information for database sequences
 #' @field seq database reference sequences
 #' @field metadata associated metadata for the database
 #' @export
-#' @usage
-#' # library(greengenes13.5MgDb)
+#' @usage # library(greengenes13.5MgDb)
 #' @examples
 #' # see vignette
-#' @note Currently the only database with a MgDb package is the \href{http://greengenes.secondgenome.com/}{Greengenes database} (version 13.5), additional packages are planned.
+#' @note Currently the only database with a MgDb package is the
+#'   \href{http://greengenes.secondgenome.com/}{Greengenes database} (version
+#'   13.5), additional packages are planned.
 #' @rdname MgDb-class
 MgDb <- setRefClass("MgDb",
                      #contains="DNAStringSet",
@@ -45,9 +46,13 @@ MgDb <- setRefClass("MgDb",
 setValidity("MgDb", function(object) {
     msg <- NULL
     if(!("seq" %in% ls(object)) || !is(object$seq, "DNAStringSet"))
-        msg <- paste(msg, "'seq' slot must contain a DNAStringSeq object with sequence data", sep = "\n")
+        msg <- paste(msg,
+                     "'seq' slot must contain DNAStringSeq object",
+                     sep = "\n")
     if(!("taxa" %in% ls(object)) || !is(object$taxa, "tbl_sqlite"))
-        msg <- paste(msg, "'taxa' slot must contain a tbl_sqlite object with taxonomy data", sep = "\n")
+        msg <- paste(msg,
+                     "'taxa' slot must contain a tbl_sqlite object",
+                     sep = "\n")
     if(!("metadata" %in% ls(object)) || !is(object$metadata, "list"))
         msg <- paste(msg, "'metadata' slot must contain a list", sep = "\n")
     if (is.null(msg)) TRUE else msg
@@ -167,10 +172,6 @@ setMethod("show", "MgDb",
 #' @param ... additional arguments passed to select function
 #' @return generates database, function does not return anything
 #' @examples
-#' \dontrun{
-#' ## need to install greengenes13.5MgDb from github
-#' ## https://github.com/HCBravoLab/greengenes13.5MgDb
-#' ## untill package is released on bioconductor
 #' library(greengenes13.5MgDb)
 #' # select taxa only
 #' select(gg13.5MgDb, type = "taxa",
@@ -186,7 +187,6 @@ setMethod("show", "MgDb",
 #' select(gg13.5MgDb, type = "both",
 #'        keys = c("Vibrio", "Salmonella"),
 #'        keytype = "Genus")
-#' }
 #' @rdname select-MgDb-method
 setGeneric("select", signature="mgdb",
     function(mgdb, type, ...) { standardGeneric("select")
@@ -212,11 +212,15 @@ setMethod("select", "MgDb",
 ## Methods to generate metagenomeAnnotation object %%TODO%% modify features to
 ## include additional information about metagenomeAnnotation class, specifically
 ## filter command and other approriate metadata, e.g. method used for mapping
-## returns a metagenomeAnnotation class object
-## query - either a vector of database Keys, data frame with a column of database Keys and sample count data, a DNAStringSet with user provided sequences, or a vector with all three or a data frame with database Keys, query seq ids, can also include count data
-##      potentially modify to accept a fasta/ fastq file
-## mapping - defines method to map user provided sequences to database
-##              arbitrary - for developmental use only randomly selects random subset of sequences in the database to assign as matching sequences to the first 100 sequences in the query set
+## returns a metagenomeAnnotation class object query - either a vector of
+## database Keys, data frame with a column of database Keys and sample count
+## data, a DNAStringSet with user provided sequences, or a vector with all three
+## or a data frame with database Keys, query seq ids, can also include count
+## data potentially modify to accept a fasta/ fastq file mapping - defines
+## method to map user provided sequences to database arbitrary - for
+## developmental use only randomly selects random subset of sequences in the
+## database to assign as matching sequences to the first 100 sequences in the
+## query set
 
 
 
@@ -227,7 +231,7 @@ setMethod("select", "MgDb",
         }else if("Keys" %in% colnames(query_df)){
             select_keys <- as.character(query_df$Keys)
         }else{
-            stop("Need column in 'query_df' with database seq ids with name 'Keys'")
+            stop("Need 'Keys' column 'query_df' with database ids")
         }
     }else{
         message("Using 'db_keys' for subset database")
@@ -249,7 +253,8 @@ setMethod("select", "MgDb",
     }else if(is(query_seq, "DNAStringSet")){
             exp_seq_data <- query_seq
     }else{
-        warning("query_seq is not a 'DNAStringSet' class object, not including in the metagenomeAnnotation object" )
+        warning(paste0("query_seq is not a 'DNAStringSet' class object,",
+                        "not including in the metagenomeAnnotation object"))
         exp_seq_data <- new("DNAStringSet")
     }
 
@@ -267,24 +272,24 @@ setMethod("select", "MgDb",
 #' Annotating metagenome data with taxonomic information
 #'
 #' This method is used to create a \linkS4class{metagenomeAnnotation} class
-#' object with user supplied taxonomic assignments and
-#' \link[=MgDb]{MgDb-class} object. As input users can provide a vector with
-#' database ids, a data.frame with database ids as well as count data for
-#' different samples as columns along with a column of database ids named
-#' \code{Keys}, additionally a \code{\link[Biostrings]{DNAStringSet}} object can be
-#' passed with experimental sequence data.  If experimental sequence data are
-#' provided, database ids must be passed as a data.frame and include a column
-#' \code{SeqIDs} with sequence names as well as database ids.
+#' object with user supplied taxonomic assignments and \link[=MgDb]{MgDb-class}
+#' object. As input users can provide a vector with database ids, a data.frame
+#' with database ids as well as count data for different samples as columns
+#' along with a column of database ids named \code{Keys}, additionally a
+#' \code{\link[Biostrings]{DNAStringSet}} object can be passed with experimental
+#' sequence data.  If experimental sequence data are provided, database ids must
+#' be passed as a data.frame and include a column \code{SeqIDs} with sequence
+#' names as well as database ids.
 #'
 #' @param mgdb MgDb class object
 #' @param db_keys (Optional) vector of database Keys of entries to include in
 #'   metagenomeAnnotation class object
 #' @param query_df (Optional) data frame with experimental data to annotate with
 #'   taxonomic information, must include column named "Key" with databse ids.
-#' @param query_seq (Optional) DNAStringSet object
-#'   sequences
-#' @param mapping (Optional) method used to map sequences to database, default "user
-#'   provided", use for documenting methods used to perfom the taxonomic assignment.
+#' @param query_seq (Optional) DNAStringSet object sequences
+#' @param mapping (Optional) method used to map sequences to database, default
+#'   "user provided", use for documenting methods used to perfom the taxonomic
+#'   assignment.
 #' @param ... additional arguments passed to select function
 #' @return metagenomeAnnotation class object
 #' @note Must include either db_keys or query_df as argument.

@@ -1,7 +1,8 @@
 ## ========================= metagenomeAnnotation Class ========================
 ## the code below is modeled after the TxDb class in GenomicFeatures package
-## this object is generated from mgDb class and contains AnnotatedDataFrame object,
-## sequence/ features for the experiment and metadata about the experiment
+## this object is generated from mgDb class and contains AnnotatedDataFrame
+## object, sequence/ features for the experiment and metadata about the
+## experiment
 
 ## metagenomeAnnotation Class
 
@@ -37,9 +38,10 @@ setClass("metagenomeAnnotation",
 ## making sure new object conforms to class definition
 setValidity("metagenomeAnnotation", function(object) {
      msg <- NULL
-     if(!("experimentSeqData" %in% slotNames(object)) || !is(object@experimentSeqData, "DNAStringSet"))
+     if(!("experimentSeqData" %in% slotNames(object)) ||
+        !is(object@experimentSeqData, "DNAStringSet"))
          msg <- paste(msg,
-                      "'experimentSeqData' slot must contain a DNAStringSeq object with sequence data",
+                      "'experimentSeqData' slot must be a DNAStringSeq object",
                       sep = "\n")
      if(!("metadata" %in% slotNames(object)) || !is(object@metadata, "list"))
          msg <- paste(msg, "'metadata' slot must contain a list", sep = "\n")
@@ -47,29 +49,29 @@ setValidity("metagenomeAnnotation", function(object) {
 })
 
 ################################# Methods ######################################
-# split_by - splits metagenomeAnnotation object into a list of metagenomeAnnotation
-# objects for each taxa in a specified taxonomic level
-## user provides a metagenomeAnnotation object,
-## and defines the taxonomy level (e.g. Phylum, Class, Order ect. )to split the object by
+#split_by - splits metagenomeAnnotation object into a list of
+#metagenomeAnnotation objects for each taxa in a specified taxonomic level #
+#user provides a metagenomeAnnotation object, # and defines the taxonomy level
+#(e.g. Phylum, Class, Order ect. )to split the object by
 
 .split_by <- function(mgAnno, taxa_level) {
-                split_mgAnnoList <- list()
-                for( tax in unique(mgAnno@data[[taxa_level]])){
-                    annotated_db <- mgAnno@data[mgAnno@data[[taxa_level]] == tax,]
+    split_mgAnnoList <- list()
+    for( tax in unique(mgAnno@data[[taxa_level]])){
+        annotated_db <- mgAnno@data[mgAnno@data[[taxa_level]] == tax,]
 
-                    query_id <- mgAnno@data$query_id[mgAnno@data[[taxa_level]] == tax]
-                    experimentSeqData <- mgAnno@experimentSeqData[names(mgAnno@experimentSeqData) %in% query_id,]
+        query_id <- mgAnno@data$query_id[mgAnno@data[[taxa_level]] == tax]
+        experimentSeqData <- mgAnno@experimentSeqData[names(mgAnno@experimentSeqData) %in% query_id,]
 
-                    anno_metadata <- mgAnno@metadata
-                    anno_metadata$split_by <- list(level = taxa_level, taxa = tax)
+        anno_metadata <- mgAnno@metadata
+        anno_metadata$split_by <- list(level = taxa_level, taxa = tax)
 
-                    split_mgAnnoList[[tax]] <- new("metagenomeAnnotation",
-                                                   annotated_db,
-                                                   metadata = anno_metadata,
-                                                   experimentSeqData = experimentSeqData
-                    )
-                }
-                return(split_mgAnnoList)
+        split_mgAnnoList[[tax]] <- new("metagenomeAnnotation",
+                                       annotated_db,
+                                       metadata = anno_metadata,
+                                       experimentSeqData = experimentSeqData
+        )
+    }
+    return(split_mgAnnoList)
 }
 
 #' Split metagenomeAnnotation Object by Taxa

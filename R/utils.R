@@ -9,3 +9,18 @@ NULL
 
 #' @import Biobase
 NULL
+
+#' @import dplyr
+NULL
+
+#' @import stringr
+NULL
+
+#' @import lazyeval
+NULL
+
+#' @import RSQLite
+NULL
+
+#' @import lattice
+NULL

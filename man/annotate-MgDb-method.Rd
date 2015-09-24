@@ -22,25 +22,25 @@ metagenomeAnnotation class object}
 \item{query_df}{(Optional) data frame with experimental data to annotate with
 taxonomic information, must include column named "Key" with databse ids.}
 
-\item{query_seq}{(Optional) DNAStringSet object
-sequences}
+\item{query_seq}{(Optional) DNAStringSet object sequences}
 
-\item{mapping}{(Optional) method used to map sequences to database, default "user
-provided", use for documenting methods used to perfom the taxonomic assignment.}
+\item{mapping}{(Optional) method used to map sequences to database, default
+"user provided", use for documenting methods used to perfom the taxonomic
+assignment.}
 }
 \value{
 metagenomeAnnotation class object
 }
 \description{
 This method is used to create a \linkS4class{metagenomeAnnotation} class
-object with user supplied taxonomic assignments and
-\link[=MgDb]{MgDb-class} object. As input users can provide a vector with
-database ids, a data.frame with database ids as well as count data for
-different samples as columns along with a column of database ids named
-\code{Keys}, additionally a \code{\link[Biostrings]{DNAStringSet}} object can be
-passed with experimental sequence data.  If experimental sequence data are
-provided, database ids must be passed as a data.frame and include a column
-\code{SeqIDs} with sequence names as well as database ids.
+object with user supplied taxonomic assignments and \link[=MgDb]{MgDb-class}
+object. As input users can provide a vector with database ids, a data.frame
+with database ids as well as count data for different samples as columns
+along with a column of database ids named \code{Keys}, additionally a
+\code{\link[Biostrings]{DNAStringSet}} object can be passed with experimental
+sequence data.  If experimental sequence data are provided, database ids must
+be passed as a data.frame and include a column \code{SeqIDs} with sequence
+names as well as database ids.
 }
 \note{
 Must include either db_keys or query_df as argument.
