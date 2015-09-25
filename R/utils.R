@@ -10,10 +10,10 @@ NULL
 #' @import Biobase
 NULL
 
-#' @import dplyr
+# @import dplyr
 NULL
 
-#' @import stringr
+# @import stringr
 NULL
 
 #' @import lazyeval
