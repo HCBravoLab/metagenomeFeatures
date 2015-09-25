@@ -8,5 +8,6 @@
 #' @format A metagenomeAnnotation class object.
 #'
 #' @source \url{http://bioconductor.org/packages/release/data/experiment/html/msd16s.html}
-#'
+#' @examples
+#' data(msd16s_metagenomeAnnotation)
 "msd16s_metagenomeAnnotation"

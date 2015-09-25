@@ -17,5 +17,8 @@ includes \link[msd16s]{msd16s} OTU centers from a 16S marker gene
 survey. Specifically, the OTU centers came from 'Healthy and moderate to
 severe diarrhea 16S expression data' - bioconductor dataset 'msd16s'.
 }
+\examples{
+data(msd16s_metagenomeAnnotation)
+}
 \keyword{datasets}
 

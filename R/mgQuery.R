@@ -8,4 +8,6 @@
 #'
 #' @source \url{http://bioconductor.org/packages/release/data/experiment/html/msd16s.html}
 #' @importClassesFrom ShortRead ShortRead
+#' @examples
+#' data(mgQuery)
 "mgQuery"
