@@ -172,21 +172,21 @@ setMethod("show", "MgDb",
 #' @param ... additional arguments passed to select function
 #' @return generates database, function does not return anything
 #' @examples
-#' library(greengenes13.5MgDb)
+#' # library(greengenes13.5MgDb)
 #' # select taxa only
-#' select(gg13.5MgDb, type = "taxa",
-#'      keys = c("Vibrio", "Salmonella"),
-#'      keytype = "Genus")
+#' # select(gg13.5MgDb, type = "taxa",
+#' #     keys = c("Vibrio", "Salmonella"),
+#' #     keytype = "Genus")
 #'
 #'  # select seq only
-#' select(gg13.5MgDb, type = "seq",
-#'       keys = c("Vibrio", "Salmonella"),
-#'       keytype = "Genus")
+#' # select(gg13.5MgDb, type = "seq",
+#' #      keys = c("Vibrio", "Salmonella"),
+#' #      keytype = "Genus")
 #'
 #' # select both taxa and seq
-#' select(gg13.5MgDb, type = "both",
-#'        keys = c("Vibrio", "Salmonella"),
-#'        keytype = "Genus")
+#' #select(gg13.5MgDb, type = "both",
+#' #       keys = c("Vibrio", "Salmonella"),
+#' #       keytype = "Genus")
 #' @rdname select-MgDb-method
 setGeneric("select", signature="mgdb",
     function(mgdb, type, ...) { standardGeneric("select")

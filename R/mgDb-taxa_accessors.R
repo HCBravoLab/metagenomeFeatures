@@ -64,8 +64,8 @@ setMethod("taxa_keys", "MgDb",
 #' @return tbl_df
 #' @note Same function as \code{\link{taxa_keytypes}}.
 #' @examples
-#' library(greengenes13.5MgDb)
-#' taxa_columns(gg13.5MgDb)
+#' #library(greengenes13.5MgDb)
+#' #taxa_columns(gg13.5MgDb)
 #' @family MgDb_accessors
 setGeneric("taxa_columns", signature="mgdb",
            function(mgdb) standardGeneric("taxa_columns"))

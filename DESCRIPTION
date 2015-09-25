@@ -31,7 +31,6 @@ Collate:
     'utils.R'
 Suggests:
     knitr (>= 1.11),
-    greengenes13.5MgDb (>= 0.0.0.9),
     msd16s (>= 0.102.0),
     testthat (>= 0.10.0)
 VignetteBuilder: knitr
