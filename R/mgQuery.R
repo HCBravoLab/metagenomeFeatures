@@ -7,4 +7,5 @@
 #' @format A metagenomeFeatures object with 500 sequences.
 #'
 #' @source \url{http://bioconductor.org/packages/release/data/experiment/html/msd16s.html}
+#' @importClassesFrom ShortRead ShortRead
 "mgQuery"
