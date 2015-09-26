@@ -4,9 +4,10 @@
 ##
 ### ============================================================================
 
-## See post for functional programming interface for refClass methods http://stackoverflow.com/questions/20649973/functional-interfaces-for-reference-classes
-### Not sure how to best document and export MgDb methods, wrote wrappers
-### so they can be used using standard function(value) method
+##See post for functional programming interface for refClass methods
+##http://stackoverflow.com/questions/20649973/functional-interfaces-for-reference-classes
+### Not sure how to best document and export MgDb methods, wrote wrappers # so
+##they can be used using standard function(value) method
 
 ### Taxa keys function ---------------------------------------------------------
 .taxa_keys <- function(mgdb, keytype){
@@ -18,7 +19,9 @@
             }
         }
         if(length(nonvalid_keytype) > 0){
-            msg <- paste(nonvalid_keytype, "not a valid keytype, use `taxa_keytypes()` for valid keytypes")
+            msg <- paste(nonvalid_keytype,
+                         "not a valid keytype,", "
+                         use `taxa_keytypes()` for valid keytypes")
             stop(msg)
         }
         mgdb$taxa %>%
@@ -37,17 +40,14 @@
 #'
 #' @return tbl_df
 #' @examples
-#' \dontrun{
-#' # need to install greengenes13.5MgDb from github https://github.com/HCBravoLab/greengenes13.5MgDb untill package is released on bioconductor
-#' library(greengenes13.5MgDb)
-#' taxa_keys(gg13.5MgDb, keytype = "Phylum")
-#' }
-#' @rdname taxa_keys-MgDb-method
+#' # library(greengenes13.5MgDb)
+#' # taxa_keys(gg13.5MgDb, keytype = "Phylum")
+#' @family MgDb_accessors
 setGeneric("taxa_keys", signature="mgdb",
            function(mgdb, keytype) standardGeneric("taxa_keys"))
+
+#' @describeIn taxa_keys
 #' @export
-#' @aliases taxa_keys,MgDb-method
-#' @rdname taxa_keys-MgDb-method
 setMethod("taxa_keys", "MgDb",
           function(mgdb, keytype) .taxa_keys(mgdb, keytype))
 
@@ -57,17 +57,24 @@ setMethod("taxa_keys", "MgDb",
 .taxa_columns = function(mgdb){
     colnames(mgdb$taxa)
 }
-
-#' @aliases taxa_columns
-#' @rdname taxa_keytypes-MgDb-method
+#' Column names for MgDb taxonomy slot object
+#'
+#' @param mgdb object of MgDB class
+#'
+#' @return tbl_df
+#' @note Same function as \code{\link{taxa_keytypes}}.
+#' @examples
+#' # library(greengenes13.5MgDb)
+#' # taxa_columns(gg13.5MgDb)
+#' @family MgDb_accessors
 setGeneric("taxa_columns", signature="mgdb",
            function(mgdb) standardGeneric("taxa_columns"))
 
 ## MgDb taxa_columns method
 
+
 #' @export
-#' @aliases taxa_columns,MgDb-method
-#' @rdname taxa_keytypes-MgDb-method
+#' @describeIn taxa_columns
 setMethod("taxa_columns", "MgDb",
           function(mgdb) .taxa_columns(mgdb))
 
@@ -83,18 +90,15 @@ setMethod("taxa_columns", "MgDb",
 #'
 #' @return tbl_df
 #' @examples
-#' \dontrun{
-#' # need to install greengenes13.5MgDb from github https://github.com/HCBravoLab/greengenes13.5MgDb untill package is released on bioconductor
-#' library(greengenes13.5MgDb)
-#' taxa_keytypes(gg13.5MgDb)
-#' }
-#' @rdname taxa_keytypes-MgDb-method
+#' # library(greengenes13.5MgDb)
+#' # taxa_keytypes(gg13.5MgDb)
+#' @family MgDb_accessors
 setGeneric("taxa_keytypes", signature="mgdb",
            function(mgdb) standardGeneric("taxa_keytypes"))
 
 ## MgDb taxa_keytypes method
 
 #' @export
-#' @rdname taxa_keytypes-MgDb-method
+#' @describeIn taxa_keytypes
 setMethod("taxa_keytypes", "MgDb",
           function(mgdb) .taxa_columns(mgdb))

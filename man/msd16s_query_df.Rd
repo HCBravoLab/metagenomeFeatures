@@ -3,7 +3,7 @@
 \docType{data}
 \name{msd16s_query_df}
 \alias{msd16s_query_df}
-\title{Example Query Data Frame for creating metagenomeAnnotation object}
+\title{Example Query Data Frame}
 \format{data.frame}
 \source{
 \url{http://bioconductor.org/packages/release/data/experiment/html/msd16s.html}
@@ -12,9 +12,15 @@
 msd16s_query_df
 }
 \description{
-A dataset containing the msd16s OTU ids and Greengenes database version 13.5 ids.
-Specifically, the OTU centers came from 'Healthy and moderate to severe
-diarrhea 16S expression data' - bioconductor dataset 'msd16s'.
+Example \code{query_df} for use in generating a
+\link{metagenomeAnnotation-class} object using the \link{annotate}
+\link[=MgDb]{MgDb-class} method.  The dataset contains the msd16s OTU ids and
+Greengenes database version 13.5 ids. Specifically, the OTU centers came from
+'Healthy and moderate to severe diarrhea 16S expression data' - bioconductor
+dataset 'msd16s'.
+}
+\examples{
+data(msd15s_query_df)
 }
 \keyword{datasets}
 

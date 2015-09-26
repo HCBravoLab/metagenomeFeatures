@@ -4,17 +4,11 @@
 \name{taxa_columns}
 \alias{taxa_columns}
 \alias{taxa_columns,MgDb-method}
-\alias{taxa_keytypes}
-\alias{taxa_keytypes,MgDb-method}
 \title{Column names for MgDb taxonomy slot object}
 \usage{
 taxa_columns(mgdb)
 
 \S4method{taxa_columns}{MgDb}(mgdb)
-
-taxa_keytypes(mgdb)
-
-\S4method{taxa_keytypes}{MgDb}(mgdb)
 }
 \arguments{
 \item{mgdb}{object of MgDB class}
@@ -25,11 +19,21 @@ tbl_df
 \description{
 Column names for MgDb taxonomy slot object
 }
-\examples{
-\dontrun{
-# need to install greengenes13.5MgDb from github https://github.com/HCBravoLab/greengenes13.5MgDb untill package is released on bioconductor
-library(greengenes13.5MgDb)
-taxa_keytypes(gg13.5MgDb)
+\section{Methods (by class)}{
+\itemize{
+\item \code{MgDb}: 
+}}
+\note{
+Same function as \code{\link{taxa_keytypes}}.
 }
+\examples{
+# library(greengenes13.5MgDb)
+# taxa_columns(gg13.5MgDb)
+}
+\seealso{
+Other MgDb_accessors: \code{\link{taxa_keys}},
+  \code{\link{taxa_keys,MgDb-method}};
+  \code{\link{taxa_keytypes}},
+  \code{\link{taxa_keytypes,MgDb-method}}
 }
 

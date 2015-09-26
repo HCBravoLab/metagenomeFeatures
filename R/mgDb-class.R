@@ -13,13 +13,21 @@
 }
 
 #' Metagenome Database class
+#'
+#' The MgDb-class object contains sequence and taxonomic data for a 16S rRNA
+#' taxonomic database, see the \pkg{greengenes13.5MgDb} package as an example
+#' database.
 #' @aliases mgdb
 #' @field taxa taxonomic information for database sequences
 #' @field seq database reference sequences
 #' @field metadata associated metadata for the database
 #' @export
+#' @usage # library(greengenes13.5MgDb)
 #' @examples
 #' # see vignette
+#' @note Currently the only database with a MgDb package is the
+#'   \href{http://greengenes.secondgenome.com/}{Greengenes database} (version
+#'   13.5), additional packages are planned.
 #' @rdname MgDb-class
 MgDb <- setRefClass("MgDb",
                      #contains="DNAStringSet",
@@ -34,23 +42,21 @@ MgDb <- setRefClass("MgDb",
                              metadata <<- metadata
                          }))
 
-### Metadata - Need to change namespace to not export - Not exported.
-# DB_TYPE_NAME <- "Db type"
-# DB_TYPE_VALUE <- "MgDb"  # same as the name of the class
-# DB_SCHEMA_VERSION <- "1.0"
-
 ## MgDb Validity ---------------------------------------------------------------
-## not sure how to set validity for refClass
-# setValidity("MgDb", function() {
-#     msg <- NULL
-#     if(!("seq" %in% ls(.self)) || !is(.self@seq, "DNAStringSet"))
-#         msg <- paste(msg, "'seq' slot must contain a DNAStringSeq object with sequence data", sep = "\n")
-#     if(!("taxa" %in% ls(.self)) || !is(.self@taxa, "tbl_sqlite"))
-#         msg <- paste(msg, "'taxa' slot must contain a tbl_sqlite object with taxonomy data", sep = "\n")
-#     if(!("metadata" %in% ls(.self)) || !is(.self@metadata, "list"))
-#         msg <- paste(msg, "'metadata' slot must contain a list", sep = "\n")
-#     if (is.null(msg)) TRUE else msg
-# })
+setValidity("MgDb", function(object) {
+    msg <- NULL
+    if(!("seq" %in% ls(object)) || !is(object$seq, "DNAStringSet"))
+        msg <- paste(msg,
+                     "'seq' slot must contain DNAStringSeq object",
+                     sep = "\n")
+    if(!("taxa" %in% ls(object)) || !is(object$taxa, "tbl_sqlite"))
+        msg <- paste(msg,
+                     "'taxa' slot must contain a tbl_sqlite object",
+                     sep = "\n")
+    if(!("metadata" %in% ls(object)) || !is(object$metadata, "list"))
+        msg <- paste(msg, "'metadata' slot must contain a list", sep = "\n")
+    if (is.null(msg)) TRUE else msg
+})
 
 ################################################################################
 ################################################################################
@@ -65,13 +71,11 @@ MgDb <- setRefClass("MgDb",
 ##                              MgDb show method
 ##
 ### ============================================================================
-## Need to revise for refClass structure
 
 #' Display summary of MgDb-class object
 #' @param object MgDb-class object
-#'
+
 #' @export
-#' @rdname MgDb-class
 setMethod("show", "MgDb",
           function(object){
             cat(class(object), "object:")
@@ -125,10 +129,6 @@ setMethod("show", "MgDb",
     return(select_tbl %>% dplyr::collect())
 }
 
-# select function returns a filtered set of sequences or taxa based on defined
-# input ' use type = "seq" returns a ShortRead object and type = "taxa" returns a
-# filtered database not sure if we want to make the select method only generate a
-
 ## either select by ids for taxa information
 .select <- function(mgdb, type, keys, keytype, columns){
     if(!(type %in% c("seq","taxa", "both"))){
@@ -154,36 +154,39 @@ setMethod("show", "MgDb",
     return(list(taxa = taxa_df, seq = seq_obj))
 }
 
-#' Function for querying MgDb class objects
-#'  Use keys - keytype sets to define subset.
-#'  keytype - is the taxonomic level with the taxa of interest, use "Keys" if selecting based on selecting based on sequence IDs.
-#'  keys - is a vector of values of keytype
+#' Querying MgDb objects
+#'
+#' Function for querying \code{\link{MgDb}} class objects, user defines the
+#' taxonomic levels (\code{keytype}) and a vector of taxonomic names
+#' (\code{keys}) being selected. If specific database ids are being selected for
+#' use \code{keytype="Keys"}. Additionally, users can specify whether they want
+#' only the taxonomic and sequence data, or both.
+#'
 #' @param mgdb MgDb class object
-#' @param type either "taxa", "seq", or "both". "taxa" and "seq" only queries the taxonomy and sequences databases respectively. "both" queries both the taxonomy and sequence database.
+#' @param type either "taxa", "seq", or "both". "taxa" and "seq" only queries
+#'   the taxonomy and sequences databases respectively. "both" queries both the
+#'   taxonomy and sequence database.
 #' @param keys specific taxonomic groups to select for
 #' @param keytype taxonomic level of keys
 #' @param columns keytypes in taxonomy databse to return, all by default
 #' @param ... additional arguments passed to select function
 #' @return generates database, function does not return anything
 #' @examples
-#' \dontrun{
-#' # need to install greengenes13.5MgDb from github https://github.com/HCBravoLab/greengenes13.5MgDb untill package is released on bioconductor
-#' library(greengenes13.5MgDb)
+#' # library(greengenes13.5MgDb)
 #' # select taxa only
-#' select(gg13.5MgDb, type = "taxa",
-#'      keys = c("Vibrio", "Salmonella"),
-#'      keytype = "Genus")
+#' # select(gg13.5MgDb, type = "taxa",
+#' #     keys = c("Vibrio", "Salmonella"),
+#' #     keytype = "Genus")
 #'
 #'  # select seq only
-#' select(gg13.5MgDb, type = "seq",
-#'       keys = c("Vibrio", "Salmonella"),
-#'       keytype = "Genus")
+#' # select(gg13.5MgDb, type = "seq",
+#' #      keys = c("Vibrio", "Salmonella"),
+#' #      keytype = "Genus")
 #'
 #' # select both taxa and seq
-#' select(gg13.5MgDb, type = "both",
-#'        keys = c("Vibrio", "Salmonella"),
-#'        keytype = "Genus")
-#' }
+#' #select(gg13.5MgDb, type = "both",
+#' #       keys = c("Vibrio", "Salmonella"),
+#' #       keytype = "Genus")
 #' @rdname select-MgDb-method
 setGeneric("select", signature="mgdb",
     function(mgdb, type, ...) { standardGeneric("select")
@@ -209,42 +212,30 @@ setMethod("select", "MgDb",
 ## Methods to generate metagenomeAnnotation object %%TODO%% modify features to
 ## include additional information about metagenomeAnnotation class, specifically
 ## filter command and other approriate metadata, e.g. method used for mapping
-## returns a metagenomeAnnotation class object
-## query - either a vector of database Keys, data frame with a column of database Keys and sample count data, a DNAStringSet with user provided sequences, or a vector with all three or a data frame with database Keys, query seq ids, can also include count data
-##      potentially modify to accept a fasta/ fastq file
-## mapping - defines method to map user provided sequences to database
-##              arbitrary - for developmental use only randomly selects random subset of sequences in the database to assign as matching sequences to the first 100 sequences in the query set
+## returns a metagenomeAnnotation class object query - either a vector of
+## database Keys, data frame with a column of database Keys and sample count
+## data, a DNAStringSet with user provided sequences, or a vector with all three
+## or a data frame with database Keys, query seq ids, can also include count
+## data potentially modify to accept a fasta/ fastq file mapping - defines
+## method to map user provided sequences to database arbitrary - for
+## developmental use only randomly selects random subset of sequences in the
+## database to assign as matching sequences to the first 100 sequences in the
+## query set
 
 
-##%%%###%%%
-##%%% TODO
-## 1. add tests
-## 2. update documentation
-## 3. adding db seq slot to metagenomeFeatures class definition
+
 .mgDb_annotate <- function(mgdb, db_keys, query_df, query_seq, mapping){
-#     if(mapping == "arbitrary"){
-#         warning("Arbitrary mapping method is for development purposes, mappings are to the first entries in the database and not intended to represent actual sequence taxonomic assignment")
-#         query_size <- length(query)
-#         keys <- taxa_keys(mgdb, keytype = c("Keys"))$Keys
-#         key_subset <- keys[1:query_size]
-#         match_df <- data.frame(query_id = names(ShortRead::sread(query)),
-#                                Keys = key_subset,
-#                                stringsAsFactors = FALSE)
-#     }else{
-#         stop("Only arbirary mapping method is currently implemented")
-#     }
-#
     if(is.null(db_keys)){
         if(is.null(query_df)){
             stop("must provide either 'db_keys' or 'query_df'")
         }else if("Keys" %in% colnames(query_df)){
-            select_keys <- query_df$Keys
+            select_keys <- as.character(query_df$Keys)
         }else{
-            stop("Need column in 'query_df' with database seq ids with name 'Keys'")
+            stop("Need 'Keys' column 'query_df' with database ids")
         }
     }else{
         message("Using 'db_keys' for subset database")
-        select_keys <- db_keys
+        select_keys <- as.character(db_keys)
     }
 
     filtered_db <- select(mgdb, type = "both",
@@ -253,6 +244,7 @@ setMethod("select", "MgDb",
     if(is.null(query_df)){
         annotated_db <- as.data.frame(filtered_db$taxa)
     }else{
+        query_df$Keys <- as.character(query_df$Keys)
         annotated_db <- dplyr::right_join(query_df, filtered_db$taxa)
     }
 
@@ -261,7 +253,8 @@ setMethod("select", "MgDb",
     }else if(is(query_seq, "DNAStringSet")){
             exp_seq_data <- query_seq
     }else{
-        warning("query_seq is not a 'DNAStringSet' class object, not including in the metagenomeAnnotation object" )
+        warning(paste0("query_seq is not a 'DNAStringSet' class object,",
+                        "not including in the metagenomeAnnotation object"))
         exp_seq_data <- new("DNAStringSet")
     }
 
@@ -276,15 +269,30 @@ setMethod("select", "MgDb",
 
 }
 
-#' annotating a set of sequences with taxonomic information from a MgDb class object
+#' Annotating metagenome data with taxonomic information
+#'
+#' This method is used to create a \linkS4class{metagenomeAnnotation} class
+#' object with user supplied taxonomic assignments and \link[=MgDb]{MgDb-class}
+#' object. As input users can provide a vector with database ids, a data.frame
+#' with database ids as well as count data for different samples as columns
+#' along with a column of database ids named \code{Keys}, additionally a
+#' \code{\link[Biostrings]{DNAStringSet}} object can be passed with experimental
+#' sequence data.  If experimental sequence data are provided, database ids must
+#' be passed as a data.frame and include a column \code{SeqIDs} with sequence
+#' names as well as database ids.
+#'
 #' @param mgdb MgDb class object
-#' @param db_keys (Optional) vector of database Keys of entries to include in metagenomeAnnotation class object
-#' @param query_df (Optional) data frame with experimental data to annotate with taxonomic information, must include column named "Key" with data base Keys of entries to include in the new metagenomeAnnotation class object
-#' @param query_seq (Optional) DNAStringSet object with experiment marker gene sequences
-#' @param mapping (Optional) method used to map sequences to database, user provided
+#' @param db_keys (Optional) vector of database Keys of entries to include in
+#'   metagenomeAnnotation class object
+#' @param query_df (Optional) data frame with experimental data to annotate with
+#'   taxonomic information, must include column named "Key" with databse ids.
+#' @param query_seq (Optional) DNAStringSet object sequences
+#' @param mapping (Optional) method used to map sequences to database, default
+#'   "user provided", use for documenting methods used to perfom the taxonomic
+#'   assignment.
 #' @param ... additional arguments passed to select function
 #' @return metagenomeAnnotation class object
-#' @note Must include either db_keys or query_df arguments
+#' @note Must include either db_keys or query_df as argument.
 #' @rdname annotate-MgDb-method
 setGeneric("annotate", signature = "mgdb",
            function(mgdb, ...) {

@@ -16,5 +16,8 @@ A dataset containing the top OTU centers from a 16S marker gene survey.
 Specifically, the OTU centers came from 'Healthy and moderate to severe
 diarrhea 16S expression data' - bioconductor dataset 'msd16s'.
 }
+\examples{
+data(mgQuery)
+}
 \keyword{datasets}
 

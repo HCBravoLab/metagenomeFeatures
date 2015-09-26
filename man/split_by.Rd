@@ -13,15 +13,20 @@ split_by(mgAnno, taxa_level)
 \arguments{
 \item{mgAnno}{metagenomeAnnotation class object}
 
-\item{taxa_level}{taxonomic level used to split the metagenomeAnnotation object at}
+\item{taxa_level}{taxonomic level used to split the metagenomeAnnotation
+  object at}
 }
 \value{
 list of metagenomeAnnotation objects
 }
 \description{
-Split metagenomeAnnotation Object by Taxa
+Function takes a \link{metagenomeAnnotation-class}
+object and splits it based on a user provided taxonomic level, returning a
+list of \link{metagenomeAnnotation-class} objects for
+each unique taxa at that level.
 }
-\examples{
-# see vignette
-}
+\section{Methods (by class)}{
+\itemize{
+\item \code{metagenomeAnnotation}: 
+}}
 

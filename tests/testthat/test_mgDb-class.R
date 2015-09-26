@@ -1,8 +1,7 @@
 library(metagenomeFeatures)
-library(Biostrings)
-library(ShortRead)
+
 ## test generate MgDb object
-db_seq <- readDNAStringSet("../testSeq.fasta.gz")
+db_seq <- Biostrings::readDNAStringSet("../testSeq.fasta.gz")
 metadata <- list(ACCESSION_DATE = "3/31/2015",
                  URL = "https://greengenes.microbio.me",
                  DB_TYPE_NAME = "GreenGenes",
@@ -105,7 +104,7 @@ test_select_taxa <- select(testMgDb, type = "taxa",
 
 test_that("MgDb-class select taxa",{
     expect_equal_to_reference(test_select_taxa,
-        file = "cache/MgDb_test_select_taxa.rds")
+                              file = "cache/MgDb_test_select_taxa.rds")
     expect_is(test_select_taxa,"tbl_df")
     test_select_taxa <- select(testMgDb, type = "taxa",
                                keys = c("Streptomyces"),

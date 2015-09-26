@@ -1,5 +1,26 @@
-#' @importClassesFrom ShortRead ShortRead
+#' @importFrom magrittr %>%
 NULL
 
-#' @importFrom magrittr %>%
+#' @import methods
+NULL
+
+#' @importClassesFrom  Biostrings DNAStringSet
+NULL
+
+#' @import Biobase
+NULL
+
+# @import dplyr
+#NULL
+
+# @import stringr
+#NULL
+
+#' @import lazyeval
+NULL
+
+#' @import RSQLite
+NULL
+
+#' @import lattice
 NULL
