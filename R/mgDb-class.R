@@ -16,7 +16,7 @@
 #'
 #' The MgDb-class object contains sequence and taxonomic data for a 16S rRNA
 #' taxonomic database, see the \pkg{greengenes13.5MgDb} package as an example
-#' database.
+#' database. The \code{get_demoMgDb} function exports a small subset of the database in \pkg{greengenes13.5MgDb}\pkg{metagenomeFeatures} package as an example of a MgDb-class object.
 #' @aliases mgdb
 #' @field taxa taxonomic information for database sequences
 #' @field seq database reference sequences
@@ -24,7 +24,8 @@
 #' @export
 #' @usage # library(greengenes13.5MgDb)
 #' @examples
-#' # see vignette
+#' # example MgDb-class object, a small subset of the Greengenes 13.5 database.
+#' get_demoMgDb()
 #' @note Currently the only database with a MgDb package is the
 #'   \href{http://greengenes.secondgenome.com/}{Greengenes database} (version
 #'   13.5), additional packages are planned.
@@ -172,21 +173,21 @@ setMethod("show", "MgDb",
 #' @param ... additional arguments passed to select function
 #' @return generates database, function does not return anything
 #' @examples
-#' # library(greengenes13.5MgDb)
+#' demoMgDb <- get_demoMgDb()
 #' # select taxa only
-#' # select(gg13.5MgDb, type = "taxa",
-#' #     keys = c("Vibrio", "Salmonella"),
-#' #     keytype = "Genus")
+#' select(demoMgDb, type = "taxa",
+#'      keys = c("Vibrio", "Salmonella"),
+#'      keytype = "Genus")
 #'
-#'  # select seq only
-#' # select(gg13.5MgDb, type = "seq",
-#' #      keys = c("Vibrio", "Salmonella"),
-#' #      keytype = "Genus")
+#' # select seq only
+#'  select(demoMgDb, type = "seq",
+#'       keys = c("Vibrio", "Salmonella"),
+#'       keytype = "Genus")
 #'
 #' # select both taxa and seq
-#' #select(gg13.5MgDb, type = "both",
-#' #       keys = c("Vibrio", "Salmonella"),
-#' #       keytype = "Genus")
+#' select(demoMgDb, type = "both",
+#'        keys = c("Vibrio", "Salmonella"),
+#'        keytype = "Genus")
 #' @rdname select-MgDb-method
 setGeneric("select", signature="mgdb",
     function(mgdb, type, ...) { standardGeneric("select")

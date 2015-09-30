@@ -37,20 +37,20 @@ use \code{keytype="Keys"}. Additionally, users can specify whether they want
 only the taxonomic and sequence data, or both.
 }
 \examples{
-# library(greengenes13.5MgDb)
+demoMgDb <- get_demoMgDb()
 # select taxa only
-# select(gg13.5MgDb, type = "taxa",
-#     keys = c("Vibrio", "Salmonella"),
-#     keytype = "Genus")
+select(demoMgDb, type = "taxa",
+     keys = c("Vibrio", "Salmonella"),
+     keytype = "Genus")
 
- # select seq only
-# select(gg13.5MgDb, type = "seq",
-#      keys = c("Vibrio", "Salmonella"),
-#      keytype = "Genus")
+# select seq only
+ select(demoMgDb, type = "seq",
+      keys = c("Vibrio", "Salmonella"),
+      keytype = "Genus")
 
 # select both taxa and seq
-#select(gg13.5MgDb, type = "both",
-#       keys = c("Vibrio", "Salmonella"),
-#       keytype = "Genus")
+select(demoMgDb, type = "both",
+       keys = c("Vibrio", "Salmonella"),
+       keytype = "Genus")
 }
 

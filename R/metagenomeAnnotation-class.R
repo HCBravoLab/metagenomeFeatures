@@ -25,7 +25,7 @@
 #' @return metagenomeAnnotation class object
 #' @export
 #' @examples
-#' # see vignette
+#' data(msd16s_metagenomeAnnotation)
 #' @rdname metagenomeAnnotation-class
 setClass("metagenomeAnnotation",
         slots = list(metadata = "list", experimentSeqData = "DNAStringSet"),
@@ -84,7 +84,9 @@ setValidity("metagenomeAnnotation", function(object) {
 #' @param mgAnno metagenomeAnnotation class object
 #' @param taxa_level taxonomic level used to split the metagenomeAnnotation
 #'   object at
-#'
+#' @examples
+#' data(msd16s_metagenomeAnnotation)
+#' split_by(msd16s_metagenomeAnnotation, "Phylum")
 #' @return list of metagenomeAnnotation objects
 setGeneric("split_by", function(mgAnno, taxa_level) {
     standardGeneric("split_by")

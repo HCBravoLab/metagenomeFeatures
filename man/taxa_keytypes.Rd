@@ -24,8 +24,8 @@ Column names for MgDb taxonomy slot object
 \item \code{MgDb}: 
 }}
 \examples{
-# library(greengenes13.5MgDb)
-# taxa_keytypes(gg13.5MgDb)
+demoMgDb <- get_demoMgDb()
+taxa_keytypes(demoMgDb)
 }
 \seealso{
 Other MgDb_accessors: \code{\link{taxa_columns}},

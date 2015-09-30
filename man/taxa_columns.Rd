@@ -27,8 +27,8 @@ Column names for MgDb taxonomy slot object
 Same function as \code{\link{taxa_keytypes}}.
 }
 \examples{
-# library(greengenes13.5MgDb)
-# taxa_columns(gg13.5MgDb)
+demoMgDb <- get_demoMgDb()
+taxa_columns(demoMgDb)
 }
 \seealso{
 Other MgDb_accessors: \code{\link{taxa_keys}},

@@ -14,7 +14,7 @@ split_by(mgAnno, taxa_level)
 \item{mgAnno}{metagenomeAnnotation class object}
 
 \item{taxa_level}{taxonomic level used to split the metagenomeAnnotation
-  object at}
+object at}
 }
 \value{
 list of metagenomeAnnotation objects
@@ -29,4 +29,8 @@ each unique taxa at that level.
 \itemize{
 \item \code{metagenomeAnnotation}: 
 }}
+\examples{
+data(msd16s_metagenomeAnnotation)
+split_by(msd16s_metagenomeAnnotation, "Phylum")
+}
 

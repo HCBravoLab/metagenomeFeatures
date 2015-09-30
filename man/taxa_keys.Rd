@@ -26,8 +26,8 @@ Taxonomy values for a given keytype
 \item \code{MgDb}: 
 }}
 \examples{
-# library(greengenes13.5MgDb)
-# taxa_keys(gg13.5MgDb, keytype = "Phylum")
+demoMgDb <- get_demoMgDb()
+taxa_keys(demoMgDb, keytype = "Phylum")
 }
 \seealso{
 Other MgDb_accessors: \code{\link{taxa_columns}},

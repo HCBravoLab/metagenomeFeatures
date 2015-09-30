@@ -22,6 +22,6 @@ experiment sequence data in the object for use in downstream analysis.
 \item{\code{experimentSeqData}}{DNAStringSet}
 }}
 \examples{
-# see vignette
+data(msd16s_metagenomeAnnotation)
 }
 
