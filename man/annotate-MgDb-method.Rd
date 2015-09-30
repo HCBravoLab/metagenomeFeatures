@@ -6,7 +6,7 @@
 \alias{annotate,MgDb-method}
 \title{Annotating metagenome data with taxonomic information}
 \usage{
-annotate(mgdb, ...)
+annotate(MgDb-object, query_df, query_seq)
 
 \S4method{annotate}{MgDb}(mgdb, db_keys = NULL, query_df = NULL,
   query_seq = NULL, mapping = "user provided ids")
@@ -29,7 +29,7 @@ taxonomic information, must include column named "Key" with databse ids.}
 assignment.}
 }
 \value{
-metagenomeAnnotation class object
+metagenomeAnnotation-class object
 }
 \description{
 This method is used to create a \linkS4class{metagenomeAnnotation} class

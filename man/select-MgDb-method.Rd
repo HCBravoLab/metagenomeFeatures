@@ -6,7 +6,7 @@
 \alias{select,MgDb-method}
 \title{Querying MgDb objects}
 \usage{
-select(mgdb, type, ...)
+select(MgDb-object, type = "taxa", keys, keytype)
 
 \S4method{select}{MgDb}(mgdb, type, keys = NULL, keytype = NULL,
   columns = "all")
@@ -27,7 +27,9 @@ taxonomy and sequence database.}
 \item{columns}{keytypes in taxonomy databse to return, all by default}
 }
 \value{
-generates database, function does not return anything
+returned object depends on type, for 'taxa' -dataframe with taxa
+  information, 'seq' a DNAStringSet with seqeunce data, 'both' a list with
+  the dataframe and DNAStringSet.
 }
 \description{
 Function for querying \code{\link{MgDb}} class objects, user defines the
