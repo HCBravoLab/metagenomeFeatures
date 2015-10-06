@@ -1,0 +1,52 @@
+---
+title: "Example 16S Annotation Workflow"
+author: "Nathan D. Olson"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+## Overview
+This is demonstration of how to use the metagenomeFeatures package for taxonimic annotation of 16S marker gene sequence.  For the demonstration the `msd16s` data will be used along with the Greengenes taxonomic database version 13.5 (http://greengenes.secondgenome.com/).  
+
+First a metagenomeAnnotation class object from cluster centers with associated database ids will be generated. Then the resulting metagenomeAnnotation class object will be split into a list of metagenomeAnnotation object based on the assigned Phylum level.
+
+
+## Generate a metagenomeAnnotation-class object
+We will use the `msd16s` data for this example.  A named `DNAStringSet` object is first created using the `msd16s` cluster centers.
+```{r}
+# library(metagenomeFeatures)
+# library(greengenes13.5MgDb)
+# library(Biostrings)
+# library(msd16s)
+# data(msd16s)
+# 
+# msdSeq <- DNAStringSet(fData(msd16s)$clusterCenter)
+# otu_ids = rownames(fData(msd16s))
+# names(msdSeq) <- rownames(fData(msd16s))
+```
+
+
+Then along with the DNAStringSet object a data frame with the OTU ids and database is used to produce the metagenomeAnnotation object.
+```{r}
+# data(msd16s_query_df)
+# #note the column name with the database id must be names 'Keys'
+# head(msd16s_query_df)
+# 
+# msdMgAnno <- annotate(gg13.5MgDb, query_df = msd16s_query_df, query_seq = msdSeq)
+# msdMgAnno
+```
+
+
+## metagenomeAnnotation split_by method
+```{r}
+# msd_phylum_split <- split_by(msdMgAnno, "Phylum")
+# head(msd_phylum_split)
+```
+
+```{r}
+sessionInfo()
+```
