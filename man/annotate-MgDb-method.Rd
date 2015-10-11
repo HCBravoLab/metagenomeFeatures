@@ -6,7 +6,7 @@
 \alias{annotate,MgDb-method}
 \title{Annotating metagenome data with taxonomic information}
 \usage{
-annotate(MgDb-object, query_df, query_seq)
+annotate(mgdb, ...)
 
 \S4method{annotate}{MgDb}(mgdb, db_keys = NULL, query_df = NULL,
   query_seq = NULL, mapping = "user provided ids")

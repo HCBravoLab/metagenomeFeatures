@@ -6,7 +6,7 @@
 \alias{select,MgDb-method}
 \title{Querying MgDb objects}
 \usage{
-select(MgDb-object, type = "taxa", keys, keytype)
+select(mgdb, type, ...)
 
 \S4method{select}{MgDb}(mgdb, type, keys = NULL, keytype = NULL,
   columns = "all")

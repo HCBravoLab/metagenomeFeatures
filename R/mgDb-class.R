@@ -171,7 +171,6 @@ setMethod("show", "MgDb",
 #' @param keytype taxonomic level of keys
 #' @param columns keytypes in taxonomy databse to return, all by default
 #' @param ... additional arguments passed to select function
-#' @usage select(MgDb-object, type = "taxa", keys, keytype)
 #' @return returned object depends on type, for 'taxa' -dataframe with taxa
 #'   information, 'seq' a DNAStringSet with seqeunce data, 'both' a list with
 #'   the dataframe and DNAStringSet.
@@ -296,7 +295,6 @@ setMethod("select", "MgDb",
 #'   assignment.
 #' @param ... additional arguments passed to select function
 #' @return metagenomeAnnotation-class object
-#' @usage annotate(MgDb-object, query_df, query_seq)
 #' @note Must include either db_keys or query_df as argument.
 #' @rdname annotate-MgDb-method
 setGeneric("annotate", signature = "mgdb",
