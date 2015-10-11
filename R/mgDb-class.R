@@ -43,6 +43,7 @@ MgDb <- setRefClass("MgDb",
                              metadata <<- metadata
                          }))
 
+<<<<<<< HEAD
 ## MgDb Validity ---------------------------------------------------------------
 setValidity("MgDb", function(object) {
     msg <- NULL
@@ -55,10 +56,26 @@ setValidity("MgDb", function(object) {
                      "'taxa' slot must contain a tbl_sqlite object",
                      sep = "\n")
     if(!("metadata" %in% ls(object)) || !is(object$metadata, "list"))
+=======
+### Metadata - Need to change namespace to not export - Not exported.
+# DB_TYPE_NAME <- "Db type"
+# DB_TYPE_VALUE <- "MgDb"  # same as the name of the class
+# DB_SCHEMA_VERSION <- "1.0"
+
+## MgDb Validity ---------------------------------------------------------------
+setValidity("MgDb", function(object) {
+    msg <- NULL
+    if(!("seq" %in% ls(object)) || !is(object@seq, "ShortRead"))
+        msg <- paste(msg, "'seq' slot must contain a ShortRead object with sequence data", sep = "\n")
+    if(!("taxa" %in% ls(object)) || !is(object@taxa, "tbl_sqlite"))
+        msg <- paste(msg, "'taxa' slot must contain a tbl_sqlite object with taxonomy data", sep = "\n")
+    if(!("metadata" %in% ls(object)) || !is(object@metadata, "list"))
+>>>>>>> initial commit
         msg <- paste(msg, "'metadata' slot must contain a list", sep = "\n")
     if (is.null(msg)) TRUE else msg
 })
 
+<<<<<<< HEAD
 ################################################################################
 ################################################################################
 ##
@@ -88,10 +105,26 @@ setMethod("show", "MgDb",
             print("Sequence Data:")
             print(object$seq)
             print("Taxonomy Data:")
+=======
+## MgDb Methods ----------------------------------------------------------------
+## General Methods
+setMethod("show", "MgDb",
+          function(object){
+            cat(class(object), "object:\n")
+            print("Metadata\n")
+            metadata <-object$metadata
+                for(i in names(metadata)){
+                    cat("|", i, ": ", metadata[[i]], "\n", sep = "")
+                }
+            print("Sequence Data:\n")
+            print(object$seq)
+            print("Taxonomy Data:\n")
+>>>>>>> initial commit
             print(object$taxa)
         }
 )
 
+<<<<<<< HEAD
 ### ============================================================================
 ##
 ##                              MgDb select method
@@ -110,6 +143,40 @@ setMethod("show", "MgDb",
     if(keytype !=  "Keys"){
         level_id <- rep(tolower(stringr::str_sub(string = keytype,
                                              start = 1,end = 1)), length(keys))
+=======
+##
+##
+## Methods to generate metagenomeAnnotation object %%TODO%% modify features to
+## include additional information about metagenomeAnnotation class, specifically
+## filter command and other approriate metadata, e.g. method used for mapping
+MgDb$methods(annotate = function(object, ...){
+                filtered_db <- select(object, type = "both", ...)
+                MgDb$new(taxa = filtered_db[[1]],
+                          seq = filtered_db[[2]],
+                          features = object$metadata)
+            }
+)
+
+## select methods --------------------------------------------------------------
+## use ShortRead Object filters
+.select.seq <- function(x, ...){
+    return
+}
+
+#' Function for querying the marker gene taxonomy database.
+#' @param ids sequence ids to select
+#' @param columns quoted vector of table columns returned, all returned by default
+#' @param sqlite database connection, see src_sqlite in dplyr
+#' @param dbtable database table name, defaults to tree.
+#' @return generates database, function does not return anything
+.select.taxa<- function(keys, keytype,
+                        columns="all"){
+
+    # selecting desired rows
+    if(keytype !=  "Keys"){
+        level_id <- tolower(stringr::str_sub(string = keytype,
+                                             start = 1,end = 1))
+>>>>>>> initial commit
         keys <- stringr::str_c(level_id,keys,sep = "__")
     }
     if(length(keys) == 1){
@@ -130,6 +197,7 @@ setMethod("show", "MgDb",
     return(select_tbl %>% dplyr::collect())
 }
 
+<<<<<<< HEAD
 ## either select by ids for taxa information
 .select <- function(mgdb, type, keys, keytype, columns){
     if(!(type %in% c("seq","taxa", "both"))){
@@ -310,4 +378,49 @@ setMethod("annotate", "MgDb",
                    query_seq = NULL, mapping = "user provided ids"){
               .mgDb_annotate(mgdb, db_keys,
                              query_df, query_seq, mapping)}
+=======
+#' select function returns a filtered set of sequences or taxa based on defined
+# input ' use type = "seq" returns a ShortRead object and type = "taxa" returns a
+# filtered database not sure if we want to make the select method only generate a
+MgDb$methods(select = function(object, type, ...){
+              if(!(type %in% c("seq","taxa", "both"))){
+                  stop("type must be either 'seq' or 'taxa'")
+              }
+              if(type == "seq" || type == "both"){
+                  seq_obj <- .select.seq(object$seq, ...)
+                  if(type != "both"){
+                      return(seq_obj)
+                  }
+              }
+              if(type == "taxa"|| type == "both"){
+                  taxa_df <- .select.taxa(object$taxa, ...)
+                  if(type != "both"){
+                      return(taxa_obj)
+                  }
+              }else{
+                  taxa_df <- object$taxa
+              }
+              return(list(taxa_df, seq_df))
+          }
+)
+
+## MgDb Taxa function ----------------------------------------------------------
+
+# Select function revisions
+MgDb$methods(taxa_keys = function(object, keytype){
+                dplyr::select_(object$taxa, keytype) %>% dplyr::collect()
+          }
+)
+
+#' List of database columns.
+MgDb$methods(taxa_columns = function(object){
+        colnames(object$taxa)
+    }
+)
+
+#' Field to potentially use to query database.
+MgDb$methods(taxa_keytypes = function(object){
+        colnames(object$taxa)
+    }
+>>>>>>> initial commit
 )
