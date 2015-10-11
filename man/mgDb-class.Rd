@@ -5,18 +5,14 @@
 \alias{MgDb}
 \alias{MgDb-class}
 \alias{mgdb}
-\alias{show,MgDb-method}
 \title{Metagenome Database class}
 \usage{
-\S4method{show}{MgDb}(object)
-}
-\arguments{
-\item{object}{MgDb-class object}
+# library(greengenes13.5MgDb)
 }
 \description{
-Metagenome Database class
-
-Display summary of MgDb-class object
+The MgDb-class object contains sequence and taxonomic data for a 16S rRNA
+taxonomic database, see the \pkg{greengenes13.5MgDb} package as an example
+database. The \code{get_demoMgDb} function exports a small subset of the database in \pkg{greengenes13.5MgDb}\pkg{metagenomeFeatures} package as an example of a MgDb-class object.
 }
 \section{Fields}{
 
@@ -27,7 +23,13 @@ Display summary of MgDb-class object
 
 \item{\code{metadata}}{associated metadata for the database}
 }}
+\note{
+Currently the only database with a MgDb package is the
+  \href{http://greengenes.secondgenome.com/}{Greengenes database} (version
+  13.5), additional packages are planned.
+}
 \examples{
-# see vignette
+# example MgDb-class object, a small subset of the Greengenes 13.5 database.
+get_demoMgDb()
 }
 

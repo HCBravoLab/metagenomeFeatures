@@ -3,24 +3,16 @@
 \docType{class}
 \name{metagenomeAnnotation-class}
 \alias{metagenomeAnnotation-class}
-\title{metagenomeAnnotation-class object
-Object contains marker gene sequence object with taxonomic annotation data
-for set of sequences.  The class extends the AnnotatedDataFrame class with
-a slot for metadata including information on the database source and methods
-used to perform the taxonomic assignment. Additionally, the user can include
-cluster sequence experiment sequence data in the object for use in downstream
-analysis.}
+\title{metagenomeAnnotation-class object}
 \value{
 metagenomeAnnotation class object
 }
 \description{
-metagenomeAnnotation-class object
-Object contains marker gene sequence object with taxonomic annotation data
-for set of sequences.  The class extends the AnnotatedDataFrame class with
-a slot for metadata including information on the database source and methods
-used to perform the taxonomic assignment. Additionally, the user can include
-cluster sequence experiment sequence data in the object for use in downstream
-analysis.
+Object contains taxonomic annotation and sequence data for an experiment .
+The class extends the \link[Biobase]{AnnotatedDataFrame} class with a slot
+for metadata including information on the database source and methods used to
+perform the taxonomic assignment. Additionally, the user can include
+experiment sequence data in the object for use in downstream analysis.
 }
 \section{Slots}{
 
@@ -30,6 +22,6 @@ analysis.
 \item{\code{experimentSeqData}}{DNAStringSet}
 }}
 \examples{
-# see vignette
+data(msd16s_metagenomeAnnotation)
 }
 

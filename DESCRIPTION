@@ -1,41 +1,40 @@
 Package: metagenomeFeatures
 Title: Exploration of marker-gene sequence taxonomic annotations
-Version: 0.0.0.9007
+Version: 0.99.4
 Author: Nathan D. Olson, Joseph Nathaniel Paulson,  Hector Corrada Bravo
 Maintainer: Nathan D. Olson <nolson@umiacs.umd.edu>
 Description: metagenomeFeatures was developed for use in exploring
     the taxonomic annotations for a marker-gene metagenomic sequence
     dataset. The package can be used to explore the taxonomic
-    composition of a marker-gene database or annotated sequences from
+    composition of a marker-gene database or annotated sequences from a
     marker-gene metagenome experiment.
 Depends:
-    R (>= 3.1.2)
+    R (>= 3.2), Biobase (>= 2.17.8)
 License: Artistic-2.0
 LazyData: true
 Imports:
-    ShortRead,
-    dplyr,
-    stringr,
-    lazyeval,
-    RSQLite,
-    magrittr,
-    methods
+    Biostrings (>= 2.36.4),
+    ShortRead (>= 1.26.0),
+    dplyr (>= 0.4.3),
+    stringr (>= 1.0.0),
+    lazyeval (>= 0.1.10),
+    RSQLite (>= 1.0.0),
+    magrittr (>= 1.5),
+    methods,
+    lattice
 Collate:
-    'makeMgDbFromGreenGenes.R'
-    'makeMgDbPackage.R'
     'metagenomeAnnotation-class.R'
     'mgDb-class.R'
+    'demoMgDb.R'
     'mgDb-taxa_accessors.R'
     'mgQuery.R'
     'msd16s_metagenomeAnnotation.R'
     'msd16s_query_df.R'
     'utils.R'
 Suggests:
-    knitr,
-    greengenes13.5MgDb,
-    msd16s,
-    Biostrings,
-    testthat
+    knitr (>= 1.11),
+    msd16s (>= 0.102.0),
+    testthat (>= 0.10.0)
 VignetteBuilder: knitr
 URL: https://github.com/HCBravoLab/metagenomeFeatures
 BugReports: https://github.com/HCBravoLab/metagenomeFeatures/issues
