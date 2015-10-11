@@ -29,7 +29,7 @@ taxonomic information, must include column named "Key" with databse ids.}
 assignment.}
 }
 \value{
-metagenomeAnnotation class object
+metagenomeAnnotation-class object
 }
 \description{
 This method is used to create a \linkS4class{metagenomeAnnotation} class
