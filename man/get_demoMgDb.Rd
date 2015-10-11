@@ -7,7 +7,7 @@
 get_demoMgDb()
 }
 \value{
-MgDb-class
+MgDb-class object
 }
 \description{
 Example \link[=MgDb]{MgDb-class} object with 249 entries from the Greengenes 13.5 database.

@@ -171,7 +171,13 @@ setMethod("show", "MgDb",
 #' @param keytype taxonomic level of keys
 #' @param columns keytypes in taxonomy databse to return, all by default
 #' @param ... additional arguments passed to select function
+<<<<<<< HEAD
 #' @return generates database, function does not return anything
+=======
+#' @return returned object depends on type, for 'taxa' -dataframe with taxa
+#'   information, 'seq' a DNAStringSet with seqeunce data, 'both' a list with
+#'   the dataframe and DNAStringSet.
+>>>>>>> master
 #' @examples
 #' demoMgDb <- get_demoMgDb()
 #' # select taxa only
@@ -292,7 +298,7 @@ setMethod("select", "MgDb",
 #'   "user provided", use for documenting methods used to perfom the taxonomic
 #'   assignment.
 #' @param ... additional arguments passed to select function
-#' @return metagenomeAnnotation class object
+#' @return metagenomeAnnotation-class object
 #' @note Must include either db_keys or query_df as argument.
 #' @rdname annotate-MgDb-method
 setGeneric("annotate", signature = "mgdb",

@@ -1,7 +1,7 @@
 #' Example MgDb-class object
 #'
 #' Example \link[=MgDb]{MgDb-class} object with 249 entries from the Greengenes 13.5 database.
-#' @return MgDb-class
+#' @return MgDb-class object
 #' @export
 #' @examples
 #'  get_demoMgDb()
