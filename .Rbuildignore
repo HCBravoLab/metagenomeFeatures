@@ -2,3 +2,6 @@
 ^\.Rproj\.user$
 ^packrat/
 ^\.Rprofile$
+^data-raw$
+^\.travis\.yml$
+^appveyor\.yml$

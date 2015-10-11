@@ -100,4 +100,7 @@ setMethod("split_by", "metagenomeAnnotation",
           }
 )
 # mgTree - generates a tree from annotated dataframe
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
