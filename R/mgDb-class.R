@@ -277,6 +277,12 @@ setMethod("select", "MgDb",
 
 }
 
+### ============================================================================
+##
+##                              MgDb annotate MRexperiment
+##
+### ============================================================================
+
 #' Annotating metagenome data with taxonomic information
 #'
 #' This method is used to create a \linkS4class{metagenomeAnnotation} class
@@ -318,3 +324,48 @@ setMethod("annotate", "MgDb",
               .mgDb_annotate(mgdb, db_keys,
                              query_df, query_seq, mapping)}
 )
+
+#' Annotate MRexperiment object with seq taxonomy from MgDb object
+#'
+#' This method is used annotate a MRexperiment with taxonomic information from a \link[=MgDb]{MgDb-class}
+#' object using the MRexperiment object's Feature names.
+#' object.
+#'
+#' @param mgdb MgDb class object
+#' @param MRobj MRexperiment class object
+#' @param ... additional arguments passed to select function
+#' @return metagenomeAnnotation-class object
+#' @note Must include either db_keys or query_df as argument.
+#' @rdname annotate-MgDb-method
+setGeneric("annotateMRexp", signature = "mgdb",
+           function(mgdb, MRobj, ...) {
+               standardGeneric("annotateMRexp")}
+)
+
+#' @export
+#' @examples
+#' # see vignette
+#' @aliases annotateMRexp,MgDb-method
+#' @rdname annotateMRexp-MgDb-method
+setMethod("annotateMRexp", "MgDb",function(mgdb, MRobj){
+    db_keys <- featureNames(MRobj)
+    anno <- .mgDb_annotate(mgdb,db_keys,
+                           query_df = NULL,
+                           query_seq = NULL,
+                           mapping = NULL)
+    rownames(anno) <- anno@data$Keys
+    featureData(MRobj) <- anno
+    MRobj
+}
+)
+
+MRobj <- annotateMRexp(mgdb, MRobj)
+
+## Issues
+# featureNames do not correspond between objects
+# msd16s featureNames represent OTUs not ids
+# not that featureData also includes cluster seqs
+# Need to think about organization
+# - cluster centers
+# featureData should include ref seqs and ref tree
+# assayData should include cluster centers
