@@ -12,6 +12,7 @@
     dplyr::tbl(src = db_con, from = "taxa")
 }
 
+setOldClass(c("tbl_sqlite"))
 #' Metagenome Database class
 #'
 #' The MgDb-class object contains sequence and taxonomic data for a 16S rRNA
@@ -30,15 +31,16 @@
 #'   \href{http://greengenes.secondgenome.com/}{Greengenes database} (version
 #'   13.5), additional packages are planned.
 #' @rdname MgDb-class
+#' @importFrom tbl_sqlite dplyr
 MgDb <- setRefClass("MgDb",
                      #contains="DNAStringSet",
                      fields=list(seq="DNAStringSet",
-                                 taxa = "ANY",
+                                 taxa = "tbl_sqlite",
                                  metadata= "list"),
                      methods=list(
                          initialize=function(...){
                              callSuper(...)
-                             taxa <<- .load_taxa_db(taxa)
+                             taxa <<- taxa #.load_taxa_db(taxa)
                              seq <<- seq
                              metadata <<- metadata
                          }))

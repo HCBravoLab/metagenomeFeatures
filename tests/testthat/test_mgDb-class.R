@@ -8,8 +8,12 @@ metadata <- list(ACCESSION_DATE = "3/31/2015",
                  DB_TYPE_VALUE = "MgDb",
                  DB_SCHEMA_VERSION = "1.0")
 
+
+taxdb <- "../testTaxa.sqlite3" %>% dplyr::src_sqlite() %>%
+    dplyr::tbl(src = ., from = "taxa")
+
 testMgDb <- new("MgDb", seq = db_seq,
-                taxa = "../testTaxa.sqlite3",
+                taxa = taxdb,
                 metadata = metadata)
 
 context("mgDb-class")

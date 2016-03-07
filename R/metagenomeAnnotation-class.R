@@ -99,4 +99,3 @@ setMethod("split_by", "metagenomeAnnotation",
               .split_by(mgAnno, taxa_level)
           }
 )
-# mgTree - generates a tree from annotated dataframe
