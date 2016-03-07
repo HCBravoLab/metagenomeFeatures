@@ -9,7 +9,8 @@ Description: metagenomeFeatures was developed for use in exploring
     composition of a marker-gene database or annotated sequences from a
     marker-gene metagenome experiment.
 Depends:
-    R (>= 3.2), Biobase (>= 2.17.8)
+    R (>= 3.2),
+    Biobase (>= 2.17.8)
 License: Artistic-2.0
 LazyData: true
 Imports:
@@ -21,7 +22,8 @@ Imports:
     RSQLite (>= 1.0.0),
     magrittr (>= 1.5),
     methods,
-    lattice
+    lattice,
+    metagenomeSeq
 Collate:
     'metagenomeAnnotation-class.R'
     'mgDb-class.R'
@@ -38,4 +40,7 @@ Suggests:
 VignetteBuilder: knitr
 URL: https://github.com/HCBravoLab/metagenomeFeatures
 BugReports: https://github.com/HCBravoLab/metagenomeFeatures/issues
-biocViews: Microbiome, Metagenomics, Annotation, Infrastructure, Sequencing, Software
+biocViews: Microbiome, Metagenomics, Annotation, Infrastructure, Sequencing,
+    Software
+NeedsCompilation: no
+RoxygenNote: 5.0.1

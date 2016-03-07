@@ -12,6 +12,7 @@
     dplyr::tbl(src = db_con, from = "taxa")
 }
 
+setOldClass(c("tbl_sqlite"))
 #' Metagenome Database class
 #'
 #' The MgDb-class object contains sequence and taxonomic data for a 16S rRNA
@@ -30,15 +31,19 @@
 #'   \href{http://greengenes.secondgenome.com/}{Greengenes database} (version
 #'   13.5), additional packages are planned.
 #' @rdname MgDb-class
+#' @importFrom dplyr tbl_sql
 MgDb <- setRefClass("MgDb",
                      #contains="DNAStringSet",
                      fields=list(seq="DNAStringSet",
-                                 taxa = "ANY",
+                                 taxa = "tbl_sqlite",
+                                 taxa_file = "character",
                                  metadata= "list"),
                      methods=list(
                          initialize=function(...){
                              callSuper(...)
-                             taxa <<- .load_taxa_db(taxa)
+                             ## TODO - add if statement for passing either a file name or tbl_db
+                             taxa_db <- .load_taxa_db(taxa_file)
+                             taxa <<- taxa_db
                              seq <<- seq
                              metadata <<- metadata
                          }))
@@ -52,7 +57,7 @@ setValidity("MgDb", function(object) {
                      sep = "\n")
     if(!("taxa" %in% ls(object)) || !is(object$taxa, "tbl_sqlite"))
         msg <- paste(msg,
-                     "'taxa' slot must contain a tbl_sqlite object",
+                     "'taxa' slot must contain a tbl object",
                      sep = "\n")
     if(!("metadata" %in% ls(object)) || !is(object$metadata, "list"))
         msg <- paste(msg, "'metadata' slot must contain a list", sep = "\n")
@@ -227,7 +232,8 @@ setMethod("select", "MgDb",
 
 
 
-.mgDb_annotate <- function(mgdb, db_keys, query_df, query_seq, mapping){
+.mgDb_annotate <- function(mgdb, db_keys, query_df = NULL,
+                           query_seq = NULL, mapping = NULL){
     if(is.null(db_keys)){
         if(is.null(query_df)){
             stop("must provide either 'db_keys' or 'query_df'")
@@ -272,6 +278,12 @@ setMethod("select", "MgDb",
 
 }
 
+### ============================================================================
+##
+##                              MgDb annotate MRexperiment
+##
+### ============================================================================
+
 #' Annotating metagenome data with taxonomic information
 #'
 #' This method is used to create a \linkS4class{metagenomeAnnotation} class
@@ -312,4 +324,49 @@ setMethod("annotate", "MgDb",
                    query_seq = NULL, mapping = "user provided ids"){
               .mgDb_annotate(mgdb, db_keys,
                              query_df, query_seq, mapping)}
+)
+
+#' Annotate MRexperiment object with seq taxonomy from MgDb object
+#'
+#' This method is used annotate a MRexperiment with taxonomic information from a \link[=MgDb]{MgDb-class}
+#' object using the MRexperiment object's Feature names.
+#' object.
+#'
+#' @param mgdb MgDb class object
+#' @param MRobj MRexperiment class object
+#' @param ... additional arguments passed to select function
+#' @return metagenomeAnnotation-class object
+#' @note Must include either db_keys or query_df as argument.
+#' @rdname annotate-MgDb-method
+setGeneric("annotateMRexp", signature = "mgdb",
+           function(mgdb, MRobj, ...) {
+               standardGeneric("annotateMRexp")}
+)
+
+#' Annotate MRexperiment object with seq taxonomy from MgDb object
+#'
+#' This method is used annotate a MRexperiment with taxonomic information from a \link[=MgDb]{MgDb-class}
+#' object using the MRexperiment object's Feature names.
+#' object.
+#'
+#' @param mgdb MgDb class object
+#' @param MRobj MRexperiment class object
+#' @param ... additional arguments passed to select function
+#' @return metagenomeAnnotation-class object
+#' @export
+#' @examples
+#' # see vignette
+#' @aliases annotateMRexp,MgDb-method
+#' @rdname annotateMRexp-MgDb-method
+setMethod("annotateMRexp", "MgDb",
+          function(mgdb, MRobj){
+    db_keys <- featureNames(MRobj)
+    anno <- .mgDb_annotate(mgdb,db_keys,
+                           query_df = NULL,
+                           query_seq = NULL,
+                           mapping = NULL)
+    rownames(anno@data) <- anno@data$Keys
+    featureData(MRobj) <- anno
+    MRobj
+}
 )
