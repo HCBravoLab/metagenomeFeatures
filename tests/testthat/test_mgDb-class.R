@@ -9,8 +9,7 @@ metadata <- list(ACCESSION_DATE = "3/31/2015",
                  DB_SCHEMA_VERSION = "1.0")
 
 
-taxdb_file <- "../testTaxa.sqlite3" # %>% dplyr::src_sqlite() %>%
-    #dplyr::tbl(src = ., from = "taxa")
+taxdb_file <- "../testTaxa.sqlite3"
 
 testMgDb <- new("MgDb", seq = db_seq,
                 taxa_file = taxdb_file,
@@ -205,4 +204,23 @@ test_that("MgDb-class annotate metadata", {
                  testMgDb$metadata$DB_SCHEMA_VERSION)
     expect_equal(test_annotate@metadata$mapping,
                  "user provided ids")
+})
+
+
+library(metagenomeSeq)
+count_dat <- data.frame(sam1 = sample(c(0:100), size = 10, replace = TRUE),
+                        sam2 = sample(c(0:100), size = 10, replace = TRUE),
+                        sam3 = sample(c(0:100), size = 10, replace = TRUE))
+OTUcenters <- c("813058","4334144","517968","1113159",
+                "3058155","4378325","60159","2569970",
+                "4474227","48617")
+
+rownames(count_dat) <- OTUcenters
+
+testMRobj <- newMRexperiment(counts = count_dat)
+testMRobj <- annotateMRexp(mgdb = testMgDb, MRobj = testMRobj)
+
+test_that("MgDb-class annotateMRexp",{
+    expect_equal_to_reference(annotateMRexp(mgdb = testMgDb, MRobj = testMRobj),
+                              file = "cache/MgDb_test_annotateMRexp.rds")
 })
