@@ -36,11 +36,14 @@ MgDb <- setRefClass("MgDb",
                      #contains="DNAStringSet",
                      fields=list(seq="DNAStringSet",
                                  taxa = "tbl_sqlite",
+                                 taxa_file = "character",
                                  metadata= "list"),
                      methods=list(
                          initialize=function(...){
                              callSuper(...)
-                             taxa <<- taxa #.load_taxa_db(taxa)
+                             ## TODO - add if statement for passing either a file name or tbl_db
+                             taxa_db <- .load_taxa_db(taxa_file)
+                             taxa <<- taxa_db
                              seq <<- seq
                              metadata <<- metadata
                          }))
