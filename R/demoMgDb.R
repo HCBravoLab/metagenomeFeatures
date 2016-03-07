@@ -23,6 +23,6 @@ get_demoMgDb <- function(){
     ## How to find file path? maybe just create
     demoMgDb <- new("MgDb",
         seq = db_seq,
-        taxa = demo_taxa_file,
+        taxa_file = demo_taxa_file,
         metadata = metadata)
 }
