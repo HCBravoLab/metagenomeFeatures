@@ -31,7 +31,7 @@ setOldClass(c("tbl_sqlite"))
 #'   \href{http://greengenes.secondgenome.com/}{Greengenes database} (version
 #'   13.5), additional packages are planned.
 #' @rdname MgDb-class
-#' @importFrom tbl_sqlite dplyr
+#' @importFrom dplyr tbl_sql
 MgDb <- setRefClass("MgDb",
                      #contains="DNAStringSet",
                      fields=list(seq="DNAStringSet",
@@ -57,7 +57,7 @@ setValidity("MgDb", function(object) {
                      sep = "\n")
     if(!("taxa" %in% ls(object)) || !is(object$taxa, "tbl_sqlite"))
         msg <- paste(msg,
-                     "'taxa' slot must contain a tbl_sqlite object",
+                     "'taxa' slot must contain a tbl object",
                      sep = "\n")
     if(!("metadata" %in% ls(object)) || !is(object$metadata, "list"))
         msg <- paste(msg, "'metadata' slot must contain a list", sep = "\n")
@@ -232,7 +232,8 @@ setMethod("select", "MgDb",
 
 
 
-.mgDb_annotate <- function(mgdb, db_keys, query_df, query_seq, mapping){
+.mgDb_annotate <- function(mgdb, db_keys, query_df = NULL,
+                           query_seq = NULL, mapping = NULL){
     if(is.null(db_keys)){
         if(is.null(query_df)){
             stop("must provide either 'db_keys' or 'query_df'")
@@ -342,30 +343,30 @@ setGeneric("annotateMRexp", signature = "mgdb",
                standardGeneric("annotateMRexp")}
 )
 
+#' Annotate MRexperiment object with seq taxonomy from MgDb object
+#'
+#' This method is used annotate a MRexperiment with taxonomic information from a \link[=MgDb]{MgDb-class}
+#' object using the MRexperiment object's Feature names.
+#' object.
+#'
+#' @param mgdb MgDb class object
+#' @param MRobj MRexperiment class object
+#' @param ... additional arguments passed to select function
+#' @return metagenomeAnnotation-class object
 #' @export
 #' @examples
 #' # see vignette
 #' @aliases annotateMRexp,MgDb-method
 #' @rdname annotateMRexp-MgDb-method
-setMethod("annotateMRexp", "MgDb",function(mgdb, MRobj){
+setMethod("annotateMRexp", "MgDb",
+          function(mgdb, MRobj){
     db_keys <- featureNames(MRobj)
     anno <- .mgDb_annotate(mgdb,db_keys,
                            query_df = NULL,
                            query_seq = NULL,
                            mapping = NULL)
-    rownames(anno) <- anno@data$Keys
+    rownames(anno@data) <- anno@data$Keys
     featureData(MRobj) <- anno
     MRobj
 }
 )
-
-MRobj <- annotateMRexp(mgdb, MRobj)
-
-## Issues
-# featureNames do not correspond between objects
-# msd16s featureNames represent OTUs not ids
-# not that featureData also includes cluster seqs
-# Need to think about organization
-# - cluster centers
-# featureData should include ref seqs and ref tree
-# assayData should include cluster centers
