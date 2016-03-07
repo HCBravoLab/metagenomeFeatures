@@ -22,7 +22,8 @@ Imports:
     RSQLite (>= 1.0.0),
     magrittr (>= 1.5),
     methods,
-    lattice
+    lattice,
+    metagenomeSeq
 Collate:
     'metagenomeAnnotation-class.R'
     'mgDb-class.R'
