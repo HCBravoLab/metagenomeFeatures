@@ -58,7 +58,7 @@ metadata <- list(ACCESSION_DATE = "3/31/2015",
                  DB_SCHEMA_VERSION = "1.0")
 msd16s_MgDb <- new("MgDb",
                 seq = readDNAStringSet(file.path(dataDirectory,"msd16s_MgDb_seq.fasta.gz")),
-                taxa = file.path(dataDirectory,"msd16s_MgDb_taxa.sqlite"),
+                taxa_file = file.path(dataDirectory,"msd16s_MgDb_taxa.sqlite"),
                 metadata = metadata)
 ```
 
