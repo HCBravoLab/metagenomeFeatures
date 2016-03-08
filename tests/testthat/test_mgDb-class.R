@@ -209,6 +209,7 @@ test_that("MgDb-class annotate metadata", {
 library(metagenomeSeq)
 
 count_dat <- data.frame(sam1 = c(1:10))
+
 OTUcenters <- c("813058","4334144","517968","1113159",
                 "3058155","4378325","60159","2569970",
                 "4474227","48617")
