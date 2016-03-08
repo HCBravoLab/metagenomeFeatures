@@ -21,6 +21,12 @@ database. The \code{get_demoMgDb} function exports a small subset of the databas
 
 \item{\code{seq}}{database reference sequences}
 
+\item{\code{tree}}{reference phylogenetic tree}
+
+\item{\code{taxa_file}}{name of sqlite db}
+
+\item{\code{tree_file}}{name of phylogenetic tree file}
+
 \item{\code{metadata}}{associated metadata for the database}
 }}
 \note{

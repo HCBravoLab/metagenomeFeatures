@@ -12,7 +12,12 @@
     dplyr::tbl(src = db_con, from = "taxa")
 }
 
+.load_tree <- function(tree_file){
+    ape::read.tree(tree_file)
+}
+
 setOldClass(c("tbl_sqlite"))
+setOldClass("phylo")
 #' Metagenome Database class
 #'
 #' The MgDb-class object contains sequence and taxonomic data for a 16S rRNA
@@ -21,6 +26,9 @@ setOldClass(c("tbl_sqlite"))
 #' @aliases mgdb
 #' @field taxa taxonomic information for database sequences
 #' @field seq database reference sequences
+#' @field tree reference phylogenetic tree
+#' @field taxa_file name of sqlite db
+#' @field tree_file name of phylogenetic tree file
 #' @field metadata associated metadata for the database
 #' @export
 #' @usage # library(greengenes13.5MgDb)
@@ -33,18 +41,20 @@ setOldClass(c("tbl_sqlite"))
 #' @rdname MgDb-class
 #' @importFrom dplyr tbl_sql
 MgDb <- setRefClass("MgDb",
-                     #contains="DNAStringSet",
+                     #contains="DNAStringSet"
                      fields=list(seq="DNAStringSet",
+                                 # add seq file inplace of reading DNAStringSet
                                  taxa = "tbl_sqlite",
                                  taxa_file = "character",
+                                 tree_file = "character",
+                                 tree = "phylo",
                                  metadata= "list"),
                      methods=list(
                          initialize=function(...){
                              callSuper(...)
-                             ## TODO - add if statement for passing either a file name or tbl_db
-                             taxa_db <- .load_taxa_db(taxa_file)
-                             taxa <<- taxa_db
+                             taxa <<- .load_taxa_db(taxa_file)
                              seq <<- seq
+                             tree <<- .load_tree(tree_file)
                              metadata <<- metadata
                          }))
 
@@ -58,6 +68,10 @@ setValidity("MgDb", function(object) {
     if(!("taxa" %in% ls(object)) || !is(object$taxa, "tbl_sqlite"))
         msg <- paste(msg,
                      "'taxa' slot must contain a tbl object",
+                     sep = "\n")
+    if(!("tree" %in% ls(object)) || !is(object$tree, "phylo"))
+        msg <- paste(msg,
+                     "'tree' slot must contain a phylo object",
                      sep = "\n")
     if(!("metadata" %in% ls(object)) || !is(object$metadata, "list"))
         msg <- paste(msg, "'metadata' slot must contain a list", sep = "\n")
@@ -94,6 +108,8 @@ setMethod("show", "MgDb",
             print(object$seq)
             print("Taxonomy Data:")
             print(object$taxa)
+            print("Tree Data:")
+            print(object$tree)
         }
 )
 
@@ -135,10 +151,18 @@ setMethod("show", "MgDb",
     return(select_tbl %>% dplyr::collect())
 }
 
+## TODO
+.select.tree <- function(tree, ids){
+    # need to work out methods for pruning tree
+    drop_tips <- tree$tip.label[!(tree$tip.label %in% ids)]
+    ape::drop.tip(tree,drop_tips)
+}
+
 ## either select by ids for taxa information
 .select <- function(mgdb, type, keys, keytype, columns){
-    if(!(type %in% c("seq","taxa", "both"))){
-        stop("type must be either 'seq', 'taxa', or both")
+    ## TODO - need to modify to accept a vector instead of a character string
+    if(!(type %in% c("seq","taxa", "tree", "all"))){
+        stop("type must be either 'seq', 'taxa', 'tree', or both")
     }
 
     if(is.null(keys) + is.null(keytype) == 1){
@@ -150,9 +174,16 @@ setMethod("show", "MgDb",
     }
 
 
-    if(type == "seq" || type == "both"){
+    if(type == "seq" || type == "all"){
         seq_obj <- .select.seq(mgdb$seq, taxa_df$Keys)
-        if(type != "both"){
+        if(type != "all"){
+            return(seq_obj)
+        }
+    }
+
+    if(type == "tree" || type == "all"){
+        seq_obj <- .select.tree(mgdb$tree, taxa_df$Keys)
+        if(type != "all"){
             return(seq_obj)
         }
     }
@@ -169,9 +200,9 @@ setMethod("show", "MgDb",
 #' only the taxonomic and sequence data, or both.
 #'
 #' @param mgdb MgDb class object
-#' @param type either "taxa", "seq", or "both". "taxa" and "seq" only queries
-#'   the taxonomy and sequences databases respectively. "both" queries both the
-#'   taxonomy and sequence database.
+#' @param type either "taxa", "seq", "tree", or "all". "taxa", "seq", and "tree" only query
+#'   the reference taxonomy, sequences, and phylogenetic tree respectively.
+#'   "all" queries the reference taxonomy, sequence, and phylogenetic tree.
 #' @param keys specific taxonomic groups to select for
 #' @param keytype taxonomic level of keys
 #' @param columns keytypes in taxonomy databse to return, all by default
@@ -191,8 +222,8 @@ setMethod("show", "MgDb",
 #'       keys = c("Vibrio", "Salmonella"),
 #'       keytype = "Genus")
 #'
-#' # select both taxa and seq
-#' select(demoMgDb, type = "both",
+#' # select all taxa, seq, and tree
+#' select(demoMgDb, type = "all",
 #'        keys = c("Vibrio", "Salmonella"),
 #'        keytype = "Genus")
 #' @rdname select-MgDb-method
@@ -247,7 +278,7 @@ setMethod("select", "MgDb",
         select_keys <- as.character(db_keys)
     }
 
-    filtered_db <- select(mgdb, type = "both",
+    filtered_db <- select(mgdb, type = "all",
                           keys = select_keys,
                           keytype = "Keys")
     if(is.null(query_df)){

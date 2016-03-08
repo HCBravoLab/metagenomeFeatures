@@ -14,9 +14,9 @@ select(mgdb, type, ...)
 \arguments{
 \item{mgdb}{MgDb class object}
 
-\item{type}{either "taxa", "seq", or "both". "taxa" and "seq" only queries
-the taxonomy and sequences databases respectively. "both" queries both the
-taxonomy and sequence database.}
+\item{type}{either "taxa", "seq", "tree", or "all". "taxa", "seq", and "tree" only query
+the reference taxonomy, sequences, and phylogenetic tree respectively.
+"all" queries the reference taxonomy, sequence, and phylogenetic tree.}
 
 \item{...}{additional arguments passed to select function}
 
@@ -50,8 +50,8 @@ select(demoMgDb, type = "taxa",
       keys = c("Vibrio", "Salmonella"),
       keytype = "Genus")
 
-# select both taxa and seq
-select(demoMgDb, type = "both",
+# select all taxa, seq, and tree
+select(demoMgDb, type = "all",
        keys = c("Vibrio", "Salmonella"),
        keytype = "Genus")
 }

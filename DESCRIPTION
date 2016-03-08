@@ -23,7 +23,8 @@ Imports:
     magrittr (>= 1.5),
     methods,
     lattice,
-    metagenomeSeq
+    metagenomeSeq,
+    ape
 Collate:
     'metagenomeAnnotation-class.R'
     'mgDb-class.R'
