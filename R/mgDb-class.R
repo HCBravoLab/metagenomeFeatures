@@ -354,6 +354,11 @@ setGeneric("annotateMRexp", signature = "mgdb",
 #' @param MRobj MRexperiment class object
 #' @param ... additional arguments passed to select function
 #' @return metagenomeAnnotation-class object
+#' @export
+#' @examples
+#' # see vignette
+#' @aliases annotateMRexp,MgDb-method
+#' @rdname annotateMRexp-MgDb-method
 setMethod("annotateMRexp", "MgDb",
           function(mgdb, MRobj){
     db_keys <- featureNames(MRobj)
@@ -361,9 +366,10 @@ setMethod("annotateMRexp", "MgDb",
                            query_df = NULL,
                            query_seq = NULL,
                            mapping = NULL)
-    rownames(anno) <- anno@data$Keys
+    rownames(anno@data) <- anno@data$Keys
     featureData(MRobj) <- anno
     MRobj
 }
 )
+
 
