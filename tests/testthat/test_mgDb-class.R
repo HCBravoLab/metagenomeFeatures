@@ -9,7 +9,6 @@ metadata <- list(ACCESSION_DATE = "3/31/2015",
                  DB_SCHEMA_VERSION = "1.0")
 
 
-
 taxdb_file <- "../testTaxa.sqlite3"
 
 testMgDb <- new("MgDb", seq = db_seq,
@@ -209,8 +208,14 @@ test_that("MgDb-class annotate metadata", {
 
 
 library(metagenomeSeq)
+<<<<<<< 90ac170721b49dddabc89b211a3ffdd28a8b0931
 
 count_dat <- data.frame(sam1 = c(1:10))
+=======
+count_dat <- data.frame(sam1 = sample(c(0:100), size = 10, replace = TRUE),
+                        sam2 = sample(c(0:100), size = 10, replace = TRUE),
+                        sam3 = sample(c(0:100), size = 10, replace = TRUE))
+>>>>>>> mgdb not uses tbl_sqlite as slot added function to annotate MRexperiment
 OTUcenters <- c("813058","4334144","517968","1113159",
                 "3058155","4378325","60159","2569970",
                 "4474227","48617")
