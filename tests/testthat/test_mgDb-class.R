@@ -8,7 +8,6 @@ metadata <- list(ACCESSION_DATE = "3/31/2015",
                  DB_TYPE_VALUE = "MgDb",
                  DB_SCHEMA_VERSION = "1.0")
 
-
 taxdb_file <- "../testTaxa.sqlite3"
 
 testMgDb <- new("MgDb", seq = db_seq,
