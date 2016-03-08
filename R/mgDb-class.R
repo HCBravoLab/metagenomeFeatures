@@ -343,7 +343,6 @@ setGeneric("annotateMRexp", signature = "mgdb",
                standardGeneric("annotateMRexp")}
 )
 
-
 #' Annotate MRexperiment object with seq taxonomy from MgDb object
 #'
 #' This method is used annotate a MRexperiment with taxonomic information from a \link[=MgDb]{MgDb-class}
@@ -371,5 +370,3 @@ setMethod("annotateMRexp", "MgDb",
     MRobj
 }
 )
-
-
