@@ -343,6 +343,7 @@ setGeneric("annotateMRexp", signature = "mgdb",
                standardGeneric("annotateMRexp")}
 )
 
+
 #' Annotate MRexperiment object with seq taxonomy from MgDb object
 #'
 #' This method is used annotate a MRexperiment with taxonomic information from a \link[=MgDb]{MgDb-class}
@@ -353,11 +354,6 @@ setGeneric("annotateMRexp", signature = "mgdb",
 #' @param MRobj MRexperiment class object
 #' @param ... additional arguments passed to select function
 #' @return metagenomeAnnotation-class object
-#' @export
-#' @examples
-#' # see vignette
-#' @aliases annotateMRexp,MgDb-method
-#' @rdname annotateMRexp-MgDb-method
 setMethod("annotateMRexp", "MgDb",
           function(mgdb, MRobj){
     db_keys <- featureNames(MRobj)
@@ -365,8 +361,9 @@ setMethod("annotateMRexp", "MgDb",
                            query_df = NULL,
                            query_seq = NULL,
                            mapping = NULL)
-    rownames(anno@data) <- anno@data$Keys
+    rownames(anno) <- anno@data$Keys
     featureData(MRobj) <- anno
     MRobj
 }
 )
+
