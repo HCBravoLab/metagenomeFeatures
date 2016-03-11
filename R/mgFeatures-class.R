@@ -45,10 +45,16 @@ setValidity("mgFeatures", function(object) {
     if (is.null(msg)) TRUE else msg
 })
 
-## Methods
-# accessors
+################################################################################
+################################################################################
+##
+##                              mgFeatures Methods
+##
+################################################################################
+################################################################################
+## accessors -------------------------------------------------------------------
 
-#' mgFeatures referenceDbTreeData slot accessor
+#' mgFeatures refDbTree slot accessor
 #'
 #' @param mgF  mgFeatures class object
 #'
@@ -60,26 +66,26 @@ mgF_tree <- function(mgF){
     mgF@refDbTree
 }
 
-#' mgFeatures referenceDbSeqData slot accessor
+#' mgFeatures refDbSeq slot accessor
 #'
 #' @param mgF  mgFeatures class object
 #'
 #' @return DNAStringSet class object
 #' @export
 #'
-#' @examples ## mgF_tree(demo_mgF)
+#' @examples ## mgF_seq(demo_mgF)
 mgF_seq <- function(mgF){
     mgF@refDbSeq
 }
 
-#' mgFeatures tree slot accessor
+#' mgFeatures taxa slot accessor
 #'
 #' @param mgF  mgFeatures class object
 #'
 #' @return AnnotatedDataFrame
 #' @export
 #'
-#' @examples ## mgF_tree(demo_mgF)
+#' @examples ## mgF_taxa(demo_mgF)
 mgF_taxa <- function(mgF){
     mgF@data
 }
