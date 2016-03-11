@@ -28,6 +28,7 @@ Imports:
 Collate:
     'metagenomeAnnotation-class.R'
     'mgDb-class.R'
+    'mgFeatures-class.R'
     'demoMgDb.R'
     'mgDb-taxa_accessors.R'
     'mgQuery.R'
