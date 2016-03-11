@@ -19,6 +19,10 @@ experiment sequence data in the object for use in downstream analysis.
 \describe{
 \item{\code{metadata}}{list}
 
+\item{\code{referenceDbSeqData}}{DNAStringSet}
+
+\item{\code{experimentTreeData}}{phylo}
+
 \item{\code{experimentSeqData}}{DNAStringSet}
 }}
 \examples{

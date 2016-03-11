@@ -11,7 +11,7 @@
 ##  annotation metadata - ref db package, mapping method,
 ##  user defined features, e.g. annotate function parameters
 ##  feature data - cluster sequences, cluster IDs
-
+setOldClass("phylo")
 #' metagenomeAnnotation-class object
 #'
 #' Object contains taxonomic annotation and sequence data for an experiment .
@@ -21,6 +21,8 @@
 #' experiment sequence data in the object for use in downstream analysis.
 #'
 #' @slot metadata list
+#' @slot referenceDbSeqData DNAStringSet
+#' @slot experimentTreeData phylo
 #' @slot experimentSeqData DNAStringSet
 #' @return metagenomeAnnotation class object
 #' @export
@@ -28,11 +30,14 @@
 #' data(msd16s_metagenomeAnnotation)
 #' @rdname metagenomeAnnotation-class
 setClass("metagenomeAnnotation",
-        slots = list(metadata = "list", experimentSeqData = "DNAStringSet"),
+        slots = list(metadata = "list",
+                     referenceDbSeqData="DNAStringSet",
+                     experimentTreeData = "phylo",
+                     experimentSeqData = "DNAStringSet"),
         contains = c("AnnotatedDataFrame"),
         prototype = new("VersionedBiobase",
                         versions = c(classVersion("AnnotatedDataFrame"),
-                                     metagenomeAnnotation = "1.0.0"))
+                                     metagenomeAnnotation = "1.0.1"))
 )
 
 ## making sure new object conforms to class definition
@@ -43,6 +48,16 @@ setValidity("metagenomeAnnotation", function(object) {
          msg <- paste(msg,
                       "'experimentSeqData' slot must be a DNAStringSeq object",
                       sep = "\n")
+     if(!("referenceDbSeqData" %in% slotNames(object)) ||
+        !is(object@experimentSeqData, "DNAStringSet"))
+         msg <- paste(msg,
+                      "'referenceDbSeqData' slot must be a DNAStringSeq object",
+                      sep = "\n")
+     # if(!("experimentTreeData" %in% slotNames(object)) ||
+     #    !is(object@experimentSeqData, "phylo"))
+     #     msg <- paste(msg,
+     #                  "'experimentTreeData' slot must be a phylo object",
+     #                  sep = "\n")
      if(!("metadata" %in% slotNames(object)) || !is(object@metadata, "list"))
          msg <- paste(msg, "'metadata' slot must contain a list", sep = "\n")
      if (is.null(msg)) TRUE else msg
