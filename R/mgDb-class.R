@@ -91,11 +91,7 @@ setValidity("MgDb", function(object) {
 ################################################################################
 ################################################################################
 
-### ============================================================================
-##
-##                              MgDb show method
-##
-### ============================================================================
+## show ------------------------------------------------------------------------
 
 #' Display summary of MgDb-class object
 #' @param object MgDb-class object
@@ -117,6 +113,57 @@ setMethod("show", "MgDb",
             print(object$tree)
         }
 )
+
+## accessors -------------------------------------------------------------------
+
+#' MgDb tree slot accessor
+#'
+#' @param mgdb  MgDb class object
+#'
+#' @return phylo class object
+#' @export
+#'
+#' @examples mgdb_tree(demoMgDb)
+mgdb_tree <- function(mgdb){
+    mgdb$tree
+}
+
+#' MgDb seq slot accessor
+#'
+#' @param mgdb  MgDb class object
+#'
+#' @return DNAStringSet class object
+#' @export
+#'
+#' @examples mgdb_seq(demoMgDb)
+mgdb_seq <- function(mgdb){
+    mgdb$seq
+}
+
+#' MgDb taxa slot accessor
+#'
+#' @param mgdb  MgDb class object
+#'
+#' @return tbl_sql connection to sqlite table
+#' @export
+#'
+#' @examples mgdb_taxa(demoMgDb)
+mgdb_taxa <- function(mgdb){
+    mgdb$taxa
+}
+
+#' MgDb metadata slot accessor
+#'
+#' @param mgdb  MgDb class object
+#'
+#' @return list
+#' @export
+#'
+#' @examples mgdb_meta(demoMgDb)
+mgdb_meta <- function(mgdb){
+    mgdb$metadata
+}
+
 
 ### ============================================================================
 ##
@@ -160,9 +207,7 @@ setMethod("show", "MgDb",
     return(select_tbl %>% dplyr::collect())
 }
 
-## TODO
 .select.tree <- function(tree, ids){
-    # need to work out methods for pruning tree
     drop_tips <- tree$tip.label[!(tree$tip.label %in% ids)]
     ape::drop.tip(tree,drop_tips)
 }

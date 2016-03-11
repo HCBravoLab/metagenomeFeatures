@@ -132,7 +132,7 @@ test_select_all <- metagenomeFeatures::select(testMgDb,type = "all",
                                               keys = c("tax_51", "tax_53"),
                                               keytype = "Genus")
 
-test_that("MgDb-class select both",{
+test_that("MgDb-class select all",{
     expect_equal_to_reference(
         test_select_all,
         file = "cache/MgDb_test_select_all.rds")
@@ -145,6 +145,13 @@ test_that("MgDb-class select both",{
     expect_equal(test_select_all$tree, test_select_tree)
 })
 
+## MgDb accessors ---------------------------------------------------------------
+test_that("MgDb-accessors",{
+    expect_identical(mgdb_taxa(testMgDb), testMgDb$taxa)
+    expect_identical(mgdb_meta(testMgDb), testMgDb$metadata)
+    expect_identical(mgdb_seq(testMgDb), testMgDb$seq)
+    expect_identical(mgdb_tree(testMgDb), testMgDb$tree)
+})
 
 ## test generate MgDb object
 # db_seq <- Biostrings::readDNAStringSet("../testSeq.fasta.gz")
