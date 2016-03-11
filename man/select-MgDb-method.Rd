@@ -28,8 +28,8 @@ the reference taxonomy, sequences, and phylogenetic tree respectively.
 }
 \value{
 returned object depends on type, for 'taxa' -dataframe with taxa
-  information, 'seq' a DNAStringSet with seqeunce data, 'both' a list with
-  the dataframe and DNAStringSet.
+  information, 'seq' a DNAStringSet with seqeunce data, 'tree' a phylogenetic tree of class phylo, 'all' a list with
+  the dataframe, DNAStringSet, and phylo.
 }
 \description{
 Function for querying \code{\link{MgDb}} class objects, user defines the
