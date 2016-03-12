@@ -4,15 +4,12 @@
 \name{annotate}
 \alias{annotate}
 \alias{annotate,MgDb-method}
-\alias{annotateMRexp_fData}
 \title{Annotating metagenome data with taxonomic information}
 \usage{
 annotate(mgdb, ...)
 
 \S4method{annotate}{MgDb}(mgdb, db_keys = NULL, query_df = NULL,
   query_seq = NULL, mapping = "user provided ids")
-
-annotateMRexp_fData(mgdb, MRobj, ...)
 }
 \arguments{
 \item{mgdb}{MgDb class object}
@@ -30,16 +27,8 @@ taxonomic information, must include column named "Key" with databse ids.}
 \item{mapping}{(Optional) method used to map sequences to database, default
 "user provided", use for documenting methods used to perfom the taxonomic
 assignment.}
-
-\item{MRobj}{MRexperiment class object}
-
-\item{mgdb}{MgDb class object}
-
-\item{...}{additional arguments passed to select function}
 }
 \value{
-metagenomeAnnotation-class object
-
 metagenomeAnnotation-class object
 }
 \description{
@@ -52,14 +41,8 @@ along with a column of database ids named \code{Keys}, additionally a
 sequence data.  If experimental sequence data are provided, database ids must
 be passed as a data.frame and include a column \code{SeqIDs} with sequence
 names as well as database ids.
-
-This method is used to define a MRexperiment object featureData slot with
-taxonomic information from a \link[=MgDb]{MgDb-class} object using the
-MRexperiment object's Feature names. object.
 }
 \note{
-Must include either db_keys or query_df as argument.
-
 Must include either db_keys or query_df as argument.
 }
 \examples{
