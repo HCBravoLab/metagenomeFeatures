@@ -16,6 +16,6 @@ list
 MgDb metadata slot accessor
 }
 \examples{
-mgdb_meta(demoMgDb)
+# mgdb_meta(demoMgDb)
 }
 

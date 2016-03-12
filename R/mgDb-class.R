@@ -123,7 +123,7 @@ setMethod("show", "MgDb",
 #' @return phylo class object
 #' @export
 #'
-#' @examples mgdb_tree(demoMgDb)
+#' @examples # mgdb_tree(demoMgDb)
 mgdb_tree <- function(mgdb){
     mgdb$tree
 }
@@ -135,7 +135,7 @@ mgdb_tree <- function(mgdb){
 #' @return DNAStringSet class object
 #' @export
 #'
-#' @examples mgdb_seq(demoMgDb)
+#' @examples # mgdb_seq(demoMgDb)
 mgdb_seq <- function(mgdb){
     mgdb$seq
 }
@@ -147,7 +147,7 @@ mgdb_seq <- function(mgdb){
 #' @return tbl_sql connection to sqlite table
 #' @export
 #'
-#' @examples mgdb_taxa(demoMgDb)
+#' @examples # mgdb_taxa(demoMgDb)
 mgdb_taxa <- function(mgdb){
     mgdb$taxa
 }
@@ -159,7 +159,7 @@ mgdb_taxa <- function(mgdb){
 #' @return list
 #' @export
 #'
-#' @examples mgdb_meta(demoMgDb)
+#' @examples # mgdb_meta(demoMgDb)
 mgdb_meta <- function(mgdb){
     mgdb$metadata
 }
@@ -413,7 +413,7 @@ setMethod("annotate", "MgDb",
                          keytype = "Keys", columns = "all")
 
     ## featureData
-    anno_tax <- db_subset$taxa
+    anno_tax <- db_subset$taxa %>% as.data.frame()
 
     anno <- new("mgFeatures",
                 data = anno_tax,
