@@ -405,56 +405,30 @@ setMethod("annotate", "MgDb",
                              query_df, query_seq, mapping)}
 )
 
-### Anno MRexp counts fData ----------------------------------------------------
-# #' Annotate MRexperiment object with seq taxonomy from MgDb object
-# #'
-# #' This method is used annotate a MRexperiment with taxonomic information from a \link[=MgDb]{MgDb-class}
-# #' object using the MRexperiment object's Feature names.
-# #' object.
-# #'
-# #' @param mgdb MgDb class object
-# #' @param MRobj MRexperiment class object
-# #' @param ... additional arguments passed to select function
-# #' @return metagenomeAnnotation-class object
-# #' @note Must include either db_keys or query_df as argument.
-# #' @rdname annotate-MgDb-method
-# setGeneric("annotateMRexp", signature = "mgdb",
-#            function(mgdb, MRobj, ...) {
-#                standardGeneric("annotateMRexp")}
-# )
+#### Anno MRexp featureData ----------------------------------------------------------
+.mgDb_annotateMRexp_fData <- function(mgdb, MRobj){
+    ## subset reference database with OTU ids
+    db_keys <- featureNames(MRobj)
+    db_subset <- .select(mgdb, type = "all", keys = db_keys,
+                         keytype = "Keys", columns = "all")
 
-# #' Annotate MRexperiment object featureData with data from MgDb object
-# #'
-# #' This method is used annotate a MRexperiment with taxonomic information from a \link[=MgDb]{MgDb-class}
-# #' object using the MRexperiment object's Feature names.
-# #' object.
-# #'
-# #' @param mgdb MgDb class object
-# #' @param MRobj MRexperiment class object
-# #' @param ... additional arguments passed to select function
-# #' @return metagenomeAnnotation-class object
-# #' @export
-# #' @examples
-# #' # see vignette
-# #' @aliases annotateMRexp,MgDb-method
-# #' @rdname annotateMRexp-MgDb-method
-# setMethod("annotateMRexp_fData", "MgDb",
-#           function(mgdb, MRobj){
-#     db_keys <- featureNames(MRobj)
-#     anno <- .mgDb_annotate(mgdb,db_keys,
-#                            query_df = NULL,
-#                            query_seq = NULL,
-#                            mapping = NULL)
-#     rownames(anno@data) <- anno@data$Keys
-#     featureData(MRobj) <- anno
-#     MRobj
-# }
-# )
+    ## featureData
+    anno_tax <- db_subset$taxa
+
+    anno <- new("mgFeatures",
+                data = anno_tax,
+                metadata = mgdb$metadata,
+                refDbSeq=db_subset$seq,
+                refDbTree = db_subset$tree)
+    rownames(anno@data) <- anno@data$Keys
+
+    ## set featureData
+    featureData(MRobj) <- anno
+    MRobj
+}
 
 
-#### Anno MRexp fData ----------------------------------------------------------
-
-#' Annotate MRexperiment object featureData with seq taxonomy from MgDb object
+#' Annotate MRexperiment object featureData slot using MgDb object
 #'
 #' This method is used to define a MRexperiment object featureData slot with
 #' taxonomic information from a \link[=MgDb]{MgDb-class} object using the
@@ -463,46 +437,17 @@ setMethod("annotate", "MgDb",
 #' @param mgdb MgDb class object
 #' @param MRobj MRexperiment class object
 #' @param ... additional arguments passed to select function
-#' @return metagenomeAnnotation-class object
+#' @return MRexperiment-class object
 #' @note Must include either db_keys or query_df as argument.
-#' @rdname annotate-MgDb-method
+#' @rdname annotateMRexp_fData-MgDb-method
 setGeneric("annotateMRexp_fData", signature = "mgdb",
            function(mgdb, MRobj, ...) {
                standardGeneric("annotateMRexp_fData")}
 )
 
-#' Annotate MRexperiment object with seq taxonomy from MgDb object
-#'
-#' This method is used annotate a MRexperiment with taxonomic information from a \link[=MgDb]{MgDb-class}
-#' object using the MRexperiment object's Feature names.
-#' object.
-#'
-#' @param mgdb MgDb class object
-#' @param MRobj MRexperiment class object
-#' @param ... additional arguments passed to select function
-#' @return metagenomeAnnotation-class object
 #' @export
-#' @examples
-#' # see vignette
 #' @aliases annotateMRexp_fData,MgDb-method
 #' @rdname annotateMRexp_fData-MgDb-method
 setMethod("annotateMRexp_fData", "MgDb",
-          function(mgdb, MRobj){
-
-              ## subset reference database with OTU ids
-              db_keys <- featureNames(MRobj)
-              db_subset <- .select(mgdb, type = "all",
-                              keys = db_keys, keytype = "Keys")
-
-              ## Prepare slots
-              anno_tax <- annotatedDataFrameFrom(db_subset$taxa)
-              anno <- new("mgFeatures",
-                             data = anno_tax,
-                             metadata = mgdb$metadata,
-                             referenceDbSeq=db_subset$seq,
-                             referenceDbTree = db_subset$tree)
-              rownames(anno@data) <- anno@data$Keys
-              featureData(MRobj) <- anno
-              MRobj
-          }
+          function(mgdb, MRobj) .mgDb_annotateMRexp_fData(mgdb, MRobj)
 )

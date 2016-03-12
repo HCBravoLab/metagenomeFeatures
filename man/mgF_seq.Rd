@@ -2,7 +2,7 @@
 % Please edit documentation in R/mgFeatures-class.R
 \name{mgF_seq}
 \alias{mgF_seq}
-\title{mgFeatures referenceDbSeqData slot accessor}
+\title{mgFeatures refDbSeq slot accessor}
 \usage{
 mgF_seq(mgF)
 }
@@ -13,9 +13,9 @@ mgF_seq(mgF)
 DNAStringSet class object
 }
 \description{
-mgFeatures referenceDbSeqData slot accessor
+mgFeatures refDbSeq slot accessor
 }
 \examples{
-## mgF_tree(demo_mgF)
+## mgF_seq(demo_mgF)
 }
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/mgFeatures-class.R
 \name{mgF_taxa}
 \alias{mgF_taxa}
-\title{mgFeatures tree slot accessor}
+\title{mgFeatures taxa slot accessor}
 \usage{
 mgF_taxa(mgF)
 }
@@ -13,9 +13,9 @@ mgF_taxa(mgF)
 AnnotatedDataFrame
 }
 \description{
-mgFeatures tree slot accessor
+mgFeatures taxa slot accessor
 }
 \examples{
-## mgF_tree(demo_mgF)
+## mgF_taxa(demo_mgF)
 }
 

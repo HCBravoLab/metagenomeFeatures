@@ -2,7 +2,7 @@
 % Please edit documentation in R/mgFeatures-class.R
 \name{mgF_tree}
 \alias{mgF_tree}
-\title{mgFeatures referenceDbTreeData slot accessor}
+\title{mgFeatures refDbTree slot accessor}
 \usage{
 mgF_tree(mgF)
 }
@@ -13,7 +13,7 @@ mgF_tree(mgF)
 phylo class object
 }
 \description{
-mgFeatures referenceDbTreeData slot accessor
+mgFeatures refDbTree slot accessor
 }
 \examples{
 ## mgF_tree(demo_mgF)
