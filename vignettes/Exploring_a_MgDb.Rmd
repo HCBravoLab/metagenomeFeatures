@@ -54,9 +54,9 @@ select(demoMgDb, type = "seq",
 
 
 
-### Selecting both
+### Selecting all
 ```{r}
-select(demoMgDb, type = "both",
+select(demoMgDb, type = "all",
                 keys = c("Vibrio", "Salmonella"),
                 keytype = "Genus")
 ```
