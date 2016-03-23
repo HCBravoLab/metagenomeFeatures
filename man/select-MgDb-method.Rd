@@ -14,7 +14,7 @@ select(mgdb, type, ...)
 \arguments{
 \item{mgdb}{MgDb class object}
 
-\item{type}{either "taxa", "seq", "tree", or "all". "taxa", "seq", and "tree" only query
+\item{type}{either "taxa", "seq", "tree", "all" or a character vector of types. "taxa", "seq", and "tree" only query
 the reference taxonomy, sequences, and phylogenetic tree respectively.
 "all" queries the reference taxonomy, sequence, and phylogenetic tree.}
 
