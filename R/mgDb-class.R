@@ -343,8 +343,9 @@ setMethod("select", "MgDb",
 
 
 
-.mgDb_annotate <- function(mgdb, db_keys, query_df = NULL,
-                           query_seq = NULL, mapping = NULL){
+.mgDb_annotate <- function(mgdb, db_keys,
+                           query_df = NULL, exp_seq = NULL, exp_tree = NULL,
+                           mapping = NULL){
     if(is.null(db_keys)){
         if(is.null(query_df)){
             stop("must provide either 'db_keys' or 'query_df'")
@@ -368,14 +369,24 @@ setMethod("select", "MgDb",
         annotated_db <- dplyr::right_join(query_df, filtered_db$taxa)
     }
 
-    if(is.null(query_seq)){
-        exp_seq_data <- new("DNAStringSet")
-    }else if(is(query_seq, "DNAStringSet")){
+    if(is.null(exp_seq)){
+        exp_seq_data <- NULL
+    }else if(is(exp_seq, "DNAStringSet")){
             exp_seq_data <- query_seq
     }else{
-        warning(paste0("query_seq is not a 'DNAStringSet' class object,",
+        warning(paste0("exp_seq is not a 'DNAStringSet' class object,",
                         "not including in the metagenomeAnnotation object"))
-        exp_seq_data <- new("DNAStringSet")
+        exp_seq_data <- NULL
+    }
+
+    if(is.null(exp_tree)){
+        exp_tree_data <- NULL
+    }else if(is(exp_tree, "phylo")){
+        exp_tree_data <- exp_tree
+    }else{
+        warning(paste0("exp_tree is not a 'phylo' class object,",
+                       "not including in the metagenomeAnnotation object"))
+        exp_tree_data <- NULL
     }
 
     anno_metadata <- mgdb$metadata
@@ -384,9 +395,11 @@ setMethod("select", "MgDb",
     new("metagenomeAnnotation",
         data = annotated_db,
         metadata = anno_metadata,
-        experimentSeqData = exp_seq_data
+        referenceDbSeqData=filtered_db$seq,
+        referenceDbTreeData=filtered_db$tree,
+        experimentSeqData = exp_seq_data,
+        experimentTreeData=exp_tree_data
     )
-
 }
 
 #' Annotating metagenome data with taxonomic information
