@@ -444,6 +444,7 @@ setMethod("select", "MgDb",
 #                              query_df, query_seq, mapping)}
 # )
 
+
 ## Annotate MRexp --------------------------------------------------------------
 .mgDb_annotateMRexp_fData <- function(mgdb, MRobj){
     ## subset reference database with OTU ids
