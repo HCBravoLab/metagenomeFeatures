@@ -10,8 +10,8 @@ setOldClass("phylo")
 #' slot for metadata including information on the database source.
 #'
 #' @slot metadata list
-#' @slot referenceDbSeq DNAStringSet
-#' @slot referenceDbTree phylo
+#' @slot refDbSeq DNAStringSet
+#' @slot refDbTree phylo
 #' @return mgFeature class object
 #' @export
 #' @examples
