@@ -1,26 +1,3 @@
-library(dplyr)
-library(ape)
-library(metagenomeFeatures)
-
-test_metadata <- list(ACCESSION_DATE = "1/11/1111",
-                      URL = "test-data",
-                      DB_TYPE_NAME = "Test",
-                      DB_TYPE_VALUE = "MgDb",
-                      DB_SCHEMA_VERSION = "1.0")
-
-test_taxa_file <- "../test_taxa.sqlite3"
-
-test_seq_file <- "../test_seq.rds"
-test_seq <- readRDS(test_seq_file)
-
-test_tree_file <- "../test_tree.rds"
-test_tree <- readRDS(test_tree_file)
-
-testMgDb <- new("MgDb", seq = test_seq,
-                taxa_file = test_taxa_file,
-                tree_file = test_tree_file,
-                metadata = test_metadata)
-
 context("mgDb-class")
 
 test_that("MgDb-class",{
@@ -76,74 +53,7 @@ test_that("MgDb-class taxa_keys at different taxonomic levels", {
 })
 
 
-## Select Methods
-test_that("MgDb-class select",{
-    expect_error(select(testMgDb, type = "not a type"))
-    expect_error(select(testMgDb, type = "all", keytype = "Keys"))
-    expect_error(select(testMgDb, type = "all", keys = "Streptomyces"))
-})
 
-## issue with select for MgDb select and dplyr select
-test_select_taxa <- metagenomeFeatures::select(testMgDb,type = "taxa",
-                           keys = c("tax_51", "tax_53"),
-                           keytype = "Genus")
-
-
-test_keys <- as.character(1:10)
-tax_names <- matrix(paste0("tax_",0:69), ncol = 7)
-colnames(tax_names) <- c("Kingdom","Phylum","Class","Order",
-                         "Family","Genus","Species")
-tax_names <- as.data.frame(tax_names)
-
-taxa <- data.frame(Keys = test_keys, tax_names) %>% as_data_frame() %>%
-    mutate(Keys = as.character(Keys), Kingdom = as.character(Kingdom),
-           Phylum = as.character(Phylum),
-           Class = as.character(Class), Order = as.character(Order),
-           Family = as.character(Family), Genus = as.character(Genus),
-           Species = as.character(Species))
-
-## add test for Greengenes format
-test_that("MgDb-class select taxa",{
-    expect_is(test_select_taxa,"tbl_df")
-    expect_equal(test_select_taxa, filter(taxa, Keys %in% c("2","4")))
-})
-
-test_select_seq <- metagenomeFeatures::select(testMgDb,type = "seq",
-                                               keys = c("tax_51", "tax_53"),
-                                               keytype = "Genus")
-
-test_that("MgDb-class select seq", {
-    expect_is(test_select_seq, "DNAStringSet")
-    expect_equal( test_select_seq,test_seq[c(2,4)])
-})
-
-test_select_tree <- metagenomeFeatures::select(testMgDb,type = "tree",
-                                              keys = c("tax_51", "tax_53"),
-                                              keytype = "Genus")
-
-test_that("MgDb-class select tree", {
-    expect_is(test_select_tree, "phylo")
-    expect_equal(test_select_tree,
-                  drop.tip(test_tree,
-                           tip = test_tree$tip.label[-c(2,4)]))
-})
-
-test_select_all <- metagenomeFeatures::select(testMgDb,type = "all",
-                                              keys = c("tax_51", "tax_53"),
-                                              keytype = "Genus")
-
-test_that("MgDb-class select all",{
-    expect_equal_to_reference(
-        test_select_all,
-        file = "cache/MgDb_test_select_all.rds")
-    expect_is(test_select_all, "list")
-    expect_is(test_select_all$taxa, "tbl_df")
-    expect_is(test_select_all$seq, "DNAStringSet")
-    expect_is(test_select_all$tree, "phylo")
-    expect_equal(test_select_all$taxa, test_select_taxa)
-    expect_equal(test_select_all$seq, test_select_seq)
-    expect_equal(test_select_all$tree, test_select_tree)
-})
 
 ## MgDb accessors ---------------------------------------------------------------
 test_that("MgDb-accessors",{
