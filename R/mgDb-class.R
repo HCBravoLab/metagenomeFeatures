@@ -1,12 +1,16 @@
-## -----------------------------------------------------------------------------
+################################################################################
 ##
 ## Definition and methods for MgDb class
 ## using RefClass as db changes state with query string
 ##
-## -----------------------------------------------------------------------------
+################################################################################
+
+
+## MgDb Class -----------------------------------------------------------------------------
 
 ## Not sure how to access method, currently need MgDb$methodname(mgdb_object)
-#loading the sqlite database from file
+## loading the sqlite database from file
+
 .load_taxa_db <- function(taxdb){
     db_con <- dplyr::src_sqlite(taxdb)
     dplyr::tbl(src = db_con, from = "taxa")
@@ -59,11 +63,14 @@ MgDb <- setRefClass("MgDb",
                              callSuper(...)
                              taxa <<- .load_taxa_db(taxa_file)
                              seq <<- seq
-                             tree <<- .load_tree(tree_file)
+                             if(tree_file != "not available"){
+                                 tree <<- .load_tree(tree_file)
+                             }
                              metadata <<- metadata
                          }))
 
-## MgDb Validity ---------------------------------------------------------------
+## Validity ---------------------------------------------------------------
+
 setValidity("MgDb", function(object) {
     msg <- NULL
     if(!("seq" %in% ls(object)) || !is(object$seq, "DNAStringSet"))
@@ -91,7 +98,7 @@ setValidity("MgDb", function(object) {
 ################################################################################
 ################################################################################
 
-## show ------------------------------------------------------------------------
+## Show ------------------------------------------------------------------------
 
 #' Display summary of MgDb-class object
 #' @param object MgDb-class object
@@ -114,7 +121,7 @@ setMethod("show", "MgDb",
         }
 )
 
-## accessors -------------------------------------------------------------------
+## Accessors -------------------------------------------------------------------
 
 #' MgDb tree slot accessor
 #'
@@ -164,13 +171,12 @@ mgdb_meta <- function(mgdb){
     mgdb$metadata
 }
 
-
-### ============================================================================
+################################################################################
 ##
 ##                              MgDb select method
 ##
-### ============================================================================
-
+################################################################################
+## Select ----------------------------------------------------------------------
 
 .select.seq <- function(seqObj, ids){
     seqObj[names(seqObj) %in% ids,]
@@ -179,25 +185,38 @@ mgdb_meta <- function(mgdb){
 
 .select.taxa<- function(taxaDb, metaDb, keys, keytype,
                         columns="all"){
+
+    ## setting values when keys and keytypes are not defined
+    if(is.null(keys)){
+        keys <- taxaDb %>% dplyr::select(Keys) %>%
+            dplyr::collect() %>% .$Keys
+        keytype <- "Keys"
+    }
+
     # selecting desired rows
 
-    if(keytype !=  "Keys"){
-        level_id <- rep(tolower(stringr::str_sub(string = keytype,
-                                             start = 1,end = 1)), length(keys))
-        if(metaDb$DB_TYPE_NAME =="GreenGenes"){
-            keys <- stringr::str_c(level_id,keys,sep = "__")
+
+    if(!is.null(keys)){
+        if(keytype !=  "Keys"){
+            level_id <- stringr::str_sub(string = keytype, start = 1,end = 1) %>%
+                tolower() %>% rep(length(keys))
+            if(metaDb$DB_TYPE_NAME =="GreenGenes"){
+                keys <- stringr::str_c(level_id,keys,sep = "__")
+            }
         }
+
+        if(length(keys) == 1){
+            filter_criteria <- lazyeval::interp(~which_column == keys,
+                                                which_column = as.name(keytype))
+        } else {
+            filter_criteria <- lazyeval::interp(~which_column %in% keys,
+                                                which_column = as.name(keytype))
+        }
+        select_tbl <- dplyr::filter_(taxaDb, filter_criteria)
+    }else{
+        select_tbl <- taxaDb
     }
 
-    if(length(keys) == 1){
-        filter_criteria <- lazyeval::interp(~which_column == keys,
-                                            which_column = as.name(keytype))
-    } else {
-        filter_criteria <- lazyeval::interp(~which_column %in% keys,
-                                            which_column = as.name(keytype))
-    }
-
-    select_tbl <- dplyr::filter_(taxaDb, filter_criteria)
 
     # selecting desired columns
     if(columns[1] != "all"){
@@ -214,35 +233,41 @@ mgdb_meta <- function(mgdb){
 
 ## either select by ids for taxa information
 .select <- function(mgdb, type, keys, keytype, columns){
-    ## TODO - need to modify to accept a vector instead of a character string
-    if(!(type %in% c("seq","taxa", "tree", "all"))){
-        stop("type must be either 'seq', 'taxa', 'tree', or both")
+    ## check correct types
+    select_types <- c("seq","taxa", "tree", "all")
+    if(FALSE %in% (type %in% select_types)){
+        bad_type <- type[!(type %in% select_types)]
+        stop(paste(bad_type, "not valid type value, type must be either 'seq', 'taxa', 'tree', 'all' or a character vector with types"))
     }
 
-    if(is.null(keys) + is.null(keytype) == 1){
+    if(is.null(keys) != is.null(keytype)){
         stop("must define both keys and keytypes, or neither")
     }
+
+    ## list with select results
+    select_obj <- list()
     taxa_df <- .select.taxa(mgdb$taxa, mgdb$metadata, keys, keytype, columns)
-    if(type == "taxa"){
-        return(taxa_df)
+
+
+    # vector with all objects to return
+    if("taxa" %in% type || type == "all"){
+        select_obj$taxa <- taxa_df
     }
 
-
-    if(type == "seq" || type == "all"){
-        seq_obj <- .select.seq(mgdb$seq, taxa_df$Keys)
-        if(type != "all"){
-            return(seq_obj)
-        }
+    if("seq" %in% type || type == "all"){
+        select_obj$seq <- .select.seq(mgdb$seq, taxa_df$Keys)
     }
 
-    if(type == "tree" || type == "all"){
-        tree_obj <- .select.tree(mgdb$tree, taxa_df$Keys)
-        if(type != "all"){
-            return(tree_obj)
-        }
+    if("tree" %in% type || type == "all"){
+        select_obj$tree <- .select.tree(mgdb$tree, taxa_df$Keys)
     }
 
-    return(list(taxa = taxa_df, seq = seq_obj, tree = tree_obj))
+    ## return single obj if only selecting one type
+    if(type != "all" && length(type)  == 1){
+        select_obj <- select_obj[[type]]
+    }
+
+    return(select_obj)
 }
 
 #' Querying MgDb objects
@@ -254,7 +279,7 @@ mgdb_meta <- function(mgdb){
 #' only the taxonomic and sequence data, or both.
 #'
 #' @param mgdb MgDb class object
-#' @param type either "taxa", "seq", "tree", or "all". "taxa", "seq", and "tree" only query
+#' @param type either "taxa", "seq", "tree", "all" or a character vector of types. "taxa", "seq", and "tree" only query
 #'   the reference taxonomy, sequences, and phylogenetic tree respectively.
 #'   "all" queries the reference taxonomy, sequence, and phylogenetic tree.
 #' @param keys specific taxonomic groups to select for
@@ -296,11 +321,12 @@ setMethod("select", "MgDb",
 )
 
 
-### ============================================================================
+################################################################################
 ##
 ##                              MgDb annotate method
 ##
-### ============================================================================
+################################################################################
+## Annotate --------------------------------------------------------------------
 
 ## Methods to generate metagenomeAnnotation object %%TODO%% modify features to
 ## include additional information about metagenomeAnnotation class, specifically
@@ -405,7 +431,7 @@ setMethod("annotate", "MgDb",
                              query_df, query_seq, mapping)}
 )
 
-#### Anno MRexp featureData ----------------------------------------------------------
+## Annotate MRexp --------------------------------------------------------------
 .mgDb_annotateMRexp_fData <- function(mgdb, MRobj){
     ## subset reference database with OTU ids
     db_keys <- featureNames(MRobj)
