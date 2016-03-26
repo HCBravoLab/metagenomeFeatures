@@ -19,9 +19,9 @@ slot for metadata including information on the database source.
 \describe{
 \item{\code{metadata}}{list}
 
-\item{\code{referenceDbSeq}}{DNAStringSet}
+\item{\code{refDbSeq}}{DNAStringSet}
 
-\item{\code{referenceDbTree}}{phylo}
+\item{\code{refDbTree}}{phylo}
 }}
 \examples{
 data(msd16s_mgFeatures)
