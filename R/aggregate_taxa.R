@@ -52,6 +52,7 @@ aggregateByTaxonomy<-function(obj,lvl,norm=FALSE,log=FALSE,
 
     if(!(is.integer(sl))|| sl < 1){
         ## does this check even make sense?
+        ## why does sl throw error if out parameter defined?
         warning("The parameter `sl` must either be a positive integer, see `MRcounts for more information")
     }
 
