@@ -24,7 +24,8 @@ Imports:
     methods,
     lattice,
     metagenomeSeq,
-    ape
+    ape,
+    purrr
 Collate:
     'metagenomeAnnotation-class.R'
     'mgDb-class.R'

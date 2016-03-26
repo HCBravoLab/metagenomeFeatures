@@ -16,7 +16,8 @@ character vector with taxonomic levels
 Accessior function for taxanomic levels in MRexperiment featureData
 }
 \examples{
-metagenomeSeq::data("mouseData")
-taxa_levels(mouseData)
+# not run
+# data("mouseData", package = "metagenomeSeq")
+# taxa_levels(mouseData)
 }
 

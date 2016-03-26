@@ -22,13 +22,11 @@
 #' @rdname aggregateByTaxonomy
 #' @export
 #' @examples
-#'
-#' data(mouseData)
-#' aggregateByTaxonomy(mouseData[1:100,],lvl="class",norm=TRUE,aggfun=colSums)
 #' # not run
+#' # data("mouseData", package = "metagenomeSeq")
+#' # aggregateByTaxonomy(mouseData[1:100,],lvl="class",norm=TRUE,aggfun=colSums)
 #' # aggregateByTaxonomy(mouseData,lvl="class",norm=TRUE,aggfun=colMedians)
 #' # aggTax(mouseData,lvl='phylum',norm=FALSE,aggfun=colSums)
-#'
 aggregateByTaxonomy<-function(obj,lvl,norm=FALSE,log=FALSE,
                               aggfun = colSums,sl=1000,out="MRexperiment"){
     ##### check parameters
@@ -171,8 +169,9 @@ aggTax<-function(obj,lvl,norm=FALSE,log=FALSE,aggfun = colSums,sl=1000,out='MRex
 #' @export
 #'
 #' @examples
-#' metagenomeSeq::data("mouseData")
-#' taxa_levels(mouseData)
+#' # not run
+#' # data("mouseData", package = "metagenomeSeq")
+#' # taxa_levels(mouseData)
 taxa_levels <- function(obj){
     if(class(obj)!="MRexperiment") stop("Input must either be of class 'MRexperiment'")
     obj %>% fData() %>% colnames()

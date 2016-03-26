@@ -40,12 +40,10 @@ Using the featureData information in the MRexperiment-class object, calling
   wise matrix calculations, e.g. colMeans, colMedians.
 }
 \examples{
-
-data(mouseData)
-aggregateByTaxonomy(mouseData[1:100,],lvl="class",norm=TRUE,aggfun=colSums)
 # not run
+# data("mouseData", package = "metagenomeSeq")
+# aggregateByTaxonomy(mouseData[1:100,],lvl="class",norm=TRUE,aggfun=colSums)
 # aggregateByTaxonomy(mouseData,lvl="class",norm=TRUE,aggfun=colMedians)
 # aggTax(mouseData,lvl='phylum',norm=FALSE,aggfun=colSums)
-
 }
 
