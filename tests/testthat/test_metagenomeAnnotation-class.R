@@ -1,14 +1,14 @@
-library(metagenomeFeatures)
-testMgAnno <- readRDS("../testMgAnno.rds")
-
-context("metagenomeAnnotation-class")
-split_kingdom <- split_by(testMgAnno, "Kingdom")
-test_that("metagenomeAnnotation method split_by",{
-    expect_is(split_kingdom, "list")
-    expect_is(split_kingdom$k__Bacteria, "metagenomeAnnotation")
-    expect_is(split_kingdom$k__Bacteria@metadata, "list")
-    expect_is(split_kingdom$k__Bacteria@experimentSeqData, "DNAStringSet")
-})
+# library(metagenomeFeatures)
+# testMgAnno <- readRDS("../testMgAnno.rds")
+#
+# context("metagenomeAnnotation-class")
+# split_kingdom <- split_by(testMgAnno, "Kingdom")
+# test_that("metagenomeAnnotation method split_by",{
+#     expect_is(split_kingdom, "list")
+#     expect_is(split_kingdom$k__Bacteria, "metagenomeAnnotation")
+#     expect_is(split_kingdom$k__Bacteria@metadata, "list")
+#     expect_is(split_kingdom$k__Bacteria@experimentSeqData, "DNAStringSet")
+# })
 
 # test_that("metagenomeAnnotation method split_by taxa levels", {
 #     expect_equal_to_reference(
