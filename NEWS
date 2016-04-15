@@ -1,2 +1,6 @@
+version 1.1.2: (last updated 2016-03-26)
+    + Added mgFeatures class - this class replaces metagenomeAnnotation in the 16S workflow, and contains database information for a user provided list of database sequence ids. A new metagenomeAnnotation-class will be added to the package when a suitable R native 16S taxonomic classificaiton method is available.
+    + new `aggregate_taxa` function for aggregating MRexperiment objects to user defined taxonomic level, aggretation of count data is performed using sums by dafault, users can pass any column wise matrix operation.
+
 version 0.0.0.9 : (last updated 2015-09-14)
 	+ Pre-Release Bioconductor

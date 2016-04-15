@@ -1,6 +1,6 @@
 Package: metagenomeFeatures
 Title: Exploration of marker-gene sequence taxonomic annotations
-Version: 1.1.0
+Version: 1.1.2
 Author: Nathan D. Olson, Joseph Nathaniel Paulson, Hector Corrada Bravo
 Maintainer: Nathan D. Olson <nolson@umiacs.umd.edu>
 Description: metagenomeFeatures was developed for use in exploring
@@ -23,12 +23,16 @@ Imports:
     magrittr (>= 1.5),
     methods,
     lattice,
-    metagenomeSeq
+    metagenomeSeq,
+    ape,
+    purrr
 Collate:
     'metagenomeAnnotation-class.R'
     'mgDb-class.R'
+    'mgFeatures-class.R'
     'demoMgDb.R'
     'mgDb-taxa_accessors.R'
+    'aggregate_taxa.R'
     'mgQuery.R'
     'msd16s_metagenomeAnnotation.R'
     'msd16s_query_df.R'
