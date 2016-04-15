@@ -19,10 +19,14 @@ get_demoMgDb <- function(){
 
     demo_taxa_file <- system.file("extdata", "demoTaxa.sqlite",
                                   package="metagenomeFeatures")
+
+    demo_tree_file <- system.file("extdata", "msd16S_MgDb_tree.rds",
+                                  package="metagenomeFeatures")
     ## not sure how to assign to environment instead of returning value, rda not appropriate as the connection to sqlite would expire
     ## How to find file path? maybe just create
     demoMgDb <- new("MgDb",
         seq = db_seq,
         taxa_file = demo_taxa_file,
+        tree_file = demo_tree_file,
         metadata = metadata)
 }

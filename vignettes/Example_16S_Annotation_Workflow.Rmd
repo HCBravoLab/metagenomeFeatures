@@ -22,73 +22,67 @@ For MRexperiment objects, the assayData and phenoData need to have the sample sa
 
 __Required Packages__
 ```{r message=FALSE}
+library(Biostrings)
 library(metagenomeFeatures)
 library(metagenomeSeq)
+library(magrittr)
 ```
+The `magrittr` pipe operator `%>%` is used throughout this vignette, see the magrittr package vignette for more information about this handy operator (https://cran.r-project.org/web/packages/magrittr/index.html).  
 
-## Loading assayData
-A file with count data from the msd16s study is included in the metagenomeFeatures package.
+## Creating Inital MRexperiment Object
+The assayData and phenoData we will use is in a file included in the metagenomeFeatures  package with count data derived from the msd16s study.  
+
 ```{r}
 dataDirectory <- system.file("extdata", package = "metagenomeFeatures")
-assay_data <- load_meta(file.path(dataDirectory, "msd16s_counts.csv"),sep = ",")
+
+assay_data <- file.path(dataDirectory, "msd16s_counts.csv") %>% load_meta(sep = ",")
+
+pheno_data <- file.path(dataDirectory, "msd16s_sample_data.csv") %>% 
+    read.csv(row.names = 1, stringsAsFactors = F) %>% AnnotatedDataFrame()
 ```
 
-## Loading phenoData
+Creating an initial MRexperiment with count and phenoData.  
+
 ```{r}
-pheno_data <- AnnotatedDataFrame(read.csv(file.path(dataDirectory, 
-                                                    "msd16s_sample_data.csv"), 
-                                          row.names = 1, stringsAsFactors = F))
+demoMRexp = newMRexperiment(assay_data$counts, phenoData=pheno_data)
+demoMRexp
 ```
 
-## featureData
-### Generating a metagenomeAnnotation-class object
-The `msd16s_query_df` is a dataframe with greengenes taxonomic ids for the msd16s data.
-```{r}
-data("msd16s_query_df")
-head(msd16s_query_df)
-```
+Currently the `featureData` slot is empty, we will now use the `annotateMRexp_fData` function in the metagenomeFeatures package to load the `featureData`.   
 
-A subset of the greengenes database, `msd16s_MgDb` is used to generate a MgDb-object for annotating the msd16s data. This database is only used here for demonstration purposes, the `gg13.5MgDb` database in the greengenes13.5MgDb package can also be used to generate the metagenomeAnnotation object.
+## Loading featureData with metagenomeFeatures
+You first need a `MgDb` object for the database used to classify the OTUs. A subset of the greengenes database, `msd16s_MgDb` is used to generate a MgDb-object for annotating the msd16s data. This database is only used here for demonstration purposes, the `gg13.5MgDb` database in the greengenes13.5MgDb package can also be used to generate the metagenomeAnnotation object.
+
 ```{r echo=FALSE, message=FALSE}
-library(Biostrings)
 metadata <- list(ACCESSION_DATE = "3/31/2015",
                  URL = "https://greengenes.microbio.me",
                  DB_TYPE_NAME = "GreenGenes-MgDb-msd16s",
                  DB_TYPE_VALUE = "MgDb",
                  DB_SCHEMA_VERSION = "1.0")
+
+db_seq <- file.path(dataDirectory,"msd16s_MgDb_seq.fasta.gz") %>% 
+    readDNAStringSet()
+
 msd16s_MgDb <- new("MgDb",
-                seq = readDNAStringSet(file.path(dataDirectory,"msd16s_MgDb_seq.fasta.gz")),
+                seq = db_seq,
                 taxa_file = file.path(dataDirectory,"msd16s_MgDb_taxa.sqlite"),
+                tree_file = file.path(dataDirectory,"msd16s_MgDb_tree.rds"),
                 metadata = metadata)
 ```
 
-```{r}
-msd16s_feature_data <- annotate(msd16s_MgDb, query_df = msd16s_query_df)
 
-## Using the greengenes13.5MgDb annotation package
-# library(greengenes13.5MgDb)
-# msd16s_feature_data <- annotate(gg13.5MgDb, query_df = msd16s_query_df)
+### annotateMRexp_fData
+The `annotateMRexp_fData` function takes an `MgDb` and `MRexperiment` objects as input and defines the `featureData` slot using the OTU ids from the `assayData` slot. The slot is defined with a `mgFeatures` object which extends the `AnnotatedDataFrame` object with additional slots with the database reference sequences (`refDbSeq`), phylogenetic tree (`refDbtree`), and metadata about the reference database used.  
+
+```{r}
+demoMRexp <- annotateMRexp_fData(mgdb = msd16s_MgDb, MRobj = demoMRexp)
+demoMRexp
 ```
 
-### Adding featureNames and ordering features
-Prepare the metagneomeAnnotation object for use in a MRexperiment by defining featureName and ordering the OTUs to that they agree with the assayData. Note that the OTU column in `msd16s_feature_data` are factors and are first converted to numeric before ordering.
-```{r}
-OTU_numbers <- as.numeric(as.character(msd16s_feature_data$OTU))
-featureNames(msd16s_feature_data) <- OTU_numbers
-ord <-  sort(OTU_numbers)
-msd16s_feature_data <- msd16s_feature_data[order(OTU_numbers),]
-```
+The `featureData` slot in the `demoMRexp` object now contains the taxonomic data for the OTUs as well as the database reference sequences as well as the phylogenetic tree. 
 
-
-## Creating MRexperiment object
-```{r}
-obj = newMRexperiment(assay_data$counts,
-                      phenoData=pheno_data,
-                      featureData = msd16s_feature_data)
-obj
-```
-
-
+## TODO
+demonstrate using mgFeatures accessors
 
 
 ```{r}
