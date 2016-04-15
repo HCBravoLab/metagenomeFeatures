@@ -149,7 +149,7 @@ aggregate_taxa <-function(obj, lvl, aggfun = colSums, out="MRexperiment", ...){
 
 
 ## helper functions
-#' Accessior function for taxanomic levels in MRexperiment featureData
+#' Accessor function for taxonomic levels in MRexperiment featureData
 #'
 #' @param obj an `MRexperiment-class` object
 #'
