@@ -2,7 +2,7 @@
 title: "Example 16S Annotation Workflow"
 author: "Nathan D. Olson"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: knitr::html_vignette
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
@@ -81,8 +81,28 @@ demoMRexp
 
 The `featureData` slot in the `demoMRexp` object now contains the taxonomic data for the OTUs as well as the database reference sequences as well as the phylogenetic tree. 
 
-## TODO
-demonstrate using mgFeatures accessors
+## Accessing mgFeature Slots
+Each mgFeature slot can be accessed using the approporiate accessor function. 
+
+__Phylogenetic Tree__
+```{r}
+mgF_tree(demoMRexp@featureData)
+```
+
+__Seq Data__
+```{r}
+mgF_seq(demoMRexp@featureData) %>% head()
+```
+
+__Taxonomy__
+```{r}
+mgF_taxa(demoMRexp@featureData) %>% head()
+```
+
+__Metadata__
+```{r}
+mgF_meta(demoMRexp@featureData) %>% head()
+```
 
 
 ```{r}
