@@ -2,11 +2,11 @@
 title: "Example 16S Annotation Workflow"
 author: "Nathan D. Olson"
 date: "`r Sys.Date()`"
-output: knitr::html_vignette
+output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Example 16S Annotation Workflow}
   %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ## Overview
