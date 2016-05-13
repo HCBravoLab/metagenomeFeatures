@@ -2,7 +2,7 @@
 title: "Example 16S Annotation Workflow"
 author: "Nathan D. Olson"
 date: "`r Sys.Date()`"
-output: knitr::html_vignette
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
@@ -32,18 +32,11 @@ The `magrittr` pipe operator `%>%` is used throughout this vignette, see the mag
 ## Creating Inital MRexperiment Object
 The assayData and phenoData we will use is in a file included in the metagenomeFeatures  package with count data derived from the msd16s study.  
 
-```{r}
-dataDirectory <- system.file("extdata", package = "metagenomeFeatures")
-
-assay_data <- file.path(dataDirectory, "msd16s_counts.csv") %>% load_meta(sep = ",")
-
-pheno_data <- file.path(dataDirectory, "msd16s_sample_data.csv") %>% 
-    read.csv(row.names = 1, stringsAsFactors = F) %>% AnnotatedDataFrame()
-```
-
 Creating an initial MRexperiment with count and phenoData.  
 
 ```{r}
+assay_data <- metagenomeFeatures:::vignette_assay_data()
+pheno_data <- metagenomeFeatures:::vignette_pheno_data()
 demoMRexp = newMRexperiment(assay_data$counts, phenoData=pheno_data)
 demoMRexp
 ```
@@ -54,20 +47,7 @@ Currently the `featureData` slot is empty, we will now use the `annotateMRexp_fD
 You first need a `MgDb` object for the database used to classify the OTUs. A subset of the greengenes database, `msd16s_MgDb` is used to generate a MgDb-object for annotating the msd16s data. This database is only used here for demonstration purposes, the `gg13.5MgDb` database in the greengenes13.5MgDb package can also be used to generate the metagenomeAnnotation object.
 
 ```{r echo=FALSE, message=FALSE}
-metadata <- list(ACCESSION_DATE = "3/31/2015",
-                 URL = "https://greengenes.microbio.me",
-                 DB_TYPE_NAME = "GreenGenes-MgDb-msd16s",
-                 DB_TYPE_VALUE = "MgDb",
-                 DB_SCHEMA_VERSION = "1.0")
-
-db_seq <- file.path(dataDirectory,"msd16s_MgDb_seq.fasta.gz") %>% 
-    readDNAStringSet()
-
-msd16s_MgDb <- new("MgDb",
-                seq = db_seq,
-                taxa_file = file.path(dataDirectory,"msd16s_MgDb_taxa.sqlite"),
-                tree_file = file.path(dataDirectory,"msd16s_MgDb_tree.rds"),
-                metadata = metadata)
+msd16s_MgDb <- metagenomeFeatures:::vignette_msd16s_MgDb()
 ```
 
 
