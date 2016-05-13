@@ -29,4 +29,4 @@ colnames(tax_names) <- c("Kingdom","Phylum","Class","Order",
 # tax_names <- as.data.frame(tax_names, stringsAsFactors = FALSE)
 
 taxa <- data.frame(Keys = as.character(1:10), tax_names,
-                   stringsAsFactors = FALSE) %>% as_data_frame()
+                   stringsAsFactors = FALSE) %>% dplyr::as_data_frame()
