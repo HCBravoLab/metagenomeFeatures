@@ -38,6 +38,9 @@ Collate:
     'msd16s_metagenomeAnnotation.R'
     'msd16s_query_df.R'
     'vignette_data.R'
+    'mgDb_method_annotate.R'
+    'mgDb_method_annotateMRexp.R'
+    'mgDb_method_select.R'
 Suggests:
     knitr (>= 1.11),
     msd16s (>= 0.102.0),
