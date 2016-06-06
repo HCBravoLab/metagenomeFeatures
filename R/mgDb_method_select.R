@@ -119,30 +119,30 @@
 #' @examples
 #' demoMgDb <- get_demoMgDb()
 #' # select taxa only
-#' select(demoMgDb, type = "taxa",
+#' mgDB_method_select(demoMgDb, type = "taxa",
 #'      keys = c("Vibrio", "Salmonella"),
 #'      keytype = "Genus")
 #'
 #' # select seq only
-#'  select(demoMgDb, type = "seq",
+#'  mgDB_method_select(demoMgDb, type = "seq",
 #'       keys = c("Vibrio", "Salmonella"),
 #'       keytype = "Genus")
 #'
 #' # select all taxa, seq, and tree
-#' select(demoMgDb, type = "all",
+#' mgDB_method_select(demoMgDb, type = "all",
 #'        keys = c("Vibrio", "Salmonella"),
 #'        keytype = "Genus")
 #' @rdname select-MgDb-method
-setGeneric("select", signature="mgdb",
-           function(mgdb, type, ...) { standardGeneric("select")
+setGeneric("mgDB_method_select", signature="mgdb",
+           function(mgdb, type, ...) { standardGeneric("mgDB_method_select")
            })
 
 
 #' @export
 #' @aliases select,MgDb-method
 #' @rdname select-MgDb-method
-setMethod("select", "MgDb",
+setMethod("mgDB_method_select", "MgDb",
           function(mgdb, type, keys = NULL, keytype = NULL, columns = "all"){
-              .select(mgdb, type, keys, keytype, columns)
+              .mgDB_method_select(mgdb, type, keys, keytype, columns)
           }
 )
