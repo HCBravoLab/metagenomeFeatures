@@ -1,16 +1,16 @@
 ################################################################################
 ##
-##                              MgDb select method
+##                              mgDb_method_select method
 ##
 ################################################################################
 ## Select ----------------------------------------------------------------------
 
-.select.seq <- function(seqObj, ids){
+.mgDb_method_select.seq <- function(seqObj, ids){
     seqObj[names(seqObj) %in% ids,]
 }
 
 
-.select.taxa<- function(taxaDb, metaDb, keys, keytype,
+.mgDb_method_select.taxa<- function(taxaDb, metaDb, keys, keytype,
                         columns="all"){
 
     ## setting values when keys and keytypes are not defined
@@ -53,13 +53,13 @@
     return(select_tbl %>% dplyr::collect())
 }
 
-.select.tree <- function(tree, ids){
+.mgDb_method_select.tree <- function(tree, ids){
     drop_tips <- tree$tip.label[!(tree$tip.label %in% ids)]
     ape::drop.tip(tree,drop_tips)
 }
 
 ## either select by ids for taxa information
-.select <- function(mgdb, type, keys, keytype, columns){
+.mgDb_method_select <- function(mgdb, type, keys, keytype, columns){
     ## check correct types
     select_types <- c("seq","taxa", "tree", "all")
     if(FALSE %in% (type %in% select_types)){
