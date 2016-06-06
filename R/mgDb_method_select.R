@@ -1,16 +1,16 @@
 ################################################################################
 ##
-##                              mgDb_method_select method
+##                              mgDb_select method
 ##
 ################################################################################
 ## Select ----------------------------------------------------------------------
 
-.mgDb_method_select.seq <- function(seqObj, ids){
+.select.seq <- function(seqObj, ids){
     seqObj[names(seqObj) %in% ids,]
 }
 
 
-.mgDb_method_select.taxa<- function(taxaDb, metaDb, keys, keytype,
+.select.taxa<- function(taxaDb, metaDb, keys, keytype,
                         columns="all"){
 
     ## setting values when keys and keytypes are not defined
@@ -53,13 +53,13 @@
     return(select_tbl %>% dplyr::collect())
 }
 
-.mgDb_method_select.tree <- function(tree, ids){
+.select.tree <- function(tree, ids){
     drop_tips <- tree$tip.label[!(tree$tip.label %in% ids)]
     ape::drop.tip(tree,drop_tips)
 }
 
 ## either select by ids for taxa information
-.mgDb_method_select <- function(mgdb, type, keys, keytype, columns){
+.select <- function(mgdb, type, keys, keytype, columns){
     ## check correct types
     select_types <- c("seq","taxa", "tree", "all")
     if(FALSE %in% (type %in% select_types)){
@@ -119,30 +119,30 @@
 #' @examples
 #' demoMgDb <- get_demoMgDb()
 #' # select taxa only
-#' mgDB_method_select(demoMgDb, type = "taxa",
+#' mgDb_select(demoMgDb, type = "taxa",
 #'      keys = c("Vibrio", "Salmonella"),
 #'      keytype = "Genus")
 #'
 #' # select seq only
-#'  mgDB_method_select(demoMgDb, type = "seq",
+#'  mgDb_select(demoMgDb, type = "seq",
 #'       keys = c("Vibrio", "Salmonella"),
 #'       keytype = "Genus")
 #'
 #' # select all taxa, seq, and tree
-#' mgDB_method_select(demoMgDb, type = "all",
+#' mgDb_select(demoMgDb, type = "all",
 #'        keys = c("Vibrio", "Salmonella"),
 #'        keytype = "Genus")
 #' @rdname select-MgDb-method
-setGeneric("mgDB_method_select", signature="mgdb",
-           function(mgdb, type, ...) { standardGeneric("mgDB_method_select")
+setGeneric("mgDb_select", signature="mgdb",
+           function(mgdb, type, ...) { standardGeneric("mgDb_select")
            })
 
 
 #' @export
 #' @aliases select,MgDb-method
 #' @rdname select-MgDb-method
-setMethod("mgDB_method_select", "MgDb",
+setMethod("mgDb_select", "MgDb",
           function(mgdb, type, keys = NULL, keytype = NULL, columns = "all"){
-              .mgDB_method_select(mgdb, type, keys, keytype, columns)
+              .select(mgdb, type, keys, keytype, columns)
           }
 )
