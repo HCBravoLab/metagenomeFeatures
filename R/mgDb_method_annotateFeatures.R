@@ -24,8 +24,6 @@
 		
 		# alt if: "Keys" %in% colnames(query_df)
 		if (is.element("Keys", colnames(query_df))) { 
-			
-			
 
 			query_df$Keys <- as.character(query_df$Keys) # process Keys column as character
 			select_keys <- query_df$Keys
