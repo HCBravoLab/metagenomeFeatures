@@ -30,3 +30,18 @@ colnames(tax_names) <- c("Kingdom","Phylum","Class","Order",
 
 taxa <- data.frame(Keys = as.character(1:10), tax_names,
                    stringsAsFactors = FALSE) %>% dplyr::as_data_frame()
+
+
+data(msd16s_query_df)
+
+OTU <- c(4,4,4,3,2)	
+
+incomplete_query_df <- data.frame(OTU)
+
+Keys_not <- c(1,1,1,1,1)
+
+wrong_query_df <- data.frame(Keys_not, OTU)
+
+Keys <- c(1,2,3,4,5)
+
+query_df <- data.frame(Keys, OTU)

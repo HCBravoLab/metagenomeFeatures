@@ -13,5 +13,5 @@
 #'   \url{http://bioconductor.org/packages/release/data/experiment/html/msd16s.html}
 #'
 #' @examples
-#' data(msd15s_query_df)
+#' data(msd16s_query_df)
 "msd16s_query_df"

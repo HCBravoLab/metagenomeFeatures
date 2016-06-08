@@ -10,38 +10,37 @@
 
 
 
-.mgDb_annotateFeatures <- function(mgdb, db_keys = NULL, query_df = NULL) {
+.mgDb_annotateFeatures <- function(mgdb, query_key) {
 
 	#SELECT_KEYS
 
-	# db_keys VS query_df use
+	# check query_key type: db_keys vs query_df
 	# process db_keys OR query_df 
-	# assign SELECT_KEYS
 
-	if (!is.null(query_df)) { # query_df takes precedence
-		
+	if (is.data.frame(query_key)) {
+	
 		message("Using query_df") # alert usage of query_df over db_keys
 		
-		# alt if: "Keys" %in% colnames(query_df)
-		if (is.element("Keys", colnames(query_df))) { 
+		# alt if: "Keys" %in% colnames(query_key)
+		if (is.element("Keys", colnames(query_key))) { 
 
-			query_df$Keys <- as.character(query_df$Keys) # process Keys column as character
-			select_keys <- query_df$Keys
+			query_key$Keys <- as.character(query_key$Keys) # process Keys column as character
+			select_keys <- query_key$Keys
 
 		} else {
 			
-			stop("Need 'Keys' column in 'query_df' with database ids")
+			stop("Need 'Keys' column in 'query_key' with database ids")
 
 		}
 
-	} else if (!is.null(db_keys)) { # db_keys used
+	} else if (is.vector(query_key)) { # db_keys used
 
 		message("Using db_keys") # alert usage of db_keys over query_df
 		select_keys <- as.character(db_keys)
 
 	} else { # query_df and db_keys both null
 		
-		stop("Need either 'db_keys' or 'query_df'")
+		stop("Need either 'db_keys' or 'query_df' type for input")
 
 	}
 
@@ -51,13 +50,12 @@
 	filtered_db <- mgDb_select(mgdb, type = "all",
 								keys = select_keys,
 								keytype = "Keys")
-	
 
 	# ANNOTATED_DB
 
-	if (!is.null(query_df)) { # using query_df
+	if (!is.null(query_key)) { # using query_df
 
-		annotated_db <- dplyr::right_join(query_df, filtered_db$taxa)
+		annotated_db <- dplyr::right_join(query_key, filtered_db$taxa)
 	
 	} else if (!is.null(db_keys)) { # using db_keys
 
@@ -67,7 +65,6 @@
 
 		stop("issue: no query_df or db_keys") 
 	}
-
 
 	# ANNO_METADATA
 
@@ -81,6 +78,8 @@
 		refDbTree=filtered_db$tree
 		)
 }
+
+
 
 
 
@@ -109,7 +108,6 @@
  #' @aliases annotate,MgDb-method
  #' @rdname annotateFeatures-MgDb-method
  setMethod("annotateFeatures", "MgDb",
-           function(mgdb, db_keys = NULL, query_df = NULL){
-               .mgDb_annotateFeatures(mgdb, db_keys,
-                              query_df)}
+           function(mgdb, query_key){
+               .mgDb_annotateFeatures(mgdb, query_key)}
  )

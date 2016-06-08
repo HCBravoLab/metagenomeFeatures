@@ -9,7 +9,7 @@
 \usage{
 annotateFeatures(mgdb, ...)
 
-\S4method{annotateFeatures}{MgDb}(mgdb, db_keys = NULL, query_df = NULL)
+\S4method{annotateFeatures}{MgDb}(mgdb, query_key)
 }
 \arguments{
 \item{mgdb}{MgDb class object}
