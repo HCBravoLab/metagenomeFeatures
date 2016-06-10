@@ -3,6 +3,7 @@
 export("%>%")
 export(aggregate_taxa)
 export(get_demoMgDb)
+export(get_mockMgDb)
 export(mgF_meta)
 export(mgF_seq)
 export(mgF_taxa)
