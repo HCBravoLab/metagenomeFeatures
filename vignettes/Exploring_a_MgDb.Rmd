@@ -40,14 +40,14 @@ Used to retrieve db entries for a specified taxanomic group or id list, can retu
 
 ### Selecting taxonomic information
 ```{r}
-select(demoMgDb, type = "taxa",
+mgDb_select(demoMgDb, type = "taxa",
                 keys = c("Vibrio", "Salmonella"),
                 keytype = "Genus")
 ```
 
 ### Selecting sequence information
 ```{r}
-select(demoMgDb, type = "seq",
+mgDb_select(demoMgDb, type = "seq",
                 keys = c("Vibrio", "Salmonella"),
                 keytype = "Genus")
 ```
@@ -56,7 +56,7 @@ select(demoMgDb, type = "seq",
 
 ### Selecting all
 ```{r}
-select(demoMgDb, type = "all",
+mgDb_select(demoMgDb, type = "all",
                 keys = c("Vibrio", "Salmonella"),
                 keytype = "Genus")
 ```
