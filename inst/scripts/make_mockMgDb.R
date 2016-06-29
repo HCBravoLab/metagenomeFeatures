@@ -7,7 +7,10 @@ library(metagenomeFeatures)
 library(greengenes13.5MgDb)
 library(Biostrings)
 library(ape)
-data(msd16s_query_df)
+data(mock_query_df)
+
+
+# data(mock_query_df)
 
 ggtaxa <- gg13.5MgDb$taxa
 
@@ -20,11 +23,12 @@ genus_keys <- genus_df$Keys
 save(genus_keys, file = "../extdata/genus_keys.RData")
 
 # combine in query_df keys to genus_keys to
-mock_keys <- msd16s_query_df$Keys
+mock_keys <- mock_query_df$Keys
 
 # mock_keys (integer), genus_keys (character)
 # combining turns everything into character
 combined_keys <- c(genus_keys, mock_keys)
+
 
 # keys = combined keys
 gg_data <- mgDb_select(gg13.5MgDb, type = c("seq", "taxa"), keys = combined_keys, keytype = "Keys")

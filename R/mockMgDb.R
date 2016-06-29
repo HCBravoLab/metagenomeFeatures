@@ -9,30 +9,29 @@ get_mockMgDb <- function(){
 
 
 
-metadata <- list(ACCESSION_DATE = "3/31/2015",
-                 URL = "https://greengenes.microbio.me",
-                 DB_TYPE_NAME = "GreenGenes-MgDb-Mock",
-                 DB_TYPE_VALUE = "MgDb",
-                 DB_SCHEMA_VERSION = "1.0", 
-                 NOTE = "URL does not work, working link here: http://greengenes.secondgenome.com/downloads/database/13_5")
+    metadata <- list(ACCESSION_DATE = "3/31/2015",
+                     URL = "https://greengenes.microbio.me",
+                     DB_TYPE_NAME = "GreenGenes-MgDb-Mock",
+                     DB_TYPE_VALUE = "MgDb",
+                     DB_SCHEMA_VERSION = "1.0",
+                     NOTE = "URL does not work, working link here: http://greengenes.secondgenome.com/downloads/database/13_5")
 
-# grab filenames 
+    # get db seq data and filenames
+    mock_seq <- system.file("extdata", "mockSeq.rds",
+                            package = "metagenomeFeatures") %>% readRDS()
 
-mock_seq <- system.file("extdata", "mockSeq.rds", package = "metagenomeFeatures")
+    mock_taxa_file <- system.file("extdata", "mockTaxa.sqlite",
+                                  package = "metagenomeFeatures")
+
+    mock_tree_file <- system.file("extdata", "msd16S_MgDb_tree.rds",
+                                  package="metagenomeFeatures")
 
 
-db_seq <- readRDS(mock_seq)
+    #  tree data slot is empty - not reference tree for gg 13.5
+    # tree_data <- mgDb_select(mgdb, type = "tree", keys = genus_keys, keytype = "Keys")
 
-mock_taxa_file <- system.file("extdata", "mockTaxa.sqlite", package = "metagenomeFeatures")
-
-mock_tree_file <- system.file("extdata", "msd16S_MgDb_tree.rds", package="metagenomeFeatures")
-
-
-# leave tree_data empty for now--greengene13.5 database does not have a reference tree but the 13.8 versions do
-# tree_data <- mgDb_select(mgdb, type = "tree", keys = genus_keys, keytype = "Keys")
-
-mock_MgDb <- new("MgDb",
-        seq = db_seq,
+    new("MgDb",
+        seq = mock_seq,
         taxa_file = mock_taxa_file,
         tree_file = mock_tree_file,
         metadata = metadata)
