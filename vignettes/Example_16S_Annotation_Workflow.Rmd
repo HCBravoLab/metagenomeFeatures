@@ -25,9 +25,8 @@ __Required Packages__
 library(Biostrings)
 library(metagenomeFeatures)
 library(metagenomeSeq)
-library(magrittr)
 ```
-The `magrittr` pipe operator `%>%` is used throughout this vignette, see the magrittr package vignette for more information about this handy operator (https://cran.r-project.org/web/packages/magrittr/index.html).  
+The `magrittr` pipe operator `%>%` is used throughout this vignette (exported by metagenomeFeatures), see the magrittr package vignette for more information about this handy operator (https://cran.r-project.org/web/packages/magrittr/index.html).  
 
 ## Creating Inital MRexperiment Object
 The assayData and phenoData we will use is in a file included in the metagenomeFeatures  package with count data derived from the msd16s study.  
