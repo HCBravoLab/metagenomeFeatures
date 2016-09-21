@@ -1,18 +1,33 @@
 ## Annotate MRexp --------------------------------------------------------------
 .mgDb_annotateMRexp_fData <- function(mgdb, MRobj){
+    ## check for tree slot
+    if(is.null(mgdb$tree)){
+        select_type = c("seq","taxa")
+    }else{
+        select_type = "all"
+    }
+
+
     ## subset reference database with OTU ids
     db_keys <- featureNames(MRobj)
-    db_subset <- .select(mgdb, type = "all", keys = db_keys,
+    db_subset <- .select(mgdb, type = select_type, keys = db_keys,
                          keytype = "Keys", columns = "all")
 
     ## featureData
     anno_tax <- db_subset$taxa %>% as.data.frame()
-
-    anno <- new("mgFeatures",
-                data = anno_tax,
-                metadata = mgdb$metadata,
-                refDbSeq=db_subset$seq,
-                refDbTree = db_subset$tree)
+    if(select_type != "all"){
+        anno <- new("mgFeatures",
+                    data = anno_tax,
+                    metadata = mgdb$metadata,
+                    refDbSeq=db_subset$seq,
+                    refDbTree=NULL)
+    }else{ # for when no ref tree is provided
+        anno <- new("mgFeatures",
+                    data = anno_tax,
+                    metadata = mgdb$metadata,
+                    refDbSeq=db_subset$seq,
+                    refDbTree = db_subset$tree)
+    }
     rownames(anno@data) <- anno@data$Keys
 
     ## set featureData

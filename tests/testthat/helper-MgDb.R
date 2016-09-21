@@ -34,7 +34,7 @@ taxa <- data.frame(Keys = as.character(1:10), tax_names,
 
 data(msd16s_query_df)
 
-OTU <- c(4,4,4,3,2)	
+OTU <- c(4,4,4,3,2)
 
 incomplete_query_df <- data.frame(OTU)
 
