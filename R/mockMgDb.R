@@ -17,11 +17,11 @@ get_mockMgDb <- function(){
                      NOTE = "URL does not work, working link here: http://greengenes.secondgenome.com/downloads/database/13_5")
 
     # get db seq data and filenames
-    mock_seq <- system.file("extdata", "mockSeq.fasta.gz",
+    mock_seq <- system.file("extdata", "mock_MgDb_seq.fasta.gz",
                             package = "metagenomeFeatures") %>%
         Biostrings::readDNAStringSet()
 
-    mock_taxa_file <- system.file("extdata", "mockTaxa.sqlite",
+    mock_taxa_file <- system.file("extdata", "mock_MgDb_taxa.sqlite",
                                   package = "metagenomeFeatures")
 
     # mock_tree_file <- system.file("extdata", "msd16S_MgDb_tree.rds",
