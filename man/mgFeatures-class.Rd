@@ -21,7 +21,7 @@ slot for metadata including information on the database source.
 
 \item{\code{refDbSeq}}{DNAStringSet}
 
-\item{\code{refDbTree}}{phylo}
+\item{\code{refDbTree}}{phyloOrNULL}
 }}
 \examples{
 data(msd16s_mgFeatures)
