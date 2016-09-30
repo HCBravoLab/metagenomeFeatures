@@ -37,25 +37,25 @@ test_that("mgFeatures-class-new",{
                   refDbTree = test_tree),
               "mgFeatures")
 
-    # expect_warning(new("mgFeatures",
-    #                  metadata = test_metadata,
-    #                  refDbSeq = test_seq,
-    #                  refDbTree = test_tree),"No taxonomic data provided")
-    #
-    # expect_message(new("mgFeatures",
-    #                  data = test_taxa,
-    #                  refDbSeq = test_seq,
-    #                  refDbTree = test_tree),"No metadata data provided")
-    #
-    # expect_message(new("mgFeatures",
-    #                  data = test_taxa,
-    #                  metadata = test_metadata,
-    #                  refDbTree = test_tree),"No sequence data provided")
-    #
-    # expect_message(new("mgFeatures",
-    #                    data = test_taxa,
-    #                    metadata = test_metadata,
-    #                    refDbSeq=test_seq),"No tree provided")
+    expect_warning(new("mgFeatures",
+                     metadata = test_metadata,
+                     refDbSeq = test_seq,
+                     refDbTree = test_tree),"No taxonomic data provided")
+
+    expect_message(new("mgFeatures",
+                     data = test_taxa,
+                     refDbSeq = test_seq,
+                     refDbTree = test_tree),"No metadata data provided")
+
+    expect_message(new("mgFeatures",
+                     data = test_taxa,
+                     metadata = test_metadata,
+                     refDbTree = test_tree),"No sequence data provided")
+
+    expect_message(new("mgFeatures",
+                       data = test_taxa,
+                       metadata = test_metadata,
+                       refDbSeq=test_seq),"No tree provided")
 
     expect_error(new("mgFeatures",
                        metadata = test_metadata,
