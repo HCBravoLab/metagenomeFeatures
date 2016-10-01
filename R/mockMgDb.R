@@ -24,7 +24,7 @@ get_mockMgDb <- function(){
     mock_taxa_file <- system.file("extdata", "mock_MgDb_taxa.sqlite",
                                   package = "metagenomeFeatures")
 
-    # mock_tree_file <- system.file("extdata", "msd16S_MgDb_tree.rds",
+    # mock_tree_file <- system.file("extdata", "msd16s_MgDb_tree.rds",
     #                               package="metagenomeFeatures")
 
 
