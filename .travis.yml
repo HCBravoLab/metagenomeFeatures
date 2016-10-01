@@ -5,6 +5,11 @@ bioc_required: true
 sudo: false
 cache: packages
 
+r_packages:
+  - knitr
+  - rmarkdown
+  - covr
+
 env:
  global:
    - CRAN: http://cran.rstudio.com
