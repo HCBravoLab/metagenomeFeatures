@@ -13,9 +13,9 @@ The MgDb Class in the metagenomeFeatures package includes the sequences and taxo
 
 ## Demonstration `MgDb-class` Object
 ```{r}
-# library(metagenomeFeatures)
-# demoMgDb <- get_demoMgDb()
-# demoMgDb
+library(metagenomeFeatures)
+demoMgDb <- get_demoMgDb()
+demoMgDb
 ```
 
 
