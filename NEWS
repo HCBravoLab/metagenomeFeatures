@@ -1,3 +1,6 @@
+version 1.1.3 (last updated 2016-10-01)
+    + replaced msd16S with mock community dataset for examples
+    + changed tree mgFeatures and MgDb slot from class phylo to phyloOrNULL
 version 1.1.2: (last updated 2016-03-26)
     + Added mgFeatures class - this class replaces metagenomeAnnotation in the 16S workflow, and contains database information for a user provided list of database sequence ids. A new metagenomeAnnotation-class will be added to the package when a suitable R native 16S taxonomic classificaiton method is available.
     + new `aggregate_taxa` function for aggregating MRexperiment objects to user defined taxonomic level, aggretation of count data is performed using sums by dafault, users can pass any column wise matrix operation.
