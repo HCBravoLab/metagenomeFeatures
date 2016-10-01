@@ -26,7 +26,6 @@
 }
 
 setOldClass(c("tbl_sqlite"))
-setOldClass("phylo")
 #' Metagenome Database class
 #'
 #' The MgDb-class object contains sequence and taxonomic data for a 16S rRNA
@@ -56,7 +55,7 @@ MgDb <- setRefClass("MgDb",
                                  taxa = "tbl_sqlite",
                                  taxa_file = "character",
                                  tree_file = "character",
-                                 tree = "phylo",
+                                 tree = "phyloOrNULL",
                                  metadata= "list"),
                      methods=list(
                          initialize=function(...){
@@ -81,9 +80,10 @@ setValidity("MgDb", function(object) {
         msg <- paste(msg,
                      "'taxa' slot must contain a tbl object",
                      sep = "\n")
-    if(!("tree" %in% ls(object)) || !is(object$tree, "phylo"))
+    if(!("tree" %in% ls(object)) ||
+       (is(object@tree, "phylo") && is(object@tree, "NULL")))
         msg <- paste(msg,
-                     "'tree' slot must contain a phylo object",
+                     "'tree' slot must contain a phyloOrNULL object",
                      sep = "\n")
     if(!("metadata" %in% ls(object)) || !is(object$metadata, "list"))
         msg <- paste(msg, "'metadata' slot must contain a list", sep = "\n")

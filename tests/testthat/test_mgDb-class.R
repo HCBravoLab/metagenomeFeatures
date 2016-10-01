@@ -2,6 +2,12 @@ context("mgDb-class")
 
 test_that("MgDb-class",{
     expect_is(testMgDb, "MgDb")
+
+    expect_is(new("MgDb",
+                  seq = test_seq,
+                  taxa_file = test_taxa_file,
+                  tree_file = "not available",
+                  metadata = test_metadata), "MgDb")
 })
 
 ## Not actually testing the show method
