@@ -2,6 +2,7 @@
 
 language: r
 bioc_required: true
+warnings_are_errors: false
 sudo: false
 cache: packages
 
