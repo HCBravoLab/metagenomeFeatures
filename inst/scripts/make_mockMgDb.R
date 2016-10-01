@@ -34,4 +34,4 @@ writeXStringSet(gg_data$seq, filepath = "../extdata/mockSeq.fasta.gz", compress 
 src_sqlite("../extdata/mockTaxa.sqlite", create = TRUE) %>%
     copy_to(gg_data$taxa, name = "taxa", temporary = FALSE)
 
-write.tree(gg_data$tree, file = "../extdata/mockTree.tree")
+saveRDS(gg_data$tree, file = "../extdata/mockTree.rds")

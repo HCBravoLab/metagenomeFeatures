@@ -8,14 +8,13 @@
 get_demoMgDb <- function(){
     metadata <- list(ACCESSION_DATE = "3/31/2015",
                      URL = "https://greengenes.microbio.me",
-                     DB_TYPE_NAME = "GreenGenes-MgDb-Demo",
+                     DB_TYPE_NAME = "GreenGenes",
                      DB_TYPE_VALUE = "MgDb",
                      DB_SCHEMA_VERSION = "1.0")
 
     demo_seq_file <- system.file("extdata", 'mockSeq.fasta.gz',
                 package="metagenomeFeatures")
     db_seq <- Biostrings::readDNAStringSet(demo_seq_file)
-    #demo_seq_file)
 
     demo_taxa_file <- system.file("extdata", "mockTaxa.sqlite",
                                   package="metagenomeFeatures")

@@ -43,17 +43,17 @@ only the taxonomic and sequence data, or both.
 demoMgDb <- get_demoMgDb()
 # select taxa only
 mgDb_select(demoMgDb, type = "taxa",
-     keys = c("Vibrio", "Salmonella"),
-     keytype = "Genus")
+     keys = c("Vibrionaceae", "Enterobacteriaceae"),
+     keytype = "Family")
 
 # select seq only
  mgDb_select(demoMgDb, type = "seq",
-      keys = c("Vibrio", "Salmonella"),
-      keytype = "Genus")
+      keys = c("Vibrionaceae", "Enterobacteriaceae"),
+      keytype = "Family")
 
 # select all taxa, seq, and tree
 mgDb_select(demoMgDb, type = "all",
-       keys = c("Vibrio", "Salmonella"),
-       keytype = "Genus")
+       keys = c("Vibrionaceae", "Enterobacteriaceae"),
+       keytype = "Family")
 }
 
