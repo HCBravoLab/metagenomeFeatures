@@ -1,14 +1,4 @@
 ## ========================= mgFeature Class ========================
-setOldClass("phylo")
-
-## Borrowed from https://github.com/joey711/phyloseq/blob/master/R/allClasses.R
-# Use setClassUnion to define the unholy NULL-data union as a virtual class.
-# This is a way of dealing with the expected scenarios in which one or more of
-# the component data classes is not available, in which case NULL will be used
-# instead.
-#' @keywords internal
-setClassUnion("phyloOrNULL", c("phylo", "NULL"))
-
 #' mgFeature-class object
 #'
 #' Object contains taxonomic annotation and reference sequence data for
@@ -44,7 +34,7 @@ setValidity("mgFeatures", function(object) {
                      "'refDbSeq' slot must be a DNAStringSeq object",
                      sep = "\n")
     if(!("refDbTree" %in% slotNames(object)) ||
-       !(is(object@refDbTree, "phylo") || is.null(object@refDbTree)))
+       (is(object@refDbTree, "phylo") && is(object@refDbTree, "NULL")))
         msg <- paste(msg,
                      "'refDbTree' slot must be a phylo or NULL object",
                      sep = "\n")
