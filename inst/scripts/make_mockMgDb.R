@@ -2,14 +2,14 @@
 
 library(dplyr)
 library(metagenomeFeatures)
-library(greengenes13.5MgDb)
+library(greengenes13.8OTU99MgDb)
 library(Biostrings)
 library(ape)
 data(mock_query_df)
 
 
 set.seed(1) # setting seed so that the sampled genus are the same if script is rerun
-genus_df <- mgdb_taxa(gg13.5MgDb)  %>% collect() %>%
+genus_df <- mgdb_taxa(gg13.8.99MgDb)  %>% collect(n = Inf) %>%
     group_by(Kingdom, Phylum, Class, Order, Family, Genus) %>% sample_n(1)
 
 ## Saving taxa data
@@ -24,7 +24,7 @@ combined_keys <- c(genus_df$Keys, mock_query_df$Keys)
 
 
 # keys = combined keys
-gg_data <- mgDb_select(gg13.5MgDb, type = c("seq", "taxa"), keys = combined_keys, keytype = "Keys")
+gg_data <- mgDb_select(gg13.8.99MgDb, type = c("seq", "taxa","tree"), keys = combined_keys, keytype = "Keys")
 
 
 # save as fasta.gz file - saving as rdata - includes environment info, resulting in a larger than necessary file
@@ -33,3 +33,5 @@ writeXStringSet(gg_data$seq, filepath = "../extdata/mockSeq.fasta.gz", compress 
 # save taxa info as sqlite db
 src_sqlite("../extdata/mockTaxa.sqlite", create = TRUE) %>%
     copy_to(gg_data$taxa, name = "taxa", temporary = FALSE)
+
+write.tree(gg_data$tree, file = "../extdata/mockTree.tree")

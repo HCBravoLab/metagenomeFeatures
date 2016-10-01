@@ -1,6 +1,6 @@
 #' Example MgDb-class object
 #'
-#' Example \link[=MgDb]{MgDb-class} object with 249 entries from the Greengenes 13.5 database.
+#' Example \link[=MgDb]{MgDb-class} object with 3211 entries from the Greengenes 13.9 OTU 99 database.
 #' @return MgDb-class object
 #' @export
 #' @examples
@@ -12,15 +12,15 @@ get_demoMgDb <- function(){
                      DB_TYPE_VALUE = "MgDb",
                      DB_SCHEMA_VERSION = "1.0")
 
-    demo_seq_file <- system.file("extdata", 'demoSeq.fasta.gz',
+    demo_seq_file <- system.file("extdata", 'mockSeq.fasta.gz',
                 package="metagenomeFeatures")
     db_seq <- Biostrings::readDNAStringSet(demo_seq_file)
     #demo_seq_file)
 
-    demo_taxa_file <- system.file("extdata", "demoTaxa.sqlite",
+    demo_taxa_file <- system.file("extdata", "mockTaxa.sqlite",
                                   package="metagenomeFeatures")
 
-    demo_tree_file <- system.file("extdata", "msd16S_MgDb_tree.rds",
+    demo_tree_file <- system.file("extdata", "mockTree.rds",
                                   package="metagenomeFeatures")
     ## not sure how to assign to environment instead of returning value, rda not appropriate as the connection to sqlite would expire
     ## How to find file path? maybe just create

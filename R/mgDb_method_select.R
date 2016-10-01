@@ -55,7 +55,8 @@
 
 .select.tree <- function(tree, ids){
     drop_tips <- tree$tip.label[!(tree$tip.label %in% ids)]
-    ape::drop.tip(tree,drop_tips)
+    # drip.tip return class phy defining class to match mgFeature class description
+    ape::drop.tip(tree,drop_tips) %>% as.phylo()
 }
 
 ## either select by ids for taxa information
