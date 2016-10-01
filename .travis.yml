@@ -9,6 +9,16 @@ r_packages:
   - knitr
   - rmarkdown
   - covr
+  - dplyr
+  - stringr
+  - testthat
+  - magrittr
+  - RSQLite
+
+bioc_packages:
+  - Biostrings
+  - ShortRead
+  - metagenomeSeq
 
 env:
  global:

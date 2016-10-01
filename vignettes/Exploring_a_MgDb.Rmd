@@ -13,25 +13,25 @@ The MgDb Class in the metagenomeFeatures package includes the sequences and taxo
 
 ## Demonstration `MgDb-class` Object
 ```{r}
-library(metagenomeFeatures)
-demoMgDb <- get_demoMgDb()
-demoMgDb
+# library(metagenomeFeatures)
+# demoMgDb <- get_demoMgDb()
+# demoMgDb
 ```
 
 
 ## MgDb Methods
 taxa_keytypes
 ```{r}
-taxa_keytypes(demoMgDb)
+# taxa_keytypes(demoMgDb)
 ```
 
 
 ```{r}
-taxa_columns(demoMgDb)
+# taxa_columns(demoMgDb)
 ```
 
 ```{r}
-head(taxa_keys(demoMgDb, keytype = c("Kingdom")))
+# head(taxa_keys(demoMgDb, keytype = c("Kingdom")))
 ```
 
 
@@ -40,25 +40,25 @@ Used to retrieve db entries for a specified taxanomic group or id list, can retu
 
 ### Selecting taxonomic information
 ```{r}
-mgDb_select(demoMgDb, type = "taxa",
-                keys = c("Vibrio", "Salmonella"),
-                keytype = "Genus")
+# mgDb_select(demoMgDb, type = "taxa",
+#                 keys = c("Vibrio", "Salmonella"),
+#                 keytype = "Genus")
 ```
 
 ### Selecting sequence information
 ```{r}
-mgDb_select(demoMgDb, type = "seq",
-                keys = c("Vibrio", "Salmonella"),
-                keytype = "Genus")
+# mgDb_select(demoMgDb, type = "seq",
+#                 keys = c("Vibrio", "Salmonella"),
+#                 keytype = "Genus")
 ```
 
 
 
 ### Selecting all
 ```{r}
-mgDb_select(demoMgDb, type = "all",
-                keys = c("Vibrio", "Salmonella"),
-                keytype = "Genus")
+# mgDb_select(demoMgDb, type = "all",
+#                 keys = c("Vibrio", "Salmonella"),
+#                 keytype = "Genus")
 ```
 
 
