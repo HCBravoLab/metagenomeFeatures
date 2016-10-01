@@ -5,14 +5,11 @@ bioc_required: true
 sudo: false
 cache: packages
 
-r:
- - oldrel
- - release
- - devel
+env:
+ global:
+   - CRAN: http://cran.rstudio.com
 
 after_success:
   - Rscript -e 'covr::codecov()'
 
-env:
- global:
-   - CRAN: http://cran.rstudio.com
+
