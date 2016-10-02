@@ -1,22 +1,6 @@
 Package: metagenomeFeatures
 Title: Exploration of marker-gene sequence taxonomic annotations
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 Version: 1.3.2
-=======
-Version: 1.1.2
->>>>>>> 11fc895... merge bioc with devel
-=======
-Version: 1.2.0
->>>>>>> 7c4df63... Bump versions prior to creation of 3.3 branch
-=======
-Version: 1.3.0
->>>>>>> 5fd08b0... bump version after creating 3.3 branch
-=======
-Version: 1.3.1
->>>>>>> 57d1ceb... Bump version of all packages that use knitr for vignettes.
 Author: Nathan D. Olson, Joseph Nathaniel Paulson, Hector Corrada Bravo
 Maintainer: Nathan D. Olson <nolson@umiacs.umd.edu>
 Description: metagenomeFeatures was developed for use in exploring
