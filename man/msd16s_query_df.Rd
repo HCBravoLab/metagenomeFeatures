@@ -20,7 +20,7 @@ Greengenes database version 13.5 ids. Specifically, the OTU centers came from
 dataset 'msd16s'.
 }
 \examples{
-data(msd15s_query_df)
+data(msd16s_query_df)
 }
 \keyword{datasets}
 

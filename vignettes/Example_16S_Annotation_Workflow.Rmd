@@ -4,9 +4,9 @@ author: "Nathan D. Olson"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Example 16S Annotation Workflow}
   %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ## Overview
@@ -25,25 +25,17 @@ __Required Packages__
 library(Biostrings)
 library(metagenomeFeatures)
 library(metagenomeSeq)
-library(magrittr)
 ```
-The `magrittr` pipe operator `%>%` is used throughout this vignette, see the magrittr package vignette for more information about this handy operator (https://cran.r-project.org/web/packages/magrittr/index.html).  
+The `magrittr` pipe operator `%>%` is used throughout this vignette (exported by metagenomeFeatures), see the magrittr package vignette for more information about this handy operator (https://cran.r-project.org/web/packages/magrittr/index.html).  
 
 ## Creating Inital MRexperiment Object
 The assayData and phenoData we will use is in a file included in the metagenomeFeatures  package with count data derived from the msd16s study.  
 
-```{r}
-dataDirectory <- system.file("extdata", package = "metagenomeFeatures")
-
-assay_data <- file.path(dataDirectory, "msd16s_counts.csv") %>% load_meta(sep = ",")
-
-pheno_data <- file.path(dataDirectory, "msd16s_sample_data.csv") %>% 
-    read.csv(row.names = 1, stringsAsFactors = F) %>% AnnotatedDataFrame()
-```
-
 Creating an initial MRexperiment with count and phenoData.  
 
 ```{r}
+assay_data <- metagenomeFeatures:::vignette_assay_data()
+pheno_data <- metagenomeFeatures:::vignette_pheno_data()
 demoMRexp = newMRexperiment(assay_data$counts, phenoData=pheno_data)
 demoMRexp
 ```
@@ -51,38 +43,47 @@ demoMRexp
 Currently the `featureData` slot is empty, we will now use the `annotateMRexp_fData` function in the metagenomeFeatures package to load the `featureData`.   
 
 ## Loading featureData with metagenomeFeatures
-You first need a `MgDb` object for the database used to classify the OTUs. A subset of the greengenes database, `msd16s_MgDb` is used to generate a MgDb-object for annotating the msd16s data. This database is only used here for demonstration purposes, the `gg13.5MgDb` database in the greengenes13.5MgDb package can also be used to generate the metagenomeAnnotation object.
+You first need a `MgDb` object for the database used to classify the OTUs. A subset of the greengenes database, `mock_MgDb` is used to generate a MgDb-object for annotating the msd16s data. This database is only used here for demonstration purposes, the `gg13.5MgDb` database in the greengenes13.5MgDb package can also be used to generate the metagenomeAnnotation object.
 
 ```{r echo=FALSE, message=FALSE}
-metadata <- list(ACCESSION_DATE = "3/31/2015",
-                 URL = "https://greengenes.microbio.me",
-                 DB_TYPE_NAME = "GreenGenes-MgDb-msd16s",
-                 DB_TYPE_VALUE = "MgDb",
-                 DB_SCHEMA_VERSION = "1.0")
-
-db_seq <- file.path(dataDirectory,"msd16s_MgDb_seq.fasta.gz") %>% 
-    readDNAStringSet()
-
-msd16s_MgDb <- new("MgDb",
-                seq = db_seq,
-                taxa_file = file.path(dataDirectory,"msd16s_MgDb_taxa.sqlite"),
-                tree_file = file.path(dataDirectory,"msd16s_MgDb_tree.rds"),
-                metadata = metadata)
+mock_MgDb <- metagenomeFeatures:::vignette_mock_MgDb()
 ```
 
 
 ### annotateMRexp_fData
-The `annotateMRexp_fData` function takes an `MgDb` and `MRexperiment` objects as input and defines the `featureData` slot using the OTU ids from the `assayData` slot. The slot is defined with a `mgFeatures` object which extends the `AnnotatedDataFrame` object with additional slots with the database reference sequences (`refDbSeq`), phylogenetic tree (`refDbtree`), and metadata about the reference database used.  
+The `annotateMRexp_fData` function takes an `MgDb` and `MRexperiment` objects as input and defines the `featureData` slot using the OTU ids from the `assayData` slot. The slot is defined with a `mgFeatures` object which extends the `AnnotatedDataFrame` object with additional slots with the database reference sequences (`refDbSeq`), phylogenetic tree (`refDbtree`, if available), and metadata about the reference database used. 
 
 ```{r}
-demoMRexp <- annotateMRexp_fData(mgdb = msd16s_MgDb, MRobj = demoMRexp)
+demoMRexp <- annotateMRexp_fData(mgdb = mock_MgDb, MRobj = demoMRexp)
 demoMRexp
 ```
 
 The `featureData` slot in the `demoMRexp` object now contains the taxonomic data for the OTUs as well as the database reference sequences as well as the phylogenetic tree. 
 
-## TODO
-demonstrate using mgFeatures accessors
+## Accessing mgFeature Slots
+Each mgFeature slot can be accessed using the approporiate accessor function. 
+
+__Seq Data__
+```{r}
+mgF_seq(demoMRexp@featureData) %>% head()
+```
+
+__Taxonomy__
+```{r}
+mgF_taxa(demoMRexp@featureData) %>% head()
+```
+
+__Metadata__
+```{r}
+mgF_meta(demoMRexp@featureData) %>% head()
+```
+
+__Phylogenetic Tree__
+The tree slot is not defined for `demoMRexp`. If available the tree would be accessed using the following command. 
+
+```{r eval=FALSE}
+mgF_tree(demoMRexp@featureData)
+```
 
 
 ```{r}

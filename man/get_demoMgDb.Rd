@@ -10,7 +10,7 @@ get_demoMgDb()
 MgDb-class object
 }
 \description{
-Example \link[=MgDb]{MgDb-class} object with 249 entries from the Greengenes 13.5 database.
+Example \link[=MgDb]{MgDb-class} object with 3211 entries from the Greengenes 13.9 OTU 99 database.
 }
 \examples{
  get_demoMgDb()

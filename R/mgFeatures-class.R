@@ -1,6 +1,4 @@
 ## ========================= mgFeature Class ========================
-
-setOldClass("phylo")
 #' mgFeature-class object
 #'
 #' Object contains taxonomic annotation and reference sequence data for
@@ -11,7 +9,7 @@ setOldClass("phylo")
 #'
 #' @slot metadata list
 #' @slot refDbSeq DNAStringSet
-#' @slot refDbTree phylo
+#' @slot refDbTree phyloOrNULL
 #' @return mgFeature class object
 #' @export
 #' @examples
@@ -20,7 +18,7 @@ setOldClass("phylo")
 setClass("mgFeatures",
          slots = list(metadata = "list",
                       refDbSeq="DNAStringSet",
-                      refDbTree = "phylo"),
+                      refDbTree = "phyloOrNULL"),
          contains = c("AnnotatedDataFrame"),
          prototype = new("VersionedBiobase",
                          versions = c(classVersion("AnnotatedDataFrame"),
@@ -36,9 +34,9 @@ setValidity("mgFeatures", function(object) {
                      "'refDbSeq' slot must be a DNAStringSeq object",
                      sep = "\n")
     if(!("refDbTree" %in% slotNames(object)) ||
-       !is(object@refDbTree, "phylo"))
+       (is(object@refDbTree, "phylo") && is(object@refDbTree, "NULL")))
         msg <- paste(msg,
-                     "'refDbTree' slot must be a phylo object",
+                     "'refDbTree' slot must be a phylo or NULL object",
                      sep = "\n")
     if(!("metadata" %in% slotNames(object)) || !is(object@metadata, "list"))
         msg <- paste(msg, "'metadata' slot must contain a list", sep = "\n")

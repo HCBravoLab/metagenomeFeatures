@@ -1,6 +1,6 @@
 Package: metagenomeFeatures
 Title: Exploration of marker-gene sequence taxonomic annotations
-Version: 1.3.2
+Version: 1.1.3
 Author: Nathan D. Olson, Joseph Nathaniel Paulson, Hector Corrada Bravo
 Maintainer: Nathan D. Olson <nolson@umiacs.umd.edu>
 Description: metagenomeFeatures was developed for use in exploring
@@ -27,6 +27,8 @@ Imports:
     ape,
     purrr
 Collate:
+    'utils.R'
+    'phylo-class.R'
     'metagenomeAnnotation-class.R'
     'mgDb-class.R'
     'mgFeatures-class.R'
@@ -36,11 +38,17 @@ Collate:
     'mgQuery.R'
     'msd16s_metagenomeAnnotation.R'
     'msd16s_query_df.R'
-    'utils.R'
+    'vignette_data.R'
+    'mgDb_method_annotate.R'
+    'mgDb_method_annotateMRexp.R'
+    'mgDb_method_select.R'
+    'mgDb_method_annotateFeatures.R'
+    'mockMgDb.R'
 Suggests:
     knitr (>= 1.11),
     msd16s (>= 0.102.0),
-    testthat (>= 0.10.0)
+    testthat (>= 0.10.0),
+    rmarkdown
 VignetteBuilder: knitr
 URL: https://github.com/HCBravoLab/metagenomeFeatures
 BugReports: https://github.com/HCBravoLab/metagenomeFeatures/issues
