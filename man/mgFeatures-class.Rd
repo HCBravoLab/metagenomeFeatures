@@ -24,6 +24,6 @@ slot for metadata including information on the database source.
 \item{\code{refDbTree}}{phyloOrNULL}
 }}
 \examples{
-data(msd16s_mgFeatures)
+data(mock_mgF)
 }
 

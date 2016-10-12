@@ -16,6 +16,7 @@ phylo class object
 mgFeatures refDbTree slot accessor
 }
 \examples{
-## mgF_tree(demo_mgF)
+data(mock_mgF)
+mgF_tree(mock_mgF)
 }
 

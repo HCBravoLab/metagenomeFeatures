@@ -13,7 +13,7 @@
 #' @return mgFeature class object
 #' @export
 #' @examples
-#' data(msd16s_mgFeatures)
+#' data(mock_mgF)
 #' @rdname mgFeatures-class
 setClass("mgFeatures",
          slots = list(metadata = "list",
@@ -59,7 +59,9 @@ setValidity("mgFeatures", function(object) {
 #' @return phylo class object
 #' @export
 #'
-#' @examples ## mgF_tree(demo_mgF)
+#' @examples
+#' data(mock_mgF)
+#' mgF_tree(mock_mgF)
 mgF_tree <- function(mgF){
     mgF@refDbTree
 }
@@ -71,7 +73,9 @@ mgF_tree <- function(mgF){
 #' @return DNAStringSet class object
 #' @export
 #'
-#' @examples ## mgF_seq(demo_mgF)
+#' @examples
+#' data(mock_mgF)
+#' mgF_seq(mock_mgF)
 mgF_seq <- function(mgF){
     mgF@refDbSeq
 }
@@ -83,7 +87,9 @@ mgF_seq <- function(mgF){
 #' @return AnnotatedDataFrame
 #' @export
 #'
-#' @examples ## mgF_taxa(demo_mgF)
+#' @examples
+#' data(mock_mgF)
+#' mgF_taxa(mock_mgF)
 mgF_taxa <- function(mgF){
     mgF@data
 }
@@ -95,7 +101,9 @@ mgF_taxa <- function(mgF){
 #' @return list
 #' @export
 #'
-#' @examples ## mgF_meta(demo_mgF)
+#' @examples
+#' data(mock_mgF)
+#' mgF_meta(mock_mgF)
 mgF_meta <- function(mgF){
     mgF@metadata
 }

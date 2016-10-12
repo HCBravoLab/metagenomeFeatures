@@ -16,6 +16,7 @@ DNAStringSet class object
 mgFeatures refDbSeq slot accessor
 }
 \examples{
-## mgF_seq(demo_mgF)
+data(mock_mgF)
+mgF_seq(mock_mgF)
 }
 
