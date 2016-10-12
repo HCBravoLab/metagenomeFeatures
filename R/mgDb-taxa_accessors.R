@@ -89,7 +89,7 @@ setMethod("taxa_columns", "MgDb",
 
 #' Column names for MgDb taxonomy slot object
 #'
-#' @name taxa_columns
+#' @name taxa_keytypes
 #' @param mgdb object of MgDB class
 #' @return tbl_df
 #' @examples

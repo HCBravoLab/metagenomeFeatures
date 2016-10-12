@@ -5,7 +5,7 @@
 ################################################################################
 ## mgDb_annotateFeatures --------------------------------------------------------------------
 
-## Generates an mgFeatures object when passed a vector of keys or datafram 
+## Generates an mgFeatures object when passed a vector of keys or datafram
 ## (e.g. query_df)
 
 
@@ -15,20 +15,20 @@
 	#SELECT_KEYS
 
 	# check query_key type: db_keys vs query_df
-	# process db_keys OR query_df 
+	# process db_keys OR query_df
 
 	if (is.data.frame(query_key)) {
-	
+
 		message("Using query_df") # alert usage of query_df over db_keys
-		
+
 		# alt if: "Keys" %in% colnames(query_key)
-		if (is.element("Keys", colnames(query_key))) { 
+		if (is.element("Keys", colnames(query_key))) {
 
 			query_key$Keys <- as.character(query_key$Keys) # process Keys column as character
 			select_keys <- query_key$Keys
 
 		} else {
-			
+
 			stop("Need 'Keys' column in 'query_key' with database ids")
 
 		}
@@ -39,7 +39,7 @@
 		select_keys <- as.character(db_keys)
 
 	} else { # query_df and db_keys both null
-		
+
 		stop("Need either 'db_keys' or 'query_df' type for input")
 
 	}
@@ -56,14 +56,14 @@
 	if (!is.null(query_key)) { # using query_df
 
 		annotated_db <- dplyr::right_join(query_key, filtered_db$taxa)
-	
+
 	} else if (!is.null(db_keys)) { # using db_keys
 
 		annotated_db <- as.data.frame(filtered_db$taxa)
 
 	} else { # sanity check -- should not enter here
 
-		stop("issue: no query_df or db_keys") 
+		stop("issue: no query_df or db_keys")
 	}
 
 	# ANNO_METADATA
@@ -87,7 +87,7 @@
  #' Annotating metagenome data with taxonomic information
  #'
  #' This method is used to create a \linkS4class{mgFeatures} class
- #' object 
+ #' object
  #'
  #' @param mgdb MgDb class object
  #' @param db_keys (Optional) vector of database Keys of entries to include in
@@ -105,7 +105,7 @@
  #' @export
  #' @examples
  #' # see vignette
- #' @aliases annotate,MgDb-method
+ #' @aliases annotateFeatures,MgDb-method
  #' @rdname annotateFeatures-MgDb-method
  setMethod("annotateFeatures", "MgDb",
            function(mgdb, query_key){

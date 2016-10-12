@@ -3,7 +3,7 @@
 \name{aggregate_taxa}
 \alias{aggregate_taxa}
 \title{Aggregates a MRexperiment object and returns either an aggregated
-  MRexperiment or counts matrix to a user defined taxonomic level.}
+MRexperiment or counts matrix to a user defined taxonomic level.}
 \usage{
 aggregate_taxa(obj, lvl, aggfun = colSums, out = "MRexperiment", ...)
 }
@@ -22,12 +22,12 @@ matrix object a vector of labels.}
 \value{
 An aggregated count matrix or MRexperiment
 }
-\details{
+\description{
 Using the featureData information in the MRexperiment-class object,
-  aggregate_taxa aggregates the OTU count data (MRexperiment assayData slot)
-  to a user defined taxonomic level (i.e. 'genus') using the defined
-  aggfun function (default colSums). Possible aggfun alternatives include and
-  column wise matrix calculations, e.g. colMeans, colMedians.
+aggregate_taxa aggregates the OTU count data (MRexperiment assayData slot)
+to a user defined taxonomic level (i.e. 'genus') using the defined
+aggfun function (default colSums). Possible aggfun alternatives include and
+column wise matrix calculations, e.g. colMeans, colMedians.
 }
 \examples{
 # not run

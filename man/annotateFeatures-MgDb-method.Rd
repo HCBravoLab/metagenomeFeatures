@@ -2,7 +2,6 @@
 % Please edit documentation in R/mgDb_method_annotateFeatures.R
 \docType{methods}
 \name{annotateFeatures}
-\alias{annotate,MgDb-method}
 \alias{annotateFeatures}
 \alias{annotateFeatures,MgDb-method}
 \title{Annotating metagenome data with taxonomic information}

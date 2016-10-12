@@ -8,6 +8,7 @@
 \alias{taxa_keys}
 \alias{taxa_keys,ANY-method}
 \alias{taxa_keys,MgDb-method}
+\alias{taxa_keytypes}
 \alias{taxa_keytypes,ANY-method}
 \alias{taxa_keytypes,MgDb-method}
 \title{Taxonomy values for a given keytype}

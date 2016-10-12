@@ -132,7 +132,7 @@ setMethod("show", "MgDb",
 #' @export
 #'
 #' @examples
-#' get_demoMgDb()
+#' demoMgDb <- get_demoMgDb()
 #' mgdb_tree(demoMgDb)
 mgdb_tree <- function(mgdb){
     mgdb$tree
@@ -146,7 +146,7 @@ mgdb_tree <- function(mgdb){
 #' @export
 #'
 #' @examples
-#' get_demoMgDb()
+#' demoMgDb <- get_demoMgDb()
 #' mgdb_seq(demoMgDb)
 mgdb_seq <- function(mgdb){
     mgdb$seq
@@ -160,7 +160,7 @@ mgdb_seq <- function(mgdb){
 #' @export
 #'
 #' @examples
-#' get_demoMgDb()
+#' demoMgDb <- get_demoMgDb()
 #' mgdb_taxa(demoMgDb)
 mgdb_taxa <- function(mgdb){
     mgdb$taxa
@@ -174,7 +174,7 @@ mgdb_taxa <- function(mgdb){
 #' @export
 #'
 #' @examples
-#' get_demoMgDb()
+#' demoMgDb <- get_demoMgDb()
 #' mgdb_meta(demoMgDb)
 mgdb_meta <- function(mgdb){
     mgdb$metadata

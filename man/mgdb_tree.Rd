@@ -16,7 +16,7 @@ phylo class object
 MgDb tree slot accessor
 }
 \examples{
-get_demoMgDb()
+demoMgDb <- get_demoMgDb()
 mgdb_tree(demoMgDb)
 }
 
