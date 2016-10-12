@@ -40,6 +40,7 @@ Collate:
     'mgDb_method_select.R'
     'mgDb_method_annotateFeatures.R'
     'mockMgDb.R'
+    'mock_query_df.R'
 Suggests:
     knitr (>= 1.11),
     msd16s (>= 0.102.0),
