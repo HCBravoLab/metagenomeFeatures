@@ -8,14 +8,13 @@
 
 ## MgDb Class -----------------------------------------------------------------------------
 
-## Not sure how to access method, currently need MgDb$methodname(mgdb_object)
 ## loading the sqlite database from file
-
 .load_taxa_db <- function(taxdb){
     db_con <- dplyr::src_sqlite(taxdb)
     dplyr::tbl(src = db_con, from = "taxa")
 }
 
+## Tree can be either rds with phylo class object or tree file
 .load_tree <- function(tree_file){
     if(grepl("rds",tree_file)){
         tree <- readRDS(tree_file)
@@ -30,7 +29,9 @@ setOldClass(c("tbl_sqlite"))
 #'
 #' The MgDb-class object contains sequence and taxonomic data for a 16S rRNA
 #' taxonomic database, see the \pkg{greengenes13.5MgDb} package as an example
-#' database. The \code{get_demoMgDb} function exports a small subset of the database in \pkg{greengenes13.5MgDb}\pkg{metagenomeFeatures} package as an example of a MgDb-class object.
+#' database. The \code{get_demoMgDb} function exports a small subset of the
+#' database in \pkg{greengenes13.5MgDb}\pkg{metagenomeFeatures} package as an
+#' example of a MgDb-class object.
 #' @aliases mgdb
 #' @field taxa taxonomic information for database sequences
 #' @field seq database reference sequences
@@ -130,7 +131,9 @@ setMethod("show", "MgDb",
 #' @return phylo class object
 #' @export
 #'
-#' @examples # mgdb_tree(demoMgDb)
+#' @examples
+#' get_demoMgDb()
+#' mgdb_tree(demoMgDb)
 mgdb_tree <- function(mgdb){
     mgdb$tree
 }
@@ -142,7 +145,9 @@ mgdb_tree <- function(mgdb){
 #' @return DNAStringSet class object
 #' @export
 #'
-#' @examples # mgdb_seq(demoMgDb)
+#' @examples
+#' get_demoMgDb()
+#' mgdb_seq(demoMgDb)
 mgdb_seq <- function(mgdb){
     mgdb$seq
 }
@@ -154,7 +159,9 @@ mgdb_seq <- function(mgdb){
 #' @return tbl_sql connection to sqlite table
 #' @export
 #'
-#' @examples # mgdb_taxa(demoMgDb)
+#' @examples
+#' get_demoMgDb()
+#' mgdb_taxa(demoMgDb)
 mgdb_taxa <- function(mgdb){
     mgdb$taxa
 }
@@ -166,7 +173,9 @@ mgdb_taxa <- function(mgdb){
 #' @return list
 #' @export
 #'
-#' @examples # mgdb_meta(demoMgDb)
+#' @examples
+#' get_demoMgDb()
+#' mgdb_meta(demoMgDb)
 mgdb_meta <- function(mgdb){
     mgdb$metadata
 }

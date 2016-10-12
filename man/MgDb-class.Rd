@@ -12,7 +12,9 @@
 \description{
 The MgDb-class object contains sequence and taxonomic data for a 16S rRNA
 taxonomic database, see the \pkg{greengenes13.5MgDb} package as an example
-database. The \code{get_demoMgDb} function exports a small subset of the database in \pkg{greengenes13.5MgDb}\pkg{metagenomeFeatures} package as an example of a MgDb-class object.
+database. The \code{get_demoMgDb} function exports a small subset of the
+database in \pkg{greengenes13.5MgDb}\pkg{metagenomeFeatures} package as an
+example of a MgDb-class object.
 }
 \section{Fields}{
 

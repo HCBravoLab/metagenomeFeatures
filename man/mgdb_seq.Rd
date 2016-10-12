@@ -16,6 +16,7 @@ DNAStringSet class object
 MgDb seq slot accessor
 }
 \examples{
-# mgdb_seq(demoMgDb)
+get_demoMgDb()
+mgdb_seq(demoMgDb)
 }
 
