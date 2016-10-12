@@ -32,6 +32,11 @@ object
 Must include either db_keys or query_df as argument.
 }
 \examples{
-# see vignette
+## MgDb with mock community ids
+mockMgDb <- get_mockMgDb()
+## generating mgFeatures object
+data(mock_query_df)
+mock_mgF <- annotateFeatures(mockMgDb, mock_query_df)
+
 }
 

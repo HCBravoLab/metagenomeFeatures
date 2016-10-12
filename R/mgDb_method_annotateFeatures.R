@@ -81,9 +81,6 @@
 
 
 
-
-
-
  #' Annotating metagenome data with taxonomic information
  #'
  #' This method is used to create a \linkS4class{mgFeatures} class
@@ -96,15 +93,21 @@
  #'   taxonomic information, must include column named "Key" with databse ids.
  #' @param ... additional arguments passed to select function
  #' @return mgFeatures-class object
+ #' @examples
+ #' ## MgDb with mock community ids
+ #' mockMgDb <- get_mockMgDb()
+ #' ## generating mgFeatures object
+ #' data(mock_query_df)
+ #' mock_mgF <- annotateFeatures(mockMgDb, mock_query_df)
+ #'
  #' @note Must include either db_keys or query_df as argument.
  #' @rdname annotateFeatures-MgDb-method
  setGeneric("annotateFeatures", signature = "mgdb",
             function(mgdb, ...) {
                 standardGeneric("annotateFeatures")}
  )
+
  #' @export
- #' @examples
- #' # see vignette
  #' @aliases annotateFeatures,MgDb-method
  #' @rdname annotateFeatures-MgDb-method
  setMethod("annotateFeatures", "MgDb",

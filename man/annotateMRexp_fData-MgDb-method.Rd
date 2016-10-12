@@ -25,4 +25,7 @@ This method is used to define a MRexperiment object featureData slot with
 taxonomic information from a \link[=MgDb]{MgDb-class} object using the
 MRexperiment object's Feature names. object.
 }
+\examples{
+# see vignette
+}
 
