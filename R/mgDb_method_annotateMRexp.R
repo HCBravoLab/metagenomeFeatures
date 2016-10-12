@@ -46,6 +46,8 @@
 #' @param MRobj MRexperiment class object
 #' @param ... additional arguments passed to select function
 #' @return MRexperiment-class object
+#' @examples
+#' # see vignette
 #' @rdname annotateMRexp_fData-MgDb-method
 setGeneric("annotateMRexp_fData", signature = "mgdb",
            function(mgdb, MRobj, ...) {
