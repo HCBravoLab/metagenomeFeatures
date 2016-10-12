@@ -35,19 +35,22 @@
 
 #' Taxonomy values for a given keytype
 #'
-#' @param mgdb object of MgDb class
+#' @name taxa_keys
+#' @param mgdb object of MgDB class
 #' @param keytype taxonomic classification level
-#'
 #' @return tbl_df
+#'
 #' @examples
 #' demoMgDb <- get_demoMgDb()
 #' taxa_keys(demoMgDb, keytype = "Phylum")
-#' @family MgDb_accessors
+#' @rdname MgDb_accessors
+#' @exportMethod taxa_keys
 setGeneric("taxa_keys", signature="mgdb",
            function(mgdb, keytype) standardGeneric("taxa_keys"))
 
-#' @describeIn taxa_keys
-#' @export
+## MgDb taxa_keys method
+#' @rdname MgDb_accessors
+#' @aliases taxa_keys,ANY-method
 setMethod("taxa_keys", "MgDb",
           function(mgdb, keytype) .taxa_keys(mgdb, keytype))
 
@@ -57,24 +60,24 @@ setMethod("taxa_keys", "MgDb",
 .taxa_columns = function(mgdb){
     colnames(mgdb$taxa)
 }
+
+
 #' Column names for MgDb taxonomy slot object
 #'
+#' @name taxa_columns
 #' @param mgdb object of MgDB class
-#'
-#' @return tbl_df
 #' @note Same function as \code{\link{taxa_keytypes}}.
 #' @examples
 #' demoMgDb <- get_demoMgDb()
 #' taxa_columns(demoMgDb)
-#' @family MgDb_accessors
+#' @rdname MgDb_accessors
+#' @exportMethod taxa_columns
 setGeneric("taxa_columns", signature="mgdb",
            function(mgdb) standardGeneric("taxa_columns"))
 
 ## MgDb taxa_columns method
-
-
-#' @export
-#' @describeIn taxa_columns
+#' @rdname MgDb_accessors
+#' @aliases taxa_columns,ANY-method
 setMethod("taxa_columns", "MgDb",
           function(mgdb) .taxa_columns(mgdb))
 
@@ -86,19 +89,21 @@ setMethod("taxa_columns", "MgDb",
 
 #' Column names for MgDb taxonomy slot object
 #'
+#' @name taxa_columns
 #' @param mgdb object of MgDB class
-#'
 #' @return tbl_df
 #' @examples
 #' demoMgDb <- get_demoMgDb()
 #' taxa_keytypes(demoMgDb)
-#' @family MgDb_accessors
+#' @rdname MgDb_accessors
+#' @exportMethod taxa_keytypes
 setGeneric("taxa_keytypes", signature="mgdb",
            function(mgdb) standardGeneric("taxa_keytypes"))
 
 ## MgDb taxa_keytypes method
 
-#' @export
-#' @describeIn taxa_keytypes
+## MgDb taxa_keytypes method
+#' @rdname MgDb_accessors
+#' @aliases taxa_keytypes,ANY-method
 setMethod("taxa_keytypes", "MgDb",
           function(mgdb) .taxa_columns(mgdb))
