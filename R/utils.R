@@ -1,6 +1,6 @@
 #' @importFrom magrittr %>%
 #' @export
-`%>%` <- magrittr::`%>%`
+magrittr::`%>%`
 
 #' @import methods
 NULL
