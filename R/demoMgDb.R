@@ -1,6 +1,7 @@
 #' Example MgDb-class object
 #'
-#' Example \link[=MgDb]{MgDb-class} object with 3211 entries from the Greengenes 13.9 OTU 99 database.
+#' Example \link[=MgDb]{MgDb-class} object with 3211 entries from the Greengenes
+#' 13.8 OTU 99 database.
 #' @return MgDb-class object
 #' @export
 #' @examples
@@ -21,8 +22,7 @@ get_demoMgDb <- function(){
 
     demo_tree_file <- system.file("extdata", "mockTree.rds",
                                   package="metagenomeFeatures")
-    ## not sure how to assign to environment instead of returning value, rda not appropriate as the connection to sqlite would expire
-    ## How to find file path? maybe just create
+
     demoMgDb <- new("MgDb",
         seq = db_seq,
         taxa_file = demo_taxa_file,
