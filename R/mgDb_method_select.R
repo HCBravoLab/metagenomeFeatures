@@ -55,7 +55,7 @@
 
 .select.tree <- function(tree, ids){
     drop_tips <- tree$tip.label[!(tree$tip.label %in% ids)]
-    # drip.tip return class phy defining class to match mgFeature class description
+    # drop.tip return class phy defining class to match mgFeature class description
     ape::drop.tip(tree,drop_tips) %>% ape::as.phylo()
 }
 
@@ -114,7 +114,7 @@
 #' @param keytype taxonomic level of keys
 #' @param columns keytypes in taxonomy databse to return, all by default
 #' @param ... additional arguments passed to select function
-#' @return returned object depends on type, for 'taxa' -dataframe with taxa
+#' @return returned object depends on type, for 'taxa' - dataframe with taxa
 #'   information, 'seq' a DNAStringSet with seqeunce data, 'tree' a phylogenetic tree of class phylo, 'all' a list with
 #'   the dataframe, DNAStringSet, and phylo.
 #' @examples
@@ -135,8 +135,8 @@
 #'        keytype = "Family")
 #' @rdname select-MgDb-method
 setGeneric("mgDb_select", signature="mgdb",
-           function(mgdb, type, ...) { standardGeneric("mgDb_select")
-           })
+           function(mgdb, type, ...) {standardGeneric("mgDb_select")}
+)
 
 
 #' @export

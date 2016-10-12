@@ -28,7 +28,7 @@ the reference taxonomy, sequences, and phylogenetic tree respectively.
 \item{columns}{keytypes in taxonomy databse to return, all by default}
 }
 \value{
-returned object depends on type, for 'taxa' -dataframe with taxa
+returned object depends on type, for 'taxa' - dataframe with taxa
   information, 'seq' a DNAStringSet with seqeunce data, 'tree' a phylogenetic tree of class phylo, 'all' a list with
   the dataframe, DNAStringSet, and phylo.
 }
