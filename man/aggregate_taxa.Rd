@@ -24,7 +24,7 @@ An aggregated count matrix or MRexperiment
 }
 \details{
 Using the featureData information in the MRexperiment-class object,
-  aggregate_taxa aggregates the OTU count data (MRexperiment assaData slot)
+  aggregate_taxa aggregates the OTU count data (MRexperiment assayData slot)
   to a user defined taxonomic level (i.e. 'genus') using the defined
   aggfun function (default colSums). Possible aggfun alternatives include and
   column wise matrix calculations, e.g. colMeans, colMedians.
