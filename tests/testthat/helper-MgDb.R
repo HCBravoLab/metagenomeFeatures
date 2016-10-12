@@ -26,13 +26,10 @@ testMgDb <- new("MgDb", seq = test_seq,
 tax_names <- matrix(paste0("tax_",0:69), ncol = 7)
 colnames(tax_names) <- c("Kingdom","Phylum","Class","Order",
                          "Family","Genus","Species")
-# tax_names <- as.data.frame(tax_names, stringsAsFactors = FALSE)
 
 taxa <- data.frame(Keys = as.character(1:10), tax_names,
                    stringsAsFactors = FALSE) %>% dplyr::as_data_frame()
 
-
-data(msd16s_query_df)
 
 OTU <- c(4,4,4,3,2)
 

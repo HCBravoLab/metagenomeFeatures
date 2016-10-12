@@ -4,7 +4,6 @@ library(dplyr)
 
 context("Testing annotateFeatures")
 
-data(msd16s_query_df)
 OTU <- c(4,4,4,3,2)
 Keys_not <- c(1,1,1,1,1)
 Keys <- c(1,2,3,4,5)
