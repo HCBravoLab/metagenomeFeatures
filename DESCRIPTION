@@ -46,7 +46,7 @@ Suggests:
     knitr (>= 1.11),
     msd16s (>= 0.102.0),
     testthat (>= 0.10.0),
-    rmarkdown (>= 1.0.9014)
+    rmarkdown (>= 1.0)
 VignetteBuilder: knitr
 URL: https://github.com/HCBravoLab/metagenomeFeatures
 BugReports: https://github.com/HCBravoLab/metagenomeFeatures/issues
