@@ -8,18 +8,16 @@
 \usage{
 annotateFeatures(mgdb, ...)
 
-\S4method{annotateFeatures}{MgDb}(mgdb, query_key)
+\S4method{annotateFeatures}{MgDb}(mgdb, query)
 }
 \arguments{
 \item{mgdb}{MgDb class object}
 
 \item{...}{additional arguments passed to select function}
 
-\item{db_keys}{(Optional) vector of database Keys of entries to include in
-metagenomeAnnotation class object}
-
-\item{query_df}{(Optional) data frame with experimental data to annotate with
-taxonomic information, must include column named "Key" with databse ids.}
+\item{query}{A data frame with experimental data to annotate with
+taxonomic information, must include column named "Key" with databse ids.
+Or a vector of database Keys of entries to include in mgFeatures-class object.}
 }
 \value{
 mgFeatures-class object
@@ -27,9 +25,6 @@ mgFeatures-class object
 \description{
 This method is used to create a \linkS4class{mgFeatures} class
 object
-}
-\note{
-Must include either db_keys or query_df as argument.
 }
 \examples{
 ## MgDb with mock community ids

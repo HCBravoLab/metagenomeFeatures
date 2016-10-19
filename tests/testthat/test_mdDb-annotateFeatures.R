@@ -17,7 +17,7 @@ query_df <- data.frame(Keys, OTU)
 
 test_that("annotateFeatures parameter check", {
 	expect_error(annotateFeatures(testMgDb))
-	expect_error(annotateFeatures(testMgDb, query_key = NULL))
+	expect_error(annotateFeatures(testMgDb, query = NULL))
 	expect_error(annotateFeatures(testMgDb, incomplete_query_df))
 	expect_error(annotateFeatures(testMgDb, wrong_query_df))
 })
