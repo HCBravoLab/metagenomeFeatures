@@ -44,11 +44,13 @@
 #' demoMgDb <- get_demoMgDb()
 #' taxa_keys(demoMgDb, keytype = "Phylum")
 #' @exportMethod taxa_keys
+#' @rdname taxa_keys
 setGeneric("taxa_keys", signature="mgdb",
            function(mgdb, keytype) standardGeneric("taxa_keys"))
 
 ## MgDb taxa_keys method
-#' @aliases taxa_keys,ANY-method
+#' @rdname taxa_keys
+#' @aliases taxa_keys,MgDb-method
 setMethod("taxa_keys", "MgDb",
           function(mgdb, keytype) .taxa_keys(mgdb, keytype))
 
@@ -69,11 +71,13 @@ setMethod("taxa_keys", "MgDb",
 #' demoMgDb <- get_demoMgDb()
 #' taxa_columns(demoMgDb)
 #' @exportMethod taxa_columns
+#' @rdname taxa_columns
 setGeneric("taxa_columns", signature="mgdb",
            function(mgdb) standardGeneric("taxa_columns"))
 
 ## MgDb taxa_columns method
-#' @aliases taxa_columns,ANY-method
+#' @aliases taxa_columns,MgDb-method
+#' @rdname taxa_columns
 setMethod("taxa_columns", "MgDb",
           function(mgdb) .taxa_columns(mgdb))
 
@@ -92,12 +96,14 @@ setMethod("taxa_columns", "MgDb",
 #' demoMgDb <- get_demoMgDb()
 #' taxa_keytypes(demoMgDb)
 #' @exportMethod taxa_keytypes
+#' @rdname taxa_keytypes
 setGeneric("taxa_keytypes", signature="mgdb",
            function(mgdb) standardGeneric("taxa_keytypes"))
 
 ## MgDb taxa_keytypes method
 
 ## MgDb taxa_keytypes method
-#' @aliases taxa_keytypes,ANY-method
+#' @aliases taxa_keytypes,MgDb-method
+#' @rdname taxa_keytypes
 setMethod("taxa_keytypes", "MgDb",
           function(mgdb) .taxa_columns(mgdb))
