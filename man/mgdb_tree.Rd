@@ -19,4 +19,3 @@ MgDb tree slot accessor
 demoMgDb <- get_demoMgDb()
 mgdb_tree(demoMgDb)
 }
-

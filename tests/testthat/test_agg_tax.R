@@ -5,7 +5,7 @@ context("aggregate_taxa")
 test_that("aggregate_taxa-return-class",{
     expect_is(aggregate_taxa(test_MRexp, lvl = "Species"),"MRexperiment")
     expect_is(aggregate_taxa(test_MRexp, lvl = "Species",
-                                  out = "matrix"),"matrix")
+                             out = "matrix"),"matrix")
 })
 
 ## tests for wrong input
@@ -41,14 +41,14 @@ test_that("aggregate_taxa-matrix value", {
     ## check Species level agg
     exp_rownames <- paste0("tax_",c(60,62:69))
     exp_mat <- matrix(data = c(3,3:10,5,(3:10)^2), ncol = 2,
-                          dimnames = list(exp_rownames, exp_colnames))
+                      dimnames = list(exp_rownames, exp_colnames))
     expect_equal(aggregate_taxa(test_MRexp, lvl = "Species", out = "matrix"),
                  exp_mat)
 
     ## check Genus level agg
     exp_rownames <- paste0("tax_",c(50,52,54:59))
     exp_mat <- matrix(data = c(3,7,5:10,5,25,(5:10)^2), ncol = 2,
-                          dimnames = list(exp_rownames, exp_colnames))
+                      dimnames = list(exp_rownames, exp_colnames))
     expect_equal(aggregate_taxa(test_MRexp, lvl = "Genus", out = "matrix"),
                  exp_mat)
 

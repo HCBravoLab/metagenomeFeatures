@@ -49,6 +49,7 @@
 #' @examples
 #' # see vignette
 #' @rdname annotateMRexp_fData-MgDb-method
+#' @import metagenomeSeq
 setGeneric("annotateMRexp_fData", signature = "mgdb",
            function(mgdb, MRobj, ...) {
                standardGeneric("annotateMRexp_fData")}

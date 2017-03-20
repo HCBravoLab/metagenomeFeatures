@@ -5,12 +5,11 @@
 ##
 ################################################################################
 
-
 ## MgDb Class -----------------------------------------------------------------------------
 
 ## loading the sqlite database from file
 .load_taxa_db <- function(taxdb){
-    db_con <- dplyr::src_sqlite(taxdb)
+    db_con <- dplyr::src_sqlite(taxdb, create = FALSE)
     dplyr::tbl(src = db_con, from = "taxa")
 }
 
@@ -19,7 +18,7 @@
     if(grepl("rds",tree_file)){
         tree <- readRDS(tree_file)
     }else{
-       tree <- ape::read.tree(tree_file)
+        tree <- ape::read.tree(tree_file)
     }
     tree
 }
@@ -50,24 +49,29 @@ setOldClass(c("tbl_sqlite"))
 #' @rdname MgDb-class
 #' @importFrom dplyr tbl_sql
 MgDb <- setRefClass("MgDb",
-                     #contains="DNAStringSet"
-                     fields=list(seq="DNAStringSet",
-                                 # add seq file inplace of reading DNAStringSet
-                                 taxa = "tbl_sqlite",
-                                 taxa_file = "character",
-                                 tree_file = "character",
-                                 tree = "phyloOrNULL",
-                                 metadata= "list"),
-                     methods=list(
-                         initialize=function(...){
-                             callSuper(...)
-                             taxa <<- .load_taxa_db(taxa_file)
-                             seq <<- seq
-                             if(tree_file != "not available"){
-                                 tree <<- .load_tree(tree_file)
-                             }
-                             metadata <<- metadata
-                         }))
+                    #contains="DNAStringSet"
+                    fields=list(seq="DNAStringSet",
+                                # add seq file inplace of reading DNAStringSet
+                                taxa = "tbl_sqlite",
+                                taxa_file = "character",
+                                tree_file = "character",
+                                tree = "phyloOrNULL",
+                                metadata= "list"),
+                    methods=list(
+                        initialize=function(...){
+                            callSuper(...)
+                            #if(!exists("taxa")){
+                            taxa <<- .load_taxa_db(taxa_file)
+                            #} else {
+                            #    taxa <<- taxa
+                            #}
+
+                            seq <<- seq
+                            if(tree_file != "not available"){
+                                tree <<- .load_tree(tree_file)
+                            }
+                            metadata <<- metadata
+                        }))
 
 ## Validity ---------------------------------------------------------------
 
@@ -103,23 +107,24 @@ setValidity("MgDb", function(object) {
 
 #' Display summary of MgDb-class object
 #' @param object MgDb-class object
+#' @return MgDb-class summary
 
 #' @export
 setMethod("show", "MgDb",
           function(object){
-            cat(class(object), "object:")
-            print("Metadata")
-            metadata <- object $metadata
-                for(i in names(metadata)){
-                    cat("|", i, ": ", metadata[[i]], "\n", sep = "")
-                }
-            print("Sequence Data:")
-            print(object$seq)
-            print("Taxonomy Data:")
-            print(object$taxa)
-            print("Tree Data:")
-            print(object$tree)
-        }
+              cat(class(object), "object:")
+              print("Metadata")
+              metadata <- object $metadata
+              for(i in names(metadata)){
+                  cat("|", i, ": ", metadata[[i]], "\n", sep = "")
+              }
+              print("Sequence Data:")
+              print(object$seq)
+              print("Taxonomy Data:")
+              print(object$taxa)
+              print("Tree Data:")
+              print(object$tree)
+          }
 )
 
 ## Accessors -------------------------------------------------------------------

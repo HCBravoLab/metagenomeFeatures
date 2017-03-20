@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-The MgDb Class in the metagenomeFeatures package includes the sequences and taxonomic information for a 16S database.  The following vignette demonstrates the class methods for exploring and subsetting a `MgDb-class` object using the `demoMgDb` included in the `metagenomeFeatures` package. `MgDb-class` object with full databases are inseparte packages such as the `greengenes13.5MgDb` package.
+The MgDb Class in the metagenomeFeatures package includes the sequences and taxonomic information for a 16S database.  The following vignette demonstrates the class methods for exploring and subsetting a `MgDb-class` object using the `demoMgDb` included in the `metagenomeFeatures` package. `MgDb-class` object with full databases are in separate packages such as the `greengenes13.5MgDb` package.
 
 ## Demonstration `MgDb-class` Object
 ```{r}
@@ -22,34 +22,34 @@ demoMgDb
 ## MgDb Methods
 taxa_keytypes
 ```{r}
-# taxa_keytypes(demoMgDb)
+taxa_keytypes(demoMgDb)
 ```
 
 
 ```{r}
-# taxa_columns(demoMgDb)
+taxa_columns(demoMgDb)
 ```
 
 ```{r}
-# head(taxa_keys(demoMgDb, keytype = c("Kingdom")))
+head(taxa_keys(demoMgDb, keytype = c("Kingdom")))
 ```
 
 
 ## Select Methods
-Used to retrieve db entries for a specified taxanomic group or id list, can return either taxonomic, sequences information, or both. 
+Used to retrieve db entries for a specified taxonomic group or id list, can return either taxonomic, sequences information, or both.
 
 ### Selecting taxonomic information
 ```{r}
-# mgDb_select(demoMgDb, type = "taxa",
-#                 keys = c("Vibrio", "Salmonella"),
-#                 keytype = "Genus")
+mgDb_select(demoMgDb, type = "taxa",
+            keys = c("Vibrionaceae", "Enterobacteriaceae"),
+            keytype = "Family")
 ```
 
 ### Selecting sequence information
 ```{r}
-# mgDb_select(demoMgDb, type = "seq",
-#                 keys = c("Vibrio", "Salmonella"),
-#                 keytype = "Genus")
+mgDb_select(demoMgDb, type = "seq",
+            keys = c("Vibrionaceae", "Enterobacteriaceae"),
+            keytype = "Family")
 ```
 
 
@@ -65,4 +65,3 @@ Used to retrieve db entries for a specified taxanomic group or id list, can retu
 ```{r}
 sessionInfo()
 ```
-

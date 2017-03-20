@@ -2,7 +2,10 @@
 
 library(dplyr)
 library(metagenomeFeatures)
+<<<<<<< HEAD
 #https://github.com/nate-d-olson/greengenes13.8_99MgDb
+=======
+>>>>>>> a583485a53d90aa439a78b7bce0e232981ba1e83
 library(greengenes13.8OTU99MgDb)
 library(Biostrings)
 library(ape)
@@ -25,6 +28,7 @@ combined_keys <- c(genus_df$Keys, mock_query_df$Keys)
 
 
 # keys = combined keys
+<<<<<<< HEAD
 gg_data <- mgDb_select(gg13.8.99MgDb, type = c("seq", "taxa","tree"),
                        keys = combined_keys, keytype = "Keys")
 
@@ -33,6 +37,13 @@ gg_data <- mgDb_select(gg13.8.99MgDb, type = c("seq", "taxa","tree"),
 writeXStringSet(gg_data$seq,
                 filepath = "../extdata/mockSeq.fasta.gz",
                 compress = TRUE)
+=======
+gg_data <- mgDb_select(gg13.8.99MgDb, type = c("seq", "taxa","tree"), keys = combined_keys, keytype = "Keys")
+
+
+# save as fasta.gz file - saving as rdata - includes environment info, resulting in a larger than necessary file
+writeXStringSet(gg_data$seq, filepath = "../extdata/mockSeq.fasta.gz", compress = TRUE)
+>>>>>>> a583485a53d90aa439a78b7bce0e232981ba1e83
 
 # save taxa info as sqlite db
 src_sqlite("../extdata/mockTaxa.sqlite", create = TRUE) %>%

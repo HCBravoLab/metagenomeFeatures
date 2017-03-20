@@ -34,4 +34,3 @@ data(mock_query_df)
 mock_mgF <- annotateFeatures(mockMgDb, mock_query_df)
 
 }
-

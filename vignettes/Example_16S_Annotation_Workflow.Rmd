@@ -51,17 +51,17 @@ mock_MgDb <- metagenomeFeatures:::vignette_mock_MgDb()
 
 
 ### annotateMRexp_fData
-The `annotateMRexp_fData` function takes an `MgDb` and `MRexperiment` objects as input and defines the `featureData` slot using the OTU ids from the `assayData` slot. The slot is defined with a `mgFeatures` object which extends the `AnnotatedDataFrame` object with additional slots with the database reference sequences (`refDbSeq`), phylogenetic tree (`refDbtree`, if available), and metadata about the reference database used. 
+The `annotateMRexp_fData` function takes an `MgDb` and `MRexperiment` objects as input and defines the `featureData` slot using the OTU ids from the `assayData` slot. The slot is defined with a `mgFeatures` object which extends the `AnnotatedDataFrame` object with additional slots with the database reference sequences (`refDbSeq`), phylogenetic tree (`refDbtree`, if available), and metadata about the reference database used.
 
 ```{r}
 demoMRexp <- annotateMRexp_fData(mgdb = mock_MgDb, MRobj = demoMRexp)
 demoMRexp
 ```
 
-The `featureData` slot in the `demoMRexp` object now contains the taxonomic data for the OTUs as well as the database reference sequences as well as the phylogenetic tree. 
+The `featureData` slot in the `demoMRexp` object now contains the taxonomic data for the OTUs as well as the database reference sequences as well as the phylogenetic tree.
 
 ## Accessing mgFeature Slots
-Each mgFeature slot can be accessed using the approporiate accessor function. 
+Each mgFeature slot can be accessed using the approporiate accessor function.
 
 __Seq Data__
 ```{r}
@@ -79,7 +79,7 @@ mgF_meta(demoMRexp@featureData) %>% head()
 ```
 
 __Phylogenetic Tree__
-The tree slot is not defined for `demoMRexp`. If available the tree would be accessed using the following command. 
+The tree slot is not defined for `demoMRexp`. If available the tree would be accessed using the following command.
 
 ```{r eval=FALSE}
 mgF_tree(demoMRexp@featureData)

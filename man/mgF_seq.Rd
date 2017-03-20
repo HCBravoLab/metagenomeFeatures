@@ -19,4 +19,3 @@ mgFeatures refDbSeq slot accessor
 data(mock_mgF)
 mgF_seq(mock_mgF)
 }
-

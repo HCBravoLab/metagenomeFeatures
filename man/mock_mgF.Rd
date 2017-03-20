@@ -24,4 +24,3 @@ estimates from Illumina amplicon sequencing." Nature methods 10.1 (2013): 57-59.
 data(mock_mgF)
 }
 \keyword{datasets}
-

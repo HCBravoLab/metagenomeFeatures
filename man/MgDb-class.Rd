@@ -2,8 +2,8 @@
 % Please edit documentation in R/mgDb-class.R
 \docType{class}
 \name{MgDb-class}
-\alias{MgDb}
 \alias{MgDb-class}
+\alias{MgDb}
 \alias{mgdb}
 \title{Metagenome Database class}
 \usage{
@@ -31,6 +31,8 @@ example of a MgDb-class object.
 
 \item{\code{metadata}}{associated metadata for the database}
 }}
+
+
 \note{
 Currently the only database with a MgDb package is the
   \href{http://greengenes.secondgenome.com/}{Greengenes database} (version
@@ -40,4 +42,3 @@ Currently the only database with a MgDb package is the
 # example MgDb-class object, a small subset of the Greengenes 13.5 database.
 get_demoMgDb()
 }
-

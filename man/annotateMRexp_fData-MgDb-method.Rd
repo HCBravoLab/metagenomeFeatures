@@ -28,4 +28,3 @@ MRexperiment object's Feature names. object.
 \examples{
 # see vignette
 }
-

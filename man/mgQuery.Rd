@@ -20,4 +20,3 @@ diarrhea 16S expression data' - bioconductor dataset 'msd16s'.
 data(mgQuery)
 }
 \keyword{datasets}
-

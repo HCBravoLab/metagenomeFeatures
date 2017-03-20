@@ -30,10 +30,8 @@ aggfun function (default colSums). Possible aggfun alternatives include and
 column wise matrix calculations, e.g. colMeans, colMedians.
 }
 \examples{
-# not run
-# data("mouseData", package = "metagenomeSeq")
-# aggregateByTaxonomy(mouseData[1:100,],lvl="class",norm=TRUE,aggfun=colSums)
-# aggregateByTaxonomy(mouseData,lvl="class",norm=TRUE,aggfun=colMedians)
-# aggTax(mouseData,lvl='phylum',norm=FALSE,aggfun=colSums)
+data("mouseData", package = "metagenomeSeq")
+aggregate_taxa(mouseData[1:100,],lvl="class",norm=TRUE,aggfun=colSums)
+aggregate_taxa(mouseData,lvl="class",norm=TRUE,aggfun=colSums)
+aggregate_taxa(mouseData,lvl='phylum',norm=FALSE,aggfun=colSums)
 }
-

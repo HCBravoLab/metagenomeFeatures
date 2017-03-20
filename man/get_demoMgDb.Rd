@@ -16,4 +16,3 @@ Example \link[=MgDb]{MgDb-class} object with 3211 entries from the Greengenes
 \examples{
  get_demoMgDb()
 }
-

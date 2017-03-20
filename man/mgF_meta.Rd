@@ -19,4 +19,3 @@ mgFeatures metadata slot accessor
 data(mock_mgF)
 mgF_meta(mock_mgF)
 }
-

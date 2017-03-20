@@ -66,6 +66,7 @@ setMethod("taxa_keys", "MgDb",
 #'
 #' @name taxa_columns
 #' @param mgdb object of MgDB class
+#' @return character vector
 #' @note Same function as \code{\link{taxa_keytypes}}.
 #' @examples
 #' demoMgDb <- get_demoMgDb()

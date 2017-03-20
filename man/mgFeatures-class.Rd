@@ -23,7 +23,7 @@ slot for metadata including information on the database source.
 
 \item{\code{refDbTree}}{phyloOrNULL}
 }}
+
 \examples{
 data(mock_mgF)
 }
-

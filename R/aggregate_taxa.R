@@ -15,13 +15,13 @@
 #' @param ... Additional parameters to pass to MRcount, e.g. norm, log, and sl.
 #' @return An aggregated count matrix or MRexperiment
 #' @rdname aggregate_taxa
+#' @importClassesFrom metagenomeSeq MRexperiment
 #' @export
 #' @examples
-#' # not run
-#' # data("mouseData", package = "metagenomeSeq")
-#' # aggregateByTaxonomy(mouseData[1:100,],lvl="class",norm=TRUE,aggfun=colSums)
-#' # aggregateByTaxonomy(mouseData,lvl="class",norm=TRUE,aggfun=colMedians)
-#' # aggTax(mouseData,lvl='phylum',norm=FALSE,aggfun=colSums)
+#' data("mouseData", package = "metagenomeSeq")
+#' aggregate_taxa(mouseData[1:100,],lvl="class",norm=TRUE,aggfun=colSums)
+#' aggregate_taxa(mouseData,lvl="class",norm=TRUE,aggfun=colSums)
+#' aggregate_taxa(mouseData,lvl='phylum',norm=FALSE,aggfun=colSums)
 aggregate_taxa <-function(obj, lvl, aggfun = colSums, out="MRexperiment", ...){
     ##### check parameters
     if(class(obj)!="MRexperiment"){
@@ -74,9 +74,9 @@ aggregate_taxa <-function(obj, lvl, aggfun = colSums, out="MRexperiment", ...){
     index_colnames <- obj_df %>% as.list() %>%
         purrr::map_int(dplyr::n_distinct) %>%
         .[. == nrow(obj_df)] %>% names()
-        ## - what to do, if anything, when more than one otu_col
-        ## - Might want to consider ordering columns based on
-        ##   increasing number of unique values, or standard taxonomy
+    ## - what to do, if anything, when more than one otu_col
+    ## - Might want to consider ordering columns based on
+    ##   increasing number of unique values, or standard taxonomy
 
     if(length(index_colnames) == ncol(obj_df)){
         message("Taxa values for all levels are unique, no data to aggregate")
@@ -154,11 +154,10 @@ aggregate_taxa <-function(obj, lvl, aggfun = colSums, out="MRexperiment", ...){
 #'
 #' @return character vector with taxonomic levels
 #' @export
-#'
+#' @import metagenomeSeq
 #' @examples
-#' # not run
-#' # data("mouseData", package = "metagenomeSeq")
-#' # taxa_levels(mouseData)
+#' data("mouseData", package = "metagenomeSeq")
+#' taxa_levels(mouseData)
 taxa_levels <- function(obj){
     if(class(obj)!="MRexperiment") stop("Input must either be of class 'MRexperiment'")
     obj %>% fData() %>% colnames()

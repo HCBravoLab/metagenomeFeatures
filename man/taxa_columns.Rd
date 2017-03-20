@@ -13,6 +13,9 @@ taxa_columns(mgdb)
 \arguments{
 \item{mgdb}{object of MgDB class}
 }
+\value{
+character vector
+}
 \description{
 Column names for MgDb taxonomy slot object
 }
@@ -23,4 +26,3 @@ Same function as \code{\link{taxa_keytypes}}.
 demoMgDb <- get_demoMgDb()
 taxa_columns(demoMgDb)
 }
-

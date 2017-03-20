@@ -55,20 +55,20 @@ test_seq <- readRDS("../test_seq.rds")
 test_tree <- readRDS("../test_tree.rds") %>% as(Class = "phylo")
 
 test_MRexp <-make_test_MRexp(n = 10,
-                            taxa_levels = c("OTU","Kingdom",
-                                            "Phylum","Class","Order",
-                                            "Family","Genus","Species"),
-                            test_seq, test_tree)
-
-test_MRexp1 <-make_test_MRexp(n = 10,
                              taxa_levels = c("OTU","Kingdom",
                                              "Phylum","Class","Order",
                                              "Family","Genus","Species"),
-                             test_seq, test_tree, single_sample = TRUE)
+                             test_seq, test_tree)
+
+test_MRexp1 <-make_test_MRexp(n = 10,
+                              taxa_levels = c("OTU","Kingdom",
+                                              "Phylum","Class","Order",
+                                              "Family","Genus","Species"),
+                              test_seq, test_tree, single_sample = TRUE)
 
 
 test_MRexp_all_unique <- make_test_MRexp(n = 10,
-                                       taxa_levels = c("OTU","Kingdom",
-                                                       "Phylum","Class","Order",
-                                                       "Family","Genus","Species"),
-                                       test_seq, test_tree, all_unique = TRUE)
+                                         taxa_levels = c("OTU","Kingdom",
+                                                         "Phylum","Class","Order",
+                                                         "Family","Genus","Species"),
+                                         test_seq, test_tree, all_unique = TRUE)

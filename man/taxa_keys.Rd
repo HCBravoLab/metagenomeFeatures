@@ -25,4 +25,3 @@ Taxonomy values for a given keytype
 demoMgDb <- get_demoMgDb()
 taxa_keys(demoMgDb, keytype = "Phylum")
 }
-

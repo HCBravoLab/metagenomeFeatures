@@ -14,7 +14,8 @@ get_demoMgDb <- function(){
                      DB_SCHEMA_VERSION = "1.0")
 
     demo_seq_file <- system.file("extdata", 'mockSeq.fasta.gz',
-                package="metagenomeFeatures")
+                                 package="metagenomeFeatures")
+
     db_seq <- Biostrings::readDNAStringSet(demo_seq_file)
 
     demo_taxa_file <- system.file("extdata", "mockTaxa.sqlite",
@@ -24,8 +25,8 @@ get_demoMgDb <- function(){
                                   package="metagenomeFeatures")
 
     demoMgDb <- new("MgDb",
-        seq = db_seq,
-        taxa_file = demo_taxa_file,
-        tree_file = demo_tree_file,
-        metadata = metadata)
+                    seq = db_seq,
+                    taxa_file = demo_taxa_file,
+                    tree_file = demo_tree_file,
+                    metadata = metadata)
 }

@@ -10,7 +10,9 @@
 \arguments{
 \item{object}{MgDb-class object}
 }
+\value{
+MgDb-class summary
+}
 \description{
 Display summary of MgDb-class object
 }
-

@@ -19,4 +19,3 @@ MgDb seq slot accessor
 demoMgDb <- get_demoMgDb()
 mgdb_seq(demoMgDb)
 }
-

@@ -19,4 +19,3 @@ MgDb metadata slot accessor
 demoMgDb <- get_demoMgDb()
 mgdb_meta(demoMgDb)
 }
-

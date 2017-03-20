@@ -15,9 +15,10 @@ mgDb_select(mgdb, type, ...)
 \arguments{
 \item{mgdb}{MgDb class object}
 
-\item{type}{either "taxa", "seq", "tree", "all" or a character vector of types. "taxa", "seq", and "tree" only query
-the reference taxonomy, sequences, and phylogenetic tree respectively.
-"all" queries the reference taxonomy, sequence, and phylogenetic tree.}
+\item{type}{either "taxa", "seq", "tree", "all" or a character vector of
+types. "taxa", "seq", and "tree" only query the reference taxonomy,
+sequences, and phylogenetic tree respectively. "all" queries the reference
+taxonomy, sequence, and phylogenetic tree.}
 
 \item{...}{additional arguments passed to select function}
 
@@ -28,9 +29,10 @@ the reference taxonomy, sequences, and phylogenetic tree respectively.
 \item{columns}{keytypes in taxonomy databse to return, all by default}
 }
 \value{
-returned object depends on type, for 'taxa' - dataframe with taxa
-  information, 'seq' a DNAStringSet with seqeunce data, 'tree' a phylogenetic tree of class phylo, 'all' a list with
-  the dataframe, DNAStringSet, and phylo.
+returned object depends on type: 'taxa' - dataframe with taxa
+  information; 'seq' - DNAStringSet with seqeunce data; 'tree' - phylogenetic
+  tree of class phylo; 'all' - list with the dataframe, DNAStringSet, and
+  phylo.
 }
 \description{
 Function for querying \code{\link{MgDb}} class objects, user defines the
@@ -56,4 +58,3 @@ mgDb_select(demoMgDb, type = "all",
        keys = c("Vibrionaceae", "Enterobacteriaceae"),
        keytype = "Family")
 }
-

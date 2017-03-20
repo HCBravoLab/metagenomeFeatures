@@ -2,14 +2,14 @@
 vignette_assay_data <- function(){
     system.file("extdata", "mock_counts.csv",
                 package="metagenomeFeatures") %>%
-        metagenomeSeq::load_meta(sep = ",")
+        metagenomeSeq::loadMeta(sep = ",")
 }
 
 
 vignette_pheno_data <- function(){
     system.file("extdata", "mock_sample_data.csv",
                 package="metagenomeFeatures")  %>%
-        read.csv(row.names = 1, stringsAsFactors = F) %>%
+        read.csv(row.names = 1, stringsAsFactors = FALSE) %>%
         Biobase::AnnotatedDataFrame()
 }
 
@@ -25,11 +25,11 @@ vignette_mock_MgDb <- function(){
         Biostrings::readDNAStringSet()
 
     new("MgDb",
-            seq = db_seq,
-            taxa_file = system.file("extdata", "mock_MgDb_taxa.sqlite",
-                                    package="metagenomeFeatures"),
-            tree_file = "not available",
-            # tree_file = system.file("extdata","msd16s_MgDb_tree.rds",
-            #                        package="metagenomeFeatures"),
-            metadata = metadata)
+        seq = db_seq,
+        taxa_file = system.file("extdata", "mock_MgDb_taxa.sqlite",
+                                package="metagenomeFeatures"),
+        tree_file = "not available",
+        # tree_file = system.file("extdata","msd16s_MgDb_tree.rds",
+        #                        package="metagenomeFeatures"),
+        metadata = metadata)
 }

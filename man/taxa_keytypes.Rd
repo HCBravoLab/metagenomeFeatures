@@ -23,4 +23,3 @@ Column names for MgDb taxonomy slot object
 demoMgDb <- get_demoMgDb()
 taxa_keytypes(demoMgDb)
 }
-

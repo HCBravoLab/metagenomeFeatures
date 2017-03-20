@@ -19,4 +19,3 @@ MgDb taxa slot accessor
 demoMgDb <- get_demoMgDb()
 mgdb_taxa(demoMgDb)
 }
-

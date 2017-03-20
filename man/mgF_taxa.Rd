@@ -19,4 +19,3 @@ mgFeatures taxa slot accessor
 data(mock_mgF)
 mgF_taxa(mock_mgF)
 }
-

@@ -19,4 +19,3 @@ mgFeatures refDbTree slot accessor
 data(mock_mgF)
 mgF_tree(mock_mgF)
 }
-
