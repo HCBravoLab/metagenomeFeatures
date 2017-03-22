@@ -65,17 +65,17 @@ Each mgFeature slot can be accessed using the approporiate accessor function.
 
 __Seq Data__
 ```{r}
-mgF_seq(demoMRexp@featureData) %>% head()
+featureData(demoMRexp) %>% mgF_seq() %>% head()
 ```
 
 __Taxonomy__
 ```{r}
-mgF_taxa(demoMRexp@featureData) %>% head()
+featureData(demoRMexp) %>% mgF_taxa() %>% head()
 ```
 
 __Metadata__
 ```{r}
-mgF_meta(demoMRexp@featureData) %>% head()
+featureData(demoRMexp) %>% mgF_meta() %>% head()
 ```
 
 __Phylogenetic Tree__
