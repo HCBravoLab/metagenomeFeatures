@@ -70,19 +70,19 @@ featureData(demoMRexp) %>% mgF_seq() %>% head()
 
 __Taxonomy__
 ```{r}
-featureData(demoRMexp) %>% mgF_taxa() %>% head()
+featureData(demoMRexp) %>% mgF_taxa() %>% head()
 ```
 
 __Metadata__
 ```{r}
-featureData(demoRMexp) %>% mgF_meta() %>% head()
+featureData(demoMRexp) %>% mgF_meta() %>% head()
 ```
 
 __Phylogenetic Tree__
 The tree slot is not defined for `demoMRexp`. If available the tree would be accessed using the following command.
 
 ```{r eval=FALSE}
-mgF_tree(demoMRexp@featureData)
+featureData(demoMRexp) %>% mgF_tree()
 ```
 
 
