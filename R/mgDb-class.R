@@ -86,7 +86,7 @@ setValidity("MgDb", function(object) {
                      "'taxa' slot must contain a tbl object",
                      sep = "\n")
     if(!("tree" %in% ls(object)) ||
-       (is(object@tree, "phylo") && is(object@tree, "NULL")))
+       (is(object$tree, "phylo") && is(object$tree, "NULL")))
         msg <- paste(msg,
                      "'tree' slot must contain a phyloOrNULL object",
                      sep = "\n")
