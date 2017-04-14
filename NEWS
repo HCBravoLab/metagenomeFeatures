@@ -1,3 +1,6 @@
+version 1.6.0 (last update 2017-04-14)
+    + Bioc release cleaned up documentation and debugging MgDb class definition with tree slot
+
 version 1.5.1 (last update 2017-03-20)
     + editing documentation
 
