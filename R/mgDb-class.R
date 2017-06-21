@@ -23,7 +23,7 @@
     tree
 }
 
-setOldClass(c("tbl_sqlite"))
+setOldClass(c("tbl_dbi"))
 #' Metagenome Database class
 #'
 #' The MgDb-class object contains sequence and taxonomic data for a 16S rRNA
@@ -47,12 +47,12 @@ setOldClass(c("tbl_sqlite"))
 #'   \href{http://greengenes.secondgenome.com/}{Greengenes database} (version
 #'   13.5), additional packages are planned.
 #' @rdname MgDb-class
-#' @importFrom dplyr tbl_sql
+#' @importFrom dbplyr tbl_sql
 MgDb <- setRefClass("MgDb",
                     #contains="DNAStringSet"
                     fields=list(seq="DNAStringSet",
                                 # add seq file inplace of reading DNAStringSet
-                                taxa = "tbl_sqlite",
+                                taxa = "tbl_dbi",
                                 taxa_file = "character",
                                 tree_file = "character",
                                 tree = "phyloOrNULL",
@@ -81,7 +81,7 @@ setValidity("MgDb", function(object) {
         msg <- paste(msg,
                      "'seq' slot must contain DNAStringSeq object",
                      sep = "\n")
-    if(!("taxa" %in% ls(object)) || !is(object$taxa, "tbl_sqlite"))
+    if(!("taxa" %in% ls(object)) || !is(object$taxa, "tbl_dbi"))
         msg <- paste(msg,
                      "'taxa' slot must contain a tbl object",
                      sep = "\n")

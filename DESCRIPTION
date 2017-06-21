@@ -1,6 +1,6 @@
 Package: metagenomeFeatures
 Title: Exploration of marker-gene sequence taxonomic annotations
-Version: 1.9.0
+Version: 1.9.1
 Author: Nathan D. Olson, Joseph Nathaniel Paulson, Hector Corrada Bravo
 Maintainer: Nathan D. Olson <nolson@umiacs.umd.edu>
 Description: metagenomeFeatures was developed for use in exploring
@@ -9,14 +9,15 @@ Description: metagenomeFeatures was developed for use in exploring
     composition of a marker-gene database or annotated sequences from a
     marker-gene metagenome experiment.
 Depends:
-    R (>= 3.3),
+    R (>= 3.4),
     Biobase (>= 2.17.8)
 License: Artistic-2.0
 LazyData: true
 Imports:
     Biostrings (>= 2.36.4),
     ShortRead (>= 1.26.0),
-    dplyr (>= 0.5.0),
+    dplyr (>= 0.7.0),
+    dbplyr(>= 1.0.0),
     stringr (>= 1.0.0),
     lazyeval (>= 0.1.10),
     RSQLite (>= 1.0.0),
