@@ -27,7 +27,7 @@ test_that("MgDb-class seq",{
 })
 
 test_that("MgDb-class taxa",{
-    expect_is(testMgDb$taxa, "tbl_sqlite")
+    expect_is(testMgDb$taxa, "tbl_dbi")
 })
 
 taxa_levels = c("Keys","Kingdom","Phylum","Class","Order","Family","Genus","Species")
