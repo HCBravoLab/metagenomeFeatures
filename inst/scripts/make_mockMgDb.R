@@ -2,6 +2,8 @@
 
 library(dplyr)
 library(metagenomeFeatures)
+## Use devtools to install greengenes13.8OTU99MgDb
+## devtools::install_git("https://github.com/nate-d-olson/greengenes13.8_99MgDb")
 library(greengenes13.8OTU99MgDb)
 library(Biostrings)
 library(ape)
