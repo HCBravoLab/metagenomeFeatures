@@ -16,6 +16,6 @@ list
 mgFeatures metadata slot accessor
 }
 \examples{
-## mgF_meta(demo_mgF)
+data(mock_mgF)
+mgF_meta(mock_mgF)
 }
-

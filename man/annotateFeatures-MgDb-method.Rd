@@ -2,25 +2,22 @@
 % Please edit documentation in R/mgDb_method_annotateFeatures.R
 \docType{methods}
 \name{annotateFeatures}
-\alias{annotate,MgDb-method}
 \alias{annotateFeatures}
 \alias{annotateFeatures,MgDb-method}
 \title{Annotating metagenome data with taxonomic information}
 \usage{
 annotateFeatures(mgdb, ...)
 
-\S4method{annotateFeatures}{MgDb}(mgdb, query_key)
+\S4method{annotateFeatures}{MgDb}(mgdb, query)
 }
 \arguments{
 \item{mgdb}{MgDb class object}
 
 \item{...}{additional arguments passed to select function}
 
-\item{db_keys}{(Optional) vector of database Keys of entries to include in
-metagenomeAnnotation class object}
-
-\item{query_df}{(Optional) data frame with experimental data to annotate with
-taxonomic information, must include column named "Key" with databse ids.}
+\item{query}{A data frame with experimental data to annotate with
+taxonomic information, must include column named "Key" with databse ids.
+Or a vector of database Keys of entries to include in mgFeatures-class object.}
 }
 \value{
 mgFeatures-class object
@@ -29,10 +26,11 @@ mgFeatures-class object
 This method is used to create a \linkS4class{mgFeatures} class
 object
 }
-\note{
-Must include either db_keys or query_df as argument.
-}
 \examples{
-# see vignette
-}
+## MgDb with mock community ids
+mockMgDb <- get_mockMgDb()
+## generating mgFeatures object
+data(mock_query_df)
+mock_mgF <- annotateFeatures(mockMgDb, mock_query_df)
 
+}

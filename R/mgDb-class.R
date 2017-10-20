@@ -5,32 +5,32 @@
 ##
 ################################################################################
 
-
 ## MgDb Class -----------------------------------------------------------------------------
 
-## Not sure how to access method, currently need MgDb$methodname(mgdb_object)
 ## loading the sqlite database from file
-
 .load_taxa_db <- function(taxdb){
-    db_con <- dplyr::src_sqlite(taxdb)
+    db_con <- dplyr::src_sqlite(taxdb, create = FALSE)
     dplyr::tbl(src = db_con, from = "taxa")
 }
 
+## Tree can be either rds with phylo class object or tree file
 .load_tree <- function(tree_file){
     if(grepl("rds",tree_file)){
         tree <- readRDS(tree_file)
     }else{
-       tree <- ape::read.tree(tree_file)
+        tree <- ape::read.tree(tree_file)
     }
     tree
 }
 
-setOldClass(c("tbl_sqlite"))
+setOldClass(c("tbl_dbi"))
 #' Metagenome Database class
 #'
 #' The MgDb-class object contains sequence and taxonomic data for a 16S rRNA
 #' taxonomic database, see the \pkg{greengenes13.5MgDb} package as an example
-#' database. The \code{get_demoMgDb} function exports a small subset of the database in \pkg{greengenes13.5MgDb}\pkg{metagenomeFeatures} package as an example of a MgDb-class object.
+#' database. The \code{get_demoMgDb} function exports a small subset of the
+#' database in \pkg{greengenes13.5MgDb}\pkg{metagenomeFeatures} package as an
+#' example of a MgDb-class object.
 #' @aliases mgdb
 #' @field taxa taxonomic information for database sequences
 #' @field seq database reference sequences
@@ -47,26 +47,31 @@ setOldClass(c("tbl_sqlite"))
 #'   \href{http://greengenes.secondgenome.com/}{Greengenes database} (version
 #'   13.5), additional packages are planned.
 #' @rdname MgDb-class
-#' @importFrom dplyr tbl_sql
+#' @importFrom dbplyr tbl_sql
 MgDb <- setRefClass("MgDb",
-                     #contains="DNAStringSet"
-                     fields=list(seq="DNAStringSet",
-                                 # add seq file inplace of reading DNAStringSet
-                                 taxa = "tbl_sqlite",
-                                 taxa_file = "character",
-                                 tree_file = "character",
-                                 tree = "phyloOrNULL",
-                                 metadata= "list"),
-                     methods=list(
-                         initialize=function(...){
-                             callSuper(...)
-                             taxa <<- .load_taxa_db(taxa_file)
-                             seq <<- seq
-                             if(tree_file != "not available"){
-                                 tree <<- .load_tree(tree_file)
-                             }
-                             metadata <<- metadata
-                         }))
+                    #contains="DNAStringSet"
+                    fields=list(seq="DNAStringSet",
+                                # add seq file inplace of reading DNAStringSet
+                                taxa = "tbl_dbi",
+                                taxa_file = "character",
+                                tree_file = "character",
+                                tree = "phyloOrNULL",
+                                metadata= "list"),
+                    methods=list(
+                        initialize=function(...){
+                            callSuper(...)
+                            #if(!exists("taxa")){
+                            taxa <<- .load_taxa_db(taxa_file)
+                            #} else {
+                            #    taxa <<- taxa
+                            #}
+
+                            seq <<- seq
+                            if(tree_file != "not available"){
+                                tree <<- .load_tree(tree_file)
+                            }
+                            metadata <<- metadata
+                        }))
 
 ## Validity ---------------------------------------------------------------
 
@@ -76,12 +81,12 @@ setValidity("MgDb", function(object) {
         msg <- paste(msg,
                      "'seq' slot must contain DNAStringSeq object",
                      sep = "\n")
-    if(!("taxa" %in% ls(object)) || !is(object$taxa, "tbl_sqlite"))
+    if(!("taxa" %in% ls(object)) || !is(object$taxa, "tbl_dbi"))
         msg <- paste(msg,
                      "'taxa' slot must contain a tbl object",
                      sep = "\n")
     if(!("tree" %in% ls(object)) ||
-       (is(object@tree, "phylo") && is(object@tree, "NULL")))
+       (is(object$tree, "phylo") && is(object$tree, "NULL")))
         msg <- paste(msg,
                      "'tree' slot must contain a phyloOrNULL object",
                      sep = "\n")
@@ -102,23 +107,23 @@ setValidity("MgDb", function(object) {
 
 #' Display summary of MgDb-class object
 #' @param object MgDb-class object
-
+#' @return MgDb-class summary
 #' @export
 setMethod("show", "MgDb",
           function(object){
-            cat(class(object), "object:")
-            print("Metadata")
-            metadata <- object $metadata
-                for(i in names(metadata)){
-                    cat("|", i, ": ", metadata[[i]], "\n", sep = "")
-                }
-            print("Sequence Data:")
-            print(object$seq)
-            print("Taxonomy Data:")
-            print(object$taxa)
-            print("Tree Data:")
-            print(object$tree)
-        }
+              cat(class(object), "object:")
+              print("Metadata")
+              metadata <- object $metadata
+              for(i in names(metadata)){
+                  cat("|", i, ": ", metadata[[i]], "\n", sep = "")
+              }
+              print("Sequence Data:")
+              print(object$seq)
+              print("Taxonomy Data:")
+              print(object$taxa)
+              print("Tree Data:")
+              print(object$tree)
+          }
 )
 
 ## Accessors -------------------------------------------------------------------
@@ -130,7 +135,9 @@ setMethod("show", "MgDb",
 #' @return phylo class object
 #' @export
 #'
-#' @examples # mgdb_tree(demoMgDb)
+#' @examples
+#' demoMgDb <- get_demoMgDb()
+#' mgdb_tree(demoMgDb)
 mgdb_tree <- function(mgdb){
     mgdb$tree
 }
@@ -142,7 +149,9 @@ mgdb_tree <- function(mgdb){
 #' @return DNAStringSet class object
 #' @export
 #'
-#' @examples # mgdb_seq(demoMgDb)
+#' @examples
+#' demoMgDb <- get_demoMgDb()
+#' mgdb_seq(demoMgDb)
 mgdb_seq <- function(mgdb){
     mgdb$seq
 }
@@ -154,7 +163,9 @@ mgdb_seq <- function(mgdb){
 #' @return tbl_sql connection to sqlite table
 #' @export
 #'
-#' @examples # mgdb_taxa(demoMgDb)
+#' @examples
+#' demoMgDb <- get_demoMgDb()
+#' mgdb_taxa(demoMgDb)
 mgdb_taxa <- function(mgdb){
     mgdb$taxa
 }
@@ -166,7 +177,9 @@ mgdb_taxa <- function(mgdb){
 #' @return list
 #' @export
 #'
-#' @examples # mgdb_meta(demoMgDb)
+#' @examples
+#' demoMgDb <- get_demoMgDb()
+#' mgdb_meta(demoMgDb)
 mgdb_meta <- function(mgdb){
     mgdb$metadata
 }

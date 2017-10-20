@@ -9,18 +9,18 @@ test_that("MgDb-class select arguments",{
 
 test_that("MgDb-class select return",{
     expect_equal(mgDb_select(testMgDb, type = c("seq","tree")),
-              list(seq = testMgDb$seq, tree = testMgDb$tree))
+                 list(seq = testMgDb$seq, tree = testMgDb$tree))
 
-     expect_equal(mgDb_select(testMgDb, type = c("taxa","tree")),
-               list(taxa = testMgDb$taxa, tree = testMgDb$tree))
+    expect_equal(mgDb_select(testMgDb, type = c("taxa","tree")),
+                 list(taxa = testMgDb$taxa, tree = testMgDb$tree))
 
-     expect_equal(mgDb_select(testMgDb, type = c("seq","tree")),
-               list(seq = testMgDb$seq, tree = testMgDb$tree))
+    expect_equal(mgDb_select(testMgDb, type = c("seq","tree")),
+                 list(seq = testMgDb$seq, tree = testMgDb$tree))
 
-     expect_equal(mgDb_select(testMgDb, type = "all"),
-               list(taxa = testMgDb$taxa,
-                    seq = testMgDb$seq,
-                    tree = testMgDb$tree))
+    expect_equal(mgDb_select(testMgDb, type = "all"),
+                 list(taxa = testMgDb$taxa,
+                      seq = testMgDb$seq,
+                      tree = testMgDb$tree))
 })
 
 ## TODO add test for Greengenes format

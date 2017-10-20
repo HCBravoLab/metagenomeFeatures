@@ -76,10 +76,10 @@ test_that("mgFeatures-class-new",{
 ## mgF slots -------------------------------------------------------------------
 test_that("mgFeatures-class-slots",{
     test_mgF <- new("mgFeatures",
-                   data = test_taxa,
-                   metadata = test_metadata,
-                   refDbSeq = test_seq,
-                   refDbTree = test_tree)
+                    data = test_taxa,
+                    metadata = test_metadata,
+                    refDbSeq = test_seq,
+                    refDbTree = test_tree)
     ## test slots
     expect_is(test_mgF, "mgFeatures")
     expect_identical(test_mgF@data, test_taxa)
@@ -91,10 +91,10 @@ test_that("mgFeatures-class-slots",{
 ## mgF accessors ---------------------------------------------------------------
 test_that("mgFeatures-accessors",{
     test_mgF <- new("mgFeatures",
-                   data = test_taxa,
-                   metadata = test_metadata,
-                   refDbSeq=test_seq,
-                   refDbTree = test_tree)
+                    data = test_taxa,
+                    metadata = test_metadata,
+                    refDbSeq=test_seq,
+                    refDbTree = test_tree)
 
     expect_identical(mgF_taxa(test_mgF), test_mgF@data)
     expect_identical(mgF_meta(test_mgF), test_mgF@metadata)

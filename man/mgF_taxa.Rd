@@ -16,6 +16,6 @@ AnnotatedDataFrame
 mgFeatures taxa slot accessor
 }
 \examples{
-## mgF_taxa(demo_mgF)
+data(mock_mgF)
+mgF_taxa(mock_mgF)
 }
-

@@ -46,7 +46,10 @@
 #' @param MRobj MRexperiment class object
 #' @param ... additional arguments passed to select function
 #' @return MRexperiment-class object
+#' @examples
+#' # see vignette
 #' @rdname annotateMRexp_fData-MgDb-method
+#' @import metagenomeSeq
 setGeneric("annotateMRexp_fData", signature = "mgdb",
            function(mgdb, MRobj, ...) {
                standardGeneric("annotateMRexp_fData")}

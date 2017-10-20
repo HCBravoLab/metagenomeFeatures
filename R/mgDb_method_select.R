@@ -55,7 +55,7 @@
 
 .select.tree <- function(tree, ids){
     drop_tips <- tree$tip.label[!(tree$tip.label %in% ids)]
-    # drip.tip return class phy defining class to match mgFeature class description
+    # drop.tip return class phy defining class to match mgFeature class description
     ape::drop.tip(tree,drop_tips) %>% ape::as.phylo()
 }
 
@@ -107,16 +107,18 @@
 #' only the taxonomic and sequence data, or both.
 #'
 #' @param mgdb MgDb class object
-#' @param type either "taxa", "seq", "tree", "all" or a character vector of types. "taxa", "seq", and "tree" only query
-#'   the reference taxonomy, sequences, and phylogenetic tree respectively.
-#'   "all" queries the reference taxonomy, sequence, and phylogenetic tree.
+#' @param type either "taxa", "seq", "tree", "all" or a character vector of
+#'   types. "taxa", "seq", and "tree" only query the reference taxonomy,
+#'   sequences, and phylogenetic tree respectively. "all" queries the reference
+#'   taxonomy, sequence, and phylogenetic tree.
 #' @param keys specific taxonomic groups to select for
 #' @param keytype taxonomic level of keys
 #' @param columns keytypes in taxonomy databse to return, all by default
 #' @param ... additional arguments passed to select function
-#' @return returned object depends on type, for 'taxa' -dataframe with taxa
-#'   information, 'seq' a DNAStringSet with seqeunce data, 'tree' a phylogenetic tree of class phylo, 'all' a list with
-#'   the dataframe, DNAStringSet, and phylo.
+#' @return returned object depends on type: 'taxa' - dataframe with taxa
+#'   information; 'seq' - DNAStringSet with seqeunce data; 'tree' - phylogenetic
+#'   tree of class phylo; 'all' - list with the dataframe, DNAStringSet, and
+#'   phylo.
 #' @examples
 #' demoMgDb <- get_demoMgDb()
 #' # select taxa only
@@ -135,8 +137,8 @@
 #'        keytype = "Family")
 #' @rdname select-MgDb-method
 setGeneric("mgDb_select", signature="mgdb",
-           function(mgdb, type, ...) { standardGeneric("mgDb_select")
-           })
+           function(mgdb, type, ...) {standardGeneric("mgDb_select")}
+)
 
 
 #' @export
