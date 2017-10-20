@@ -47,6 +47,7 @@ setOldClass(c("tbl_dbi"))
 #'   \href{http://greengenes.secondgenome.com/}{Greengenes database} (version
 #'   13.5), additional packages are planned.
 #' @rdname MgDb-class
+#' @return MgDb-class object
 #' @importFrom dbplyr tbl_sql
 MgDb <- setRefClass("MgDb",
                     #contains="DNAStringSet"

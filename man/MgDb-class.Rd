@@ -9,6 +9,9 @@
 \usage{
 # library(greengenes13.5MgDb)
 }
+\value{
+MgDb-class object
+}
 \description{
 The MgDb-class object contains sequence and taxonomic data for a 16S rRNA
 taxonomic database, see the \pkg{greengenes13.5MgDb} package as an example
