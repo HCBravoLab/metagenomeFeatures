@@ -52,58 +52,44 @@ setValidity("mgFeatures", function(object) {
 ################################################################################
 ## accessors -------------------------------------------------------------------
 
-#' mgFeatures refDbTree slot accessor
+#' mgFeatures accessors
 #'
-#' @param mgF  mgFeatures class object
+#' Accessors for \linkS4class{mgFeatures}-class object slots. \code{mgF_seq} - refDbSeq slot, \code{mgF_taxa} - taxa slot, \code{mgF_tree} - phylogenetic tree slot, and \code{mgF_meta} - metadata slot.
 #'
-#' @return phylo class object
-#' @export
+#' @name mgF_
+#' @param mgF mgFeatures-class object.
 #'
+#' @return appropriate class object for the slot accessed
 #' @examples
 #' data(mock_mgF)
+#' mgF_seq(mock_mgF)
+#' mgF_taxa(mock_mgF)
 #' mgF_tree(mock_mgF)
+#' mgF_meta(mock_mgF)
+NULL
+
+#' @rdname mgF_
+#' @export
 mgF_tree <- function(mgF){
     mgF@refDbTree
 }
 
-#' mgFeatures refDbSeq slot accessor
-#'
-#' @param mgF  mgFeatures class object
-#'
-#' @return DNAStringSet class object
+#' @rdname mgF_
 #' @export
-#'
-#' @examples
-#' data(mock_mgF)
-#' mgF_seq(mock_mgF)
 mgF_seq <- function(mgF){
     mgF@refDbSeq
 }
 
-#' mgFeatures taxa slot accessor
-#'
-#' @param mgF  mgFeatures class object
-#'
-#' @return AnnotatedDataFrame
+#' @rdname mgF_
 #' @export
-#'
-#' @examples
-#' data(mock_mgF)
-#' mgF_taxa(mock_mgF)
 mgF_taxa <- function(mgF){
     mgF@data
 }
 
-#' mgFeatures metadata slot accessor
-#'
-#' @param mgF  mgFeatures class object
-#'
-#' @return list
+#' @rdname mgF_
 #' @export
-#'
-#' @examples
-#' data(mock_mgF)
-#' mgF_meta(mock_mgF)
 mgF_meta <- function(mgF){
     mgF@metadata
 }
+
+
