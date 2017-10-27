@@ -102,4 +102,24 @@ test_that("mgFeatures-accessors",{
     expect_identical(mgF_tree(test_mgF), test_mgF@refDbTree)
 })
 
-## test for subsetting
+## mgF subset ------------------------------------------------------------------
+test_that("mgFeature-subset", {
+    test_mgF <- new("mgFeatures",
+                    data = test_taxa,
+                    metadata = test_metadata,
+                    refDbSeq=test_seq,
+                    refDbTree = test_tree)
+
+    ## Checking the subset function works for numeric and text based subsets
+    expect_s4_class(test_mgF[1:5,],"mgFeatures")
+    expect_s4_class(test_mgF[rownames(test_mgF) %in% 1:5], "mgFeatures")
+    expect_equal(test_mgF[1:5,], test_mgF[test_mgF$Keys %in% 1:5])
+
+    ## Checking individual slots were subset correctly
+    subset_test_mgF <- test_mgF[1:5,]
+    expect_equal(subset_test_mgF@data, test_taxa[1:5,])
+    expect_equal(subset_test_mgF@refDbTree,
+                 drop.tip(test_tree,tip = as.character(6:10)))
+    expect_equal(subset_test_mgF@refDbSeq, test_seq[1:5])
+
+})
