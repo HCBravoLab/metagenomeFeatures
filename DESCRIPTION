@@ -16,6 +16,7 @@ LazyData: true
 Imports:
     Biostrings (>= 2.36.4),
     ShortRead (>= 1.26.0),
+    S4Vectors (>= 0.14.7),
     dplyr (>= 0.7.0),
     dbplyr(>= 1.0.0),
     stringr (>= 1.0.0),

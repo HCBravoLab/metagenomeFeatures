@@ -2,7 +2,7 @@
 #' mgFeature-class object
 #'
 #' Object contains taxonomic annotation and reference sequence data for
-#' classified OTUs. The class extends the \link[Biobase]{AnnotatedDataFrame}
+#' classified OTUs. The class extends the \link[S4Vectors]{DataFrame}
 #' class with a slot with a subset of the reference database sequences and
 #' phylogenetic tree for taxonomically classified OTUs, along with an additional
 #' slot for metadata including information on the database source.
@@ -19,10 +19,10 @@ setClass("mgFeatures",
          slots = list(metadata = "list",
                       refDbSeq="DNAStringSet",
                       refDbTree = "phyloOrNULL"),
-         contains = c("AnnotatedDataFrame"),
+         contains = c("DataFrame"),
          prototype = new("VersionedBiobase",
-                         versions = c(classVersion("AnnotatedDataFrame"),
-                                      mgFeatures = "1.0.1"))
+                         versions = c(classVersion("DataFrame"),
+                                      mgFeatures = "2.0.0"))
 )
 
 ## making sure new object conforms to class definition
