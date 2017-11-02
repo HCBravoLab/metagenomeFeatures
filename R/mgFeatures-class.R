@@ -15,14 +15,12 @@
 #' @examples
 #' data(mock_mgF)
 #' @rdname mgFeatures-class
+#' @importFrom S4Vectors DataFrame
 setClass("mgFeatures",
          slots = list(metadata = "list",
                       refDbSeq="DNAStringSet",
                       refDbTree = "phyloOrNULL"),
-         contains = c("DataFrame"),
-         prototype = new("VersionedBiobase",
-                         versions = c(classVersion("DataFrame"),
-                                      mgFeatures = "2.0.0"))
+         contains = c("DataFrame")
 )
 
 ## making sure new object conforms to class definition
@@ -80,10 +78,13 @@ mgF_seq <- function(mgF){
     mgF@refDbSeq
 }
 
+## Note using DataFrame the taxa information is stored as lists and not a data
+# frame. Function returns a DataFrame but no assignment function is defined.
+
 #' @rdname mgF_
 #' @export
 mgF_taxa <- function(mgF){
-    mgF@data
+    DataFrame(mgF)
 }
 
 #' @rdname mgF_

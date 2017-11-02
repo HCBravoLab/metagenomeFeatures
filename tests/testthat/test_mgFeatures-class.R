@@ -23,20 +23,23 @@ test_taxa <- make_test_taxa()
 test_seq <- readRDS("../test_seq.rds")
 test_tree <- readRDS("../test_tree.rds") %>% as(Class = "phylo")
 
-
-
+test_mgF <- new("mgFeatures",
+                DataFrame(test_taxa),
+                metadata = test_metadata,
+                refDbSeq=test_seq,
+                refDbTree = test_tree)
 
 context("mgFeatures-class")
 ## mgF new ---------------------------------------------------------------------
 ## testing for errors when generating new metagenomeFeatures object
 test_that("mgFeatures-class-new",{
     expect_is(new("mgFeatures",
-                  data = test_taxa,
+                  listData = test_taxa,
                   metadata = test_metadata,
                   refDbSeq = test_seq,
                   refDbTree = test_tree), "mgFeatures")
     expect_is(new("mgFeatures",
-                  data = test_taxa,
+                  listData = test_taxa,
                   metadata = test_metadata,
                   refDbSeq = test_seq,
                   refDbTree = NULL), "mgFeatures")
@@ -75,14 +78,8 @@ test_that("mgFeatures-class-new",{
 
 ## mgF slots -------------------------------------------------------------------
 test_that("mgFeatures-class-slots",{
-    test_mgF <- new("mgFeatures",
-                    data = test_taxa,
-                    metadata = test_metadata,
-                    refDbSeq = test_seq,
-                    refDbTree = test_tree)
-    ## test slots
     expect_is(test_mgF, "mgFeatures")
-    expect_identical(test_mgF@data, test_taxa)
+    expect_identical(test_mgF@listData, as.list(test_taxa))
     expect_identical(test_mgF@metadata, test_metadata)
     expect_identical(test_mgF@refDbSeq, test_seq)
     expect_identical(test_mgF@refDbTree, test_tree)
@@ -90,13 +87,7 @@ test_that("mgFeatures-class-slots",{
 
 ## mgF accessors ---------------------------------------------------------------
 test_that("mgFeatures-accessors",{
-    test_mgF <- new("mgFeatures",
-                    data = test_taxa,
-                    metadata = test_metadata,
-                    refDbSeq=test_seq,
-                    refDbTree = test_tree)
-
-    expect_identical(mgF_taxa(test_mgF), test_mgF@data)
+    expect_identical(mgF_taxa(test_mgF), DataFrame(test_mgF))
     expect_identical(mgF_meta(test_mgF), test_mgF@metadata)
     expect_identical(mgF_seq(test_mgF), test_mgF@refDbSeq)
     expect_identical(mgF_tree(test_mgF), test_mgF@refDbTree)
