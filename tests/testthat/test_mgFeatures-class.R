@@ -103,7 +103,11 @@ test_that("mgFeature-subset", {
 
     ## Checking individual slots were subset correctly
     subset_test_mgF <- test_mgF[1:5,]
+<<<<<<< HEAD
     expect_equal(subset_test_mgF@listData, as.list(test_taxa[1:5,]))
+=======
+    expect_equal(test_mgF@listData, as.list(test_taxa[1:5,]))
+>>>>>>> 9566f103accb8c8d9048d70d63d6031a88a19ef9
     expect_equal(subset_test_mgF@refDbTree,
                  drop.tip(test_tree,tip = as.character(6:10)))
     expect_equal(subset_test_mgF@refDbSeq, test_seq[1:5])
