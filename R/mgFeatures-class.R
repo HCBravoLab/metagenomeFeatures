@@ -18,7 +18,7 @@
 #' @importFrom S4Vectors DataFrame
 setClass("mgFeatures",
          slots = list(metadata = "list",
-                      refDbSeq="DNAStringSet",
+                      refDbSeq = "DNAStringSet",
                       refDbTree = "phyloOrNULL"),
          contains = c("DataFrame")
 )
@@ -53,14 +53,14 @@ setValidity("mgFeatures", function(object) {
 .subset_tree <- function(tree, ids){
     drop_tips <- tree$tip.label[!(tree$tip.label %in% ids)]
     # drop.tip return class phy defining class to match mgFeature class description
-    ape::drop.tip(tree,drop_tips) %>% ape::as.phylo()
+    ape::drop.tip(tree,drop_tips) # %>% ape::as.phylo()
 }
 
 setMethod("[", "mgFeatures",
-          function (x, i, j, ..., drop = FALSE) {
+          function(x, i, j, ..., drop = FALSE) {
               obj = callNextMethod()
 
-              ## Letting subset call to AnnotatedDataFrame define subset rows
+              ## Letting subset call to DataFrame define subset rows
               ids <- rownames(obj)
 
               ## Subsetting tree

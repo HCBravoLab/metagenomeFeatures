@@ -1,6 +1,7 @@
 ## testing mgFeatures class
 library(magrittr)
 library(ape)
+library(S4Vectors)
 
 test_metadata <- list(ACCESSION_DATE = "1/11/1111",
                       URL = "test-data",
@@ -24,9 +25,9 @@ test_seq <- readRDS("../test_seq.rds")
 test_tree <- readRDS("../test_tree.rds") %>% as(Class = "phylo")
 
 test_mgF <- new("mgFeatures",
-                DataFrame(test_taxa),
+                DataFrame(test_taxa, row.names = test_taxa$Keys),
                 metadata = test_metadata,
-                refDbSeq=test_seq,
+                refDbSeq = test_seq,
                 refDbTree = test_tree)
 
 context("mgFeatures-class")
@@ -95,20 +96,14 @@ test_that("mgFeatures-accessors",{
 
 ## mgF subset ------------------------------------------------------------------
 test_that("mgFeature-subset", {
-    test_mgF <- new("mgFeatures",
-                    data = test_taxa,
-                    metadata = test_metadata,
-                    refDbSeq=test_seq,
-                    refDbTree = test_tree)
-
     ## Checking the subset function works for numeric and text based subsets
     expect_s4_class(test_mgF[1:5,],"mgFeatures")
-    expect_s4_class(test_mgF[rownames(test_mgF) %in% 1:5], "mgFeatures")
-    expect_equal(test_mgF[1:5,], test_mgF[test_mgF$Keys %in% 1:5])
+    expect_s4_class(test_mgF[rownames(test_mgF) %in% 1:5,], "mgFeatures")
+    expect_equal(test_mgF[1:5,], test_mgF[test_mgF$Keys %in% 1:5,])
 
     ## Checking individual slots were subset correctly
     subset_test_mgF <- test_mgF[1:5,]
-    expect_equal(subset_test_mgF@data, test_taxa[1:5,])
+    expect_equal(subset_test_mgF@listData, as.list(test_taxa[1:5,]))
     expect_equal(subset_test_mgF@refDbTree,
                  drop.tip(test_tree,tip = as.character(6:10)))
     expect_equal(subset_test_mgF@refDbSeq, test_seq[1:5])
