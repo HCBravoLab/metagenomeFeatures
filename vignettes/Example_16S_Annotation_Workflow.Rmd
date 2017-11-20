@@ -9,6 +9,9 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 __VIGNETTE UNDER CONSTRUCTION__  
+We are updating the class definition for mgFeatures to contain a DataFrame class object instead of a AnnotatedDataFrame class object. 
+This will allow for mgFeatures to define the rowData of a summarizedExperiment class object, used by curratedMetagenomeData, but not eSet objects which MRexperiment-objects currently extend. 
+We are planning to convert MRexperiment-objects to summerizedExperiment class objects.
 
 ## Overview
 The metagenomeFeatures package and associated annotation packages (e.g. greengene13.5MgDb) can be used to and taxonomic annotations to MRexperiment objects.  The metagenomeSeq package includes the MRexperiment-class, and has a number of methods for analyzing marker-gene metagenome datasets.  This vignette demonstrate how to add taxonomic annotation to a MRexperiment-class object using metagenomeFeatures.   
