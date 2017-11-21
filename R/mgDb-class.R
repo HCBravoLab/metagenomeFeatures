@@ -23,6 +23,10 @@
     tree
 }
 
+.load_seq <- function(seq_file){
+  DECIPHER::SearchDB(seq_file)
+}
+
 setOldClass(c("tbl_dbi"))
 #' Metagenome Database class
 #'
@@ -51,8 +55,8 @@ setOldClass(c("tbl_dbi"))
 #' @importFrom dbplyr tbl_sql
 MgDb <- setRefClass("MgDb",
                     #contains="DNAStringSet"
-                    fields=list(seq="DNAStringSet",
-                                # add seq file inplace of reading DNAStringSet
+                    fields=list(seq_file = "character",
+                                seq="DNAStringSet",
                                 taxa = "tbl_dbi",
                                 taxa_file = "character",
                                 tree_file = "character",
@@ -66,8 +70,12 @@ MgDb <- setRefClass("MgDb",
                             #} else {
                             #    taxa <<- taxa
                             #}
+                            
+                            # seq <<- seq
+                            if(!is.null(seq_file)) {
+                              seq <<- .load_seq(seq_file)
+                            }
 
-                            seq <<- seq
                             if(tree_file != "not available"){
                                 tree <<- .load_tree(tree_file)
                             }
@@ -78,7 +86,7 @@ MgDb <- setRefClass("MgDb",
 
 setValidity("MgDb", function(object) {
     msg <- NULL
-    if(!("seq" %in% ls(object)) || !is(object$seq, "DNAStringSet"))
+    if(!("seq" %in% ls(object)) || !is(object$seq, "DNAStringSet")) 
         msg <- paste(msg,
                      "'seq' slot must contain DNAStringSeq object",
                      sep = "\n")

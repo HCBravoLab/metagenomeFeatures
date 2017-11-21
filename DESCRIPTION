@@ -26,7 +26,8 @@ Imports:
     lattice (>= 0.20.33),
     metagenomeSeq (>= 1.14.2),
     ape (>= 3.5),
-    purrr (>= 0.2.2)
+    purrr (>= 0.2.2),
+    DECIPHER
 Suggests:
     knitr (>= 1.11),
     msd16s (>= 0.102.0),
