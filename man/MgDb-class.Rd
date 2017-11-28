@@ -3,38 +3,30 @@
 \docType{class}
 \name{MgDb-class}
 \alias{MgDb-class}
-\alias{MgDb}
 \alias{mgdb}
 \title{Metagenome Database class}
-\usage{
-# library(greengenes13.5MgDb)
-}
 \value{
 MgDb-class object
 }
 \description{
-The MgDb-class object contains sequence, taxonomic data, and a phylogenetic tree (optional) for a 16S rRNA
-taxonomic database, see the \pkg{greengenes13.5MgDb} package as an example
-database. The \code{get_demoMgDb} function in \pkg{metagenomeFeatures} exports a small subset of the
-database in the \pkg{greengenes13.5MgDb} annotation package as an
-example of a MgDb-class object.
+The MgDb-class object contains sequence, taxonomic data, and a phylogenetic
+tree (optional) for a 16S rRNA taxonomic database, see the
+\pkg{greengenes13.5MgDb} package as an example database. The
+\code{get_demoMgDb} function in \pkg{metagenomeFeatures} exports a small
+subset of the database in the \pkg{greengenes13.5MgDb} annotation package as
+an example of a MgDb-class object.
 }
-\section{Fields}{
+\section{Slots}{
 
 \describe{
-\item{\code{taxa}}{taxonomic information for database sequences}
-
 \item{\code{seq}}{database reference sequences}
 
 \item{\code{tree}}{reference phylogenetic tree}
 
-\item{\code{taxa_file}}{name of sqlite db}
-
-\item{\code{tree_file}}{name of phylogenetic tree file}
+\item{\code{taxa}}{database taxonomy}
 
 \item{\code{metadata}}{associated metadata for the database}
 }}
-
 
 \note{
 Currently the only database with a MgDb package is the

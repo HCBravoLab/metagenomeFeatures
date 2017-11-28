@@ -11,25 +11,25 @@
 
 ### Taxa keys function ---------------------------------------------------------
 .taxa_keys <- function(mgdb, keytype){
-    if(length(keytype) > 0){
+    if (length(keytype) > 0) {
         nonvalid_keytype <- c()
-        for(i in keytype){
-            if(!(i %in% taxa_keytypes(mgdb))){
+        for (i in keytype) {
+            if (!(i %in% taxa_keytypes(mgdb))) {
                 nonvalid_keytype <- c(nonvalid_keytype, i)
             }
         }
-        if(length(nonvalid_keytype) > 0){
+        if (length(nonvalid_keytype) > 0) {
             msg <- paste(nonvalid_keytype,
                          "not a valid keytype,", "
                          use `taxa_keytypes()` for valid keytypes")
             stop(msg)
         }
-        mgdb$taxa %>%
+        mgdb_taxa(mgdb) %>%
             dplyr::select_(keytype) %>%
             dplyr::collect() %>%
             return()
     }else{
-        mgdb$taxa
+        mgdb_taxa(mgdb)
     }
 }
 
@@ -45,7 +45,7 @@
 #' taxa_keys(demoMgDb, keytype = "Phylum")
 #' @exportMethod taxa_keys
 #' @rdname taxa_keys
-setGeneric("taxa_keys", signature="mgdb",
+setGeneric("taxa_keys", signature = "mgdb",
            function(mgdb, keytype) standardGeneric("taxa_keys"))
 
 ## MgDb taxa_keys method
@@ -58,7 +58,7 @@ setMethod("taxa_keys", "MgDb",
 
 ### Taxa columns function ------------------------------------------------------
 .taxa_columns = function(mgdb){
-    colnames(mgdb$taxa)
+    colnames(mgdb_taxa(mgdb))
 }
 
 #' Column names for MgDb taxonomy slot object
@@ -72,7 +72,7 @@ setMethod("taxa_keys", "MgDb",
 #' taxa_columns(demoMgDb)
 #' @exportMethod taxa_columns
 #' @rdname taxa_columns
-setGeneric("taxa_columns", signature="mgdb",
+setGeneric("taxa_columns", signature = "mgdb",
            function(mgdb) standardGeneric("taxa_columns"))
 
 ## MgDb taxa_columns method
@@ -84,7 +84,7 @@ setMethod("taxa_columns", "MgDb",
 
 ### taxa keytypes function -----------------------------------------------------
 .taxa_keytypes = function(mgdb){
-    colnames(mgdb$taxa)
+    colnames(mgdb_taxa(mgdb))
 }
 
 #' Column names for MgDb taxonomy slot object
@@ -97,7 +97,7 @@ setMethod("taxa_columns", "MgDb",
 #' taxa_keytypes(demoMgDb)
 #' @exportMethod taxa_keytypes
 #' @rdname taxa_keytypes
-setGeneric("taxa_keytypes", signature="mgdb",
+setGeneric("taxa_keytypes", signature = "mgdb",
            function(mgdb) standardGeneric("taxa_keytypes"))
 
 ## MgDb taxa_keytypes method
