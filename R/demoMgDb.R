@@ -13,22 +13,12 @@ get_demoMgDb <- function(){
                      DB_TYPE_VALUE = "MgDb",
                      DB_SCHEMA_VERSION = "1.0")
 
-    demo_seq_file <- system.file("extdata", 'mockSeq.fasta.gz',
-                                 package="metagenomeFeatures")
-    
-    db_seq_file <- file.path(system.file(package="metagenomeFeatures"), "extdata/mockSeq.sqlite")
-    db_seq <- DECIPHER::Seqs2DB(demo_seq_file, "FASTA",
-                                db_seq_file,
-                                metadata[["DB_TYPE_NAME"]])
-
-    demo_taxa_file <- system.file("extdata", "mockTaxa.sqlite",
-                                  package="metagenomeFeatures")
+    demo_db_file <- system.file("extdata", 'mockDB.sqlite',
+                                 package = "metagenomeFeatures")
 
     demo_tree_file <- system.file("extdata", "mockTree.rds",
-                                  package="metagenomeFeatures")
-    demoMgDb <- new("MgDb",
-                    seq_file = db_seq_file,
-                    taxa_file = demo_taxa_file,
-                    tree_file = demo_tree_file,
-                    metadata = metadata)
+                                  package = "metagenomeFeatures")
+
+    ## Creating a new MgDb class object with demoMgDb data
+    MgDb(db_file = demo_db_file, tree = demo_tree_file, metadata)
 }

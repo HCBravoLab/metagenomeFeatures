@@ -41,15 +41,14 @@ setOldClass(c("tbl_dbi"))
 #' @rdname MgDb-class
 #' @return MgDb-class object
 #' @importFrom dbplyr tbl_sql
-#' @importFrom RSQLite SQLiteConnection
+#' @importClassesFrom RSQLite SQLiteConnection
 setClass("MgDb",
          slots = list(seq = "SQLiteConnection",
                       taxa = "tbl_dbi",
                       tree = "phyloOrNULL",
                       ## Add db file path to metadata list
                       ## use hash to check for changes
-                      metadata = "list"),
-         contains = c("tbl_dbi")
+                      metadata = "list")
 
 )
 
@@ -79,8 +78,7 @@ make_mgdb <- function(db_name, db_file, taxa_tbl, seqs){
     db_conn <- RSQLite::dbConnect(RSQLite::SQLite(), db_file)
 
     DECIPHER::Seqs2DB(seqs = seqs, type = "DNAStringSet",
-                      dbFile = db_conn, identifier = "MgDb",
-                      tblName = "taxa")
+                      dbFile = db_conn, identifier = "MgDb")
 
     ### Adding taxonomic data to database
     DECIPHER::Add2DB(myData = taxa_tbl, dbFile = db_conn)
@@ -98,7 +96,7 @@ make_mgdb <- function(db_name, db_file, taxa_tbl, seqs){
 #' @export
 #'
 #' @examples
-MgDb <- function(db_file, tree, metadata){
+newMgDb <- function(db_file, tree, metadata){
     ## db_file is character string, file exists, is a properly formatted sqlite database
     ## Check tree is either a phylo class object or newick tree file
     ## Check metadata is list with required entries
@@ -107,7 +105,7 @@ MgDb <- function(db_file, tree, metadata){
     db_conn <- RSQLite::dbConnect(RSQLite::SQLite(), db_file)
 
     ## taxa slot
-    taxa_dbi <- dplyr::tbl(src = db_conn, from = "taxa")
+    taxa_dbi <- dplyr::tbl(src = db_conn, from = "Seqs")
 
     ## tree slot
     if (is.character(tree)) {
