@@ -20,6 +20,7 @@ test_tree <- readRDS(test_tree_file)
 testMgDb <- newMgDb(db_file = test_db_file, tree = test_tree_file, metadata = test_metadata)
 
 
+
 ## data.frame for testing select methods
 tax_names <- matrix(paste0("tax_",0:69), ncol = 7)
 colnames(tax_names) <- c("Kingdom","Phylum","Class","Ord",
