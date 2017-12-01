@@ -10,17 +10,17 @@ test_that("MgDb-class select arguments",{
 ## Test select will fail for seqs as the seq slot contains a different representation, seqDB than the select returns, DNAStringSet.
 test_that("MgDb-class select return",{
     expect_equal(mgDb_select(testMgDb, type = c("seq","tree")),
-                 list(seq = testMgDb@seq, tree = testMgDb@tree))
+                 list(seq = test_seq, tree = testMgDb@tree))
 
     expect_equal(mgDb_select(testMgDb, type = c("taxa","tree")),
                  list(taxa = testMgDb@taxa, tree = testMgDb@tree))
 
     expect_equal(mgDb_select(testMgDb, type = c("seq","tree")),
-                 list(seq = testMgDb@seq, tree = testMgDb@tree))
+                 list(seq = test_seq, tree = testMgDb@tree))
 
     expect_equal(mgDb_select(testMgDb, type = "all"),
                  list(taxa = testMgDb@taxa,
-                      seq = testMgDb@seq,
+                      seq = test_seq,
                       tree = testMgDb@tree))
 })
 
@@ -78,11 +78,6 @@ test_that("MgDb-class select all",{
         testMgDb,type = "all",
         keys = c("tax_51", "tax_53"),
         keytype = "Genus")
-
-
-    # expect_equal_to_reference(
-    #     test_select_all,
-    #     file = "cache/MgDb_test_select_all.rds")
 
     ## Test type
     expect_is(test_select_all, "list")
