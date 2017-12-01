@@ -13,12 +13,12 @@ make_test_count <- function(n, single_sample){
 make_test_taxa <- function(n, taxa_levels){
     n_taxa_levels <- length(taxa_levels)
     OTU <- paste0("OTU_",1:n)
-    tax_ids <- paste0("tax_",c(0:(n*(n_taxa_levels-1)-1)))
+    tax_ids <- paste0("tax_",c(0:(n*(n_taxa_levels - 1) - 1)))
 
-    test_taxa <- matrix(c(OTU, tax_ids), ncol = n_taxa_levels) %>%
-        as.data.frame(row.names = OTU, stringsAsFactors = FALSE)
+    test_taxa <- matrix(c(OTU, tax_ids), ncol = n_taxa_levels)
+    test_taxa <- as.data.frame(test_taxa, row.names = OTU, stringsAsFactors = FALSE)
 
-    colnames(test_taxa) <-c(taxa_levels)
+    colnames(test_taxa) <- c(taxa_levels)
     test_taxa
 }
 
@@ -52,7 +52,7 @@ make_test_MRexp <- function(n, taxa_levels, test_seq, test_tree, single_sample =
 
 
 test_seq <- readRDS("../test_seq.rds")
-test_tree <- readRDS("../test_tree.rds") %>% as(Class = "phylo")
+test_tree <- as(readRDS("../test_tree.rds"), Class = "phylo")
 
 test_MRexp <-make_test_MRexp(n = 10,
                              taxa_levels = c("OTU","Kingdom",
