@@ -124,20 +124,20 @@ newMgDb <- function(db_file, tree, metadata){
 
 setValidity("MgDb", function(object) {
     msg <- NULL
-    if (!("seq" %in% ls(object)) || !is(object@seq, "SQLiteConnection")) {
+    if (!("seq" %in% slotNames(object)) || !is(object@seq, "SQLiteConnection")) {
         msg <- paste(msg, "'seq' slot must contain DB connection", sep = "\n")
     }
     ## Add check for valid DECIPHER database structure - two table system
 
-    if (!("taxa" %in% ls(object)) || !is(object@taxa, "tbl_dbi")) {
+    if (!("taxa" %in% slotNames(object)) || !is(object@taxa, "tbl_dbi")) {
         msg <- paste(msg, "'taxa' slot must contain a tbl object", sep = "\n")
     }
 
-    if (!("tree" %in% ls(object)) || (is(object@tree, "phylo") && is(object$tree, "NULL"))) {
+    if (!("tree" %in% slotNames(object)) || (is(object@tree, "phylo") && is(object@tree, "NULL"))) {
         msg <- paste(msg, "'tree' slot must contain a phyloOrNULL object", sep = "\n")
     }
 
-    if (!("metadata" %in% ls(object)) || !is(object@metadata, "list")) {
+    if (!("metadata" %in% slotNames(object)) || !is(object@metadata, "list")) {
         msg <- paste(msg, "'metadata' slot must contain a list", sep = "\n")
     }
     if (is.null(msg)) TRUE else msg
