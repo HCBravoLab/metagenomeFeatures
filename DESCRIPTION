@@ -38,6 +38,7 @@ Collate:
     'phylo-class.R'
     'mgDb-class.R'
     'mgFeatures-class.R'
+    'gg13.8_97MgDb.R'
     'demoMgDb.R'
     'mgDb-taxa_accessors.R'
     'aggregate_taxa.R'

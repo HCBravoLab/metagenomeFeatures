@@ -20,5 +20,5 @@ get_demoMgDb <- function(){
                                   package = "metagenomeFeatures")
 
     ## Creating a new MgDb class object with demoMgDb data
-    MgDb(db_file = demo_db_file, tree = demo_tree_file, metadata)
+    newMgDb(db_file = demo_db_file, tree = demo_tree_file, metadata)
 }
