@@ -170,7 +170,7 @@ setMethod("show", "MgDb",
               print("Taxonomy Data:")
               print(mgdb_taxa(object))
               print("Tree Data:")
-              print(mgdb_tree(object))
+              ape::print.phylo(mgdb_tree(object))
           }
 )
 
