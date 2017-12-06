@@ -54,7 +54,7 @@ setClass("MgDb",
 
 ### Create MgDb SQLite database ------------------------------------------------
 
-#' make_mgdb
+#' make_mgdb_sqlite
 #'
 #' @param db_name reference database name
 #' @param db_file file path for sqlite database
@@ -65,7 +65,7 @@ setClass("MgDb",
 #' @export
 #'
 #' @examples
-make_mgdb <- function(db_name, db_file, taxa_tbl, seqs){
+make_mgdb_sqlite <- function(db_name, db_file, taxa_tbl, seqs){
     ## check parameters
     ## db_name == character string
     ## db_file == character string  - check if existing, warning if present???
