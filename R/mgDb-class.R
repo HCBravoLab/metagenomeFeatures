@@ -132,10 +132,12 @@ setValidity("MgDb", function(object) {
     if (!("taxa" %in% slotNames(object)) || !is(object@taxa, "tbl_dbi")) {
         msg <- paste(msg, "'taxa' slot must contain a tbl object", sep = "\n")
     }
+    ## Add checks for taxa heirarchy.
 
     if (!("tree" %in% slotNames(object)) || (is(object@tree, "phylo") && is(object@tree, "NULL"))) {
         msg <- paste(msg, "'tree' slot must contain a phyloOrNULL object", sep = "\n")
     }
+    ## Add checks for tree structure
 
     if (!("metadata" %in% slotNames(object)) || !is(object@metadata, "list")) {
         msg <- paste(msg, "'metadata' slot must contain a list", sep = "\n")
