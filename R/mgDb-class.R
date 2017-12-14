@@ -23,7 +23,7 @@ setOldClass(c("tbl_dbi"))
 #' The MgDb-class object contains sequence, taxonomic data, and a phylogenetic
 #' tree (optional) for a 16S rRNA taxonomic database, see the
 #' \pkg{greengenes13.5MgDb} package as an example database. The
-#' \code{get_demoMgDb} function in \pkg{metagenomeFeatures} exports a small
+#' \code{get_gg13.8_97MgDb()} function in \pkg{metagenomeFeatures} exports a small
 #' subset of the database in the \pkg{greengenes13.5MgDb} annotation package as
 #' an example of a MgDb-class object.
 #' @aliases mgdb
@@ -33,8 +33,8 @@ setOldClass(c("tbl_dbi"))
 #' @slot metadata associated metadata for the database
 #' @export
 #' @examples
-#' # example MgDb-class object, a small subset of the Greengenes 13.5 database.
-#' demoMgDb <- get_demoMgDb()
+#' # example MgDb-class object, Greengenes 13.8 97% OTUs database.
+#' gg97 <- get_gg13.8_97MgDb()
 #' @note Currently the only database with a MgDb package is the
 #'   \href{http://greengenes.secondgenome.com/}{Greengenes database} (version
 #'   13.5), additional packages are planned.
@@ -72,7 +72,28 @@ make_mgdb_sqlite <- function(db_name, db_file, taxa_tbl, seqs){
     ## taxa_tbl == data frame
     ## Check taxa tbl has a valid structure - specifically taxa level order
     ## seqs either a fasta file or DNAStringSet
+
+    ### Check taxa and string keys match
+    taxa_keys <- taxa_tbl$Keys
+    seq_keys <- names(seqs)
+    if (length(taxa_keys) != length(seq_keys)) {
+        stop("taxa_tbl$Keys and names(seqs) must match")
+    }
+
+    if (sum(taxa_keys %in% seq_keys) != length(taxa_keys)) {
+        stop("taxa_tbl$Keys and names(seqs) must match")
+    }
+
+    if (sum(seq_keys %in% taxa_keys) != length(seq_keys)) {
+        stop("taxa_tbl$Keys and names(seqs) must match")
+    }
+
+    if (length(unique(taxa_keys)) != length(taxa_keys)) {
+        stop("taxa_tbl$Keys must be unique")
+    }
+
     ## Taxa tbl ids and string ids match and are in the same order
+    seqs <- seqs[match(names(seqs) == taxa_tbl$Keys)]
 
     ## Create database with taxa and sequence data
     db_conn <- RSQLite::dbConnect(RSQLite::SQLite(), db_file)
@@ -186,8 +207,8 @@ setMethod("show", "MgDb",
 #' @export
 #'
 #' @examples
-#' demoMgDb <- get_demoMgDb()
-#' mgdb_tree(demoMgDb)
+#' gg97 <- get_gg13.8_97MgDb()
+#' mgdb_tree(gg97)
 mgdb_tree <- function(mgdb){
     ## Add assertion for MgDb class object
     mgdb@tree
@@ -201,8 +222,8 @@ mgdb_tree <- function(mgdb){
 #' @export
 #'
 #' @examples
-#' demoMgDb <- get_demoMgDb()
-#' mgdb_seq(demoMgDb)
+#' gg97 <- get_gg13.8_97MgDb()
+#' mgdb_seq(gg97)
 mgdb_seq <- function(mgdb){
     ## Add assertion for MgDb class object
     mgdb@seq
@@ -216,8 +237,8 @@ mgdb_seq <- function(mgdb){
 #' @export
 #'
 #' @examples
-#' demoMgDb <- get_demoMgDb()
-#' mgdb_taxa(demoMgDb)
+#' gg97 <- get_gg13.8_97MgDb()
+#' mgdb_taxa(gg97)
 mgdb_taxa <- function(mgdb){
     ## Add assertion for MgDb class object
     mgdb@taxa
@@ -231,8 +252,8 @@ mgdb_taxa <- function(mgdb){
 #' @export
 #'
 #' @examples
-#' demoMgDb <- get_demoMgDb()
-#' mgdb_meta(demoMgDb)
+#' gg97 <- get_gg13.8_97MgDb()
+#' mgdb_meta(gg97)
 mgdb_meta <- function(mgdb){
     ## Add assertion for MgDb class object
     mgdb@metadata

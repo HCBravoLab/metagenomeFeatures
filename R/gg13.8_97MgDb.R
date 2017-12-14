@@ -11,7 +11,6 @@ get_gg13.8_97MgDb <- function(){
 
     metadata_file <- system.file("extdata", 'gg13.8_97_metadata.RData',
                            package = "metagenomeFeatures")
-    metadata <- load(metadata_file)
 
     gg_db_file <- system.file("extdata", 'gg13.8_97.sqlite',
                                 package = "metagenomeFeatures")
@@ -20,5 +19,7 @@ get_gg13.8_97MgDb <- function(){
                                   package = "metagenomeFeatures")
 
     ## Creating a new MgDb class object with gg13.8_97 data
-    newMgDb(db_file = gg_db_file, tree = gg_tree_file, metadata)
+    newMgDb(db_file = gg_db_file,
+            tree = gg_tree_file,
+            metadata =  load(metadata_file))
 }
