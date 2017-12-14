@@ -65,13 +65,38 @@ setClass("MgDb",
 #' @export
 #'
 #' @examples
-make_mgdb_sqlite <- function(db_name, db_file, taxa_tbl, seqs){
-    ## check parameters
-    ## db_name == character string
-    ## db_file == character string  - check if existing, warning if present???
+make_mgdb_sqlite <- function(db_name, db_file, taxa_tbl, seqs) {
+    ## Parameter check -----------------------------------------
+    ## db_name - character string
+    if (!(is.character(db_name) & length(db_name) == 1)) {
+        stop("db_name must be a character string")
+    }
+
+    ## db_file == character string  - check if existing, warning if present
+    if (!(is.character(db_file) & length(db_file) == 1)) {
+        stop("db_name must be a character string")
+    }
+
+    if (file.exists(db_file)) {
+        warning("db_file exists adding sequence and taxa data will be added to the database")
+    }
+
     ## taxa_tbl == data frame
+    if (!is.data.frame(taxa_tbl)) {
+        stop("taxa_tbl must be a data frame")
+    }
+
     ## Check taxa tbl has a valid structure - specifically taxa level order
     ## seqs either a fasta file or DNAStringSet
+    if (is.character(seqs)) {
+        if (file.exists(seqs)) {
+            seqs <- Biostrings::readDNAStringSet(seqs)
+        } else {
+            stop("seqs is a character string but no file exists, check filename")
+        }
+    } else if (!is(seqs, "DNAStringSet")) {
+           stop("seqs must be either a DNAStringSet class object or path to a fasta file")
+    }
 
     ### Check taxa and string keys match
     taxa_keys <- taxa_tbl$Keys
@@ -93,7 +118,8 @@ make_mgdb_sqlite <- function(db_name, db_file, taxa_tbl, seqs){
     }
 
     ## Taxa tbl ids and string ids match and are in the same order
-    seqs <- seqs[match(names(seqs) == taxa_tbl$Keys)]
+    taxa_tbl$Keys <- as.character(taxa_tbl$Keys)
+    taxa_tbl <- taxa_tbl[match(names(seqs), taxa_tbl$Keys),]
 
     ## Create database with taxa and sequence data
     db_conn <- RSQLite::dbConnect(RSQLite::SQLite(), db_file)
