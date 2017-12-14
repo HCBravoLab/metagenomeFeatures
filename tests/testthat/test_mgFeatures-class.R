@@ -1,5 +1,4 @@
 ## testing mgFeatures class
-library(magrittr)
 library(ape)
 library(S4Vectors)
 
@@ -15,14 +14,14 @@ make_test_taxa <- function(){
     tax_names <- matrix(paste0("tax_",0:69), ncol = 7)
     colnames(tax_names) <- c("Kingdom","Phylum","Class","Order",
                              "Family","Genus","Species")
-    as.data.frame(tax_names) %>%
-        data.frame(Keys = test_keys, .)
+    df <- as.data.frame(tax_names)
+    data.frame(Keys = test_keys, df)
 }
 
 test_taxa <- make_test_taxa()
 
 test_seq <- readRDS("../test_seq.rds")
-test_tree <- readRDS("../test_tree.rds") %>% as(Class = "phylo")
+test_tree <- as(readRDS("../test_tree.rds"), Class = "phylo")
 
 test_mgF <- new("mgFeatures",
                 DataFrame(test_taxa, row.names = test_taxa$Keys),
