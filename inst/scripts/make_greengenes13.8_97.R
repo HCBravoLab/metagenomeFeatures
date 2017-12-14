@@ -2,7 +2,7 @@
 ### Greengenes 13.8 database 97% OTUs
 library(DECIPHER)
 library(Biostrings)
-library(metagenomeFeatures) ## Needed for the make_mgdb function
+library(metagenomeFeatures) ## Needed for the make_mgdb_sqlite function
 
 ## Database URL
 db_root_url <- "ftp://greengenes.microbio.me/greengenes_release/gg_13_8_otus/"
@@ -62,7 +62,7 @@ taxa_tbl <- parse_greengenes(taxa_file)
 
 seqs <- Biostrings::readDNAStringSet(seq_file)
 
-metagenomeFeatures::make_mgdb(db_name = "greengenes13.8_97",
+metagenomeFeatures::make_mgdb_sqlite(db_name = "greengenes13.8_97",
                               db_file = db_file,
                               taxa_tbl = taxa_tbl,
                               seqs = seqs)
@@ -77,4 +77,4 @@ metadata <- list(ACCESSION_DATE = date(),
                  DB_TYPE_VALUE = "MgDb",
                  DB_SCHEMA_VERSION = "2.0")
 
-save("metadata", file = metadata_file)
+save(metadata, file = metadata_file)
