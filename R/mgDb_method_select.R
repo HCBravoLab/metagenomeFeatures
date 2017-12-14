@@ -49,7 +49,10 @@
         select_tbl <- dplyr::select_(select_tbl, .dots = columns)
     }
 
-    return(select_tbl %>% dplyr::collect())
+    ## Removing decipher columns
+    select_tbl <- dplyr::select(select_tbl, -row_names, -description, -identifier)
+
+    return(dplyr::collect(select_tbl))
 }
 
 .select.tree <- function(tree, ids){

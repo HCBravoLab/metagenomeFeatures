@@ -4,11 +4,6 @@
 ##
 ### ============================================================================
 
-##See post for functional programming interface for refClass methods
-##http://stackoverflow.com/questions/20649973/functional-interfaces-for-reference-classes
-### Not sure how to best document and export MgDb methods, wrote wrappers # so
-##they can be used using standard function(value) method
-
 ### Taxa keys function ---------------------------------------------------------
 .taxa_keys <- function(mgdb, keytype){
     if (length(keytype) > 0) {
@@ -58,7 +53,10 @@ setMethod("taxa_keys", "MgDb",
 
 ### Taxa columns function ------------------------------------------------------
 .taxa_columns = function(mgdb){
-    colnames(mgdb_taxa(mgdb))
+    taxa_cols <- colnames(mgdb_taxa(mgdb))
+    ## Excluding decipher column names
+    decipher_cols <- c("row_names", "identifier", "description")
+    taxa_cols[!(taxa_cols %in% decipher_cols)]
 }
 
 #' Column names for MgDb taxonomy slot object
@@ -106,4 +104,4 @@ setGeneric("taxa_keytypes", signature = "mgdb",
 #' @aliases taxa_keytypes,MgDb-method
 #' @rdname taxa_keytypes
 setMethod("taxa_keytypes", "MgDb",
-          function(mgdb) .taxa_columns(mgdb))
+          function(mgdb) .taxa_keytypes(mgdb))
