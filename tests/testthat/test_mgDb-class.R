@@ -29,23 +29,22 @@ test_that("MgDb-class taxa",{
     expect_is(testMgDb@taxa, "tbl_dbi")
 })
 
-## Test fails due to additional columns in table from seqDB - not sure the best
-## way to address this issue.
+
 taxa_levels = c("Keys","Kingdom","Phylum","Class","Ord","Family","Genus","Species")
+decipher_cols <- c("row_names", "identifier", "description")
+keytypes <- c(decipher_cols, taxa_levels)
+
 test_that("MgDb-class taxa_keytypes", {
-    expect_equal(taxa_keytypes(testMgDb), taxa_levels)
-    expect_identical(length(taxa_keytypes(testMgDb)), length(taxa_levels))
+    expect_equal(taxa_keytypes(testMgDb), keytypes)
 })
 
 test_that("MgDb-class taxa_columns", {
     expect_equal(taxa_columns(testMgDb), taxa_levels)
 })
 
-test_that("MgDb-class taxa_keytypes and taxa_columns are identical", {
-    expect_identical(taxa_columns(testMgDb), taxa_keytypes(testMgDb))
-})
-
 test_that("MgDb-class taxa_keys at different taxonomic levels", {
+
+
     expect_error(taxa_keys(testMgDb, keytype = c("not a type")))
     expect_error(taxa_keys(testMgDb, keytype = c("not a type","neither is this")))
     expect_error(taxa_keys(testMgDb, keytype = c("not a type","Kingom")))

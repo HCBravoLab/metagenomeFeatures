@@ -8,18 +8,25 @@ test_that("MgDb-class select arguments",{
 })
 
 ## Test select will fail for seqs as the seq slot contains a different representation, seqDB than the select returns, DNAStringSet.
+##
+## Removing Decipher columns
+test_taxa_df <- dplyr::collect(testMgDb@taxa)
+test_taxa_df$row_names <- NULL
+test_taxa_df$description <- NULL
+test_taxa_df$identifier <- NULL
+
 test_that("MgDb-class select return",{
     expect_equal(mgDb_select(testMgDb, type = c("seq","tree")),
                  list(seq = test_seq, tree = testMgDb@tree))
 
     expect_equal(mgDb_select(testMgDb, type = c("taxa","tree")),
-                 list(taxa = testMgDb@taxa, tree = testMgDb@tree))
+                 list(taxa = test_taxa_df, tree = testMgDb@tree))
 
     expect_equal(mgDb_select(testMgDb, type = c("seq","tree")),
                  list(seq = test_seq, tree = testMgDb@tree))
 
     expect_equal(mgDb_select(testMgDb, type = "all"),
-                 list(taxa = testMgDb@taxa,
+                 list(taxa = test_taxa_df,
                       seq = test_seq,
                       tree = testMgDb@tree))
 })
