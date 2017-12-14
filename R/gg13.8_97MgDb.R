@@ -19,6 +19,6 @@ get_gg13.8_97MgDb <- function(){
     gg_tree_file <- system.file("extdata", "gg13.8_97.tre",
                                   package = "metagenomeFeatures")
 
-    ## Creating a new MgDb class object with demoMgDb data
+    ## Creating a new MgDb class object with gg13.8_97 data
     newMgDb(db_file = gg_db_file, tree = gg_tree_file, metadata)
 }

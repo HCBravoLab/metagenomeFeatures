@@ -36,8 +36,8 @@
 #' @return tbl_df
 #'
 #' @examples
-#' demoMgDb <- get_demoMgDb()
-#' taxa_keys(demoMgDb, keytype = "Phylum")
+#' gg97 <- get_gg13.8_97MgDb()
+#' taxa_keys(gg97, keytype = "Phylum")
 #' @exportMethod taxa_keys
 #' @rdname taxa_keys
 setGeneric("taxa_keys", signature = "mgdb",
@@ -66,8 +66,8 @@ setMethod("taxa_keys", "MgDb",
 #' @return character vector
 #' @note Same function as \code{\link{taxa_keytypes}}.
 #' @examples
-#' demoMgDb <- get_demoMgDb()
-#' taxa_columns(demoMgDb)
+#' gg97 <- get_gg13.8_97MgDb()
+#' taxa_columns(gg97)
 #' @exportMethod taxa_columns
 #' @rdname taxa_columns
 setGeneric("taxa_columns", signature = "mgdb",
@@ -91,8 +91,8 @@ setMethod("taxa_columns", "MgDb",
 #' @param mgdb object of MgDB class
 #' @return tbl_df
 #' @examples
-#' demoMgDb <- get_demoMgDb()
-#' taxa_keytypes(demoMgDb)
+#' gg97 <- get_gg13.8_97MgDb()
+#' taxa_keytypes(gg97)
 #' @exportMethod taxa_keytypes
 #' @rdname taxa_keytypes
 setGeneric("taxa_keytypes", signature = "mgdb",

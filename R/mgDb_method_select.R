@@ -121,19 +121,19 @@
 #'   tree of class phylo; 'all' - list with the dataframe, DNAStringSet, and
 #'   phylo.
 #' @examples
-#' demoMgDb <- get_demoMgDb()
+#' gg97 <- get_gg13.8_97MgDb()
 #' # select taxa only
-#' mgDb_select(demoMgDb, type = "taxa",
+#' mgDb_select(gg97, type = "taxa",
 #'      keys = c("Vibrionaceae", "Enterobacteriaceae"),
 #'      keytype = "Family")
 #'
 #' # select seq only
-#'  mgDb_select(demoMgDb, type = "seq",
+#'  mgDb_select(gg97, type = "seq",
 #'       keys = c("Vibrionaceae", "Enterobacteriaceae"),
 #'       keytype = "Family")
 #'
 #' # select all taxa, seq, and tree
-#' mgDb_select(demoMgDb, type = "all",
+#' mgDb_select(gg97, type = "all",
 #'        keys = c("Vibrionaceae", "Enterobacteriaceae"),
 #'        keytype = "Family")
 #' @rdname select-MgDb-method

@@ -12,8 +12,3 @@ vignette_pheno_data <- function(){
         read.csv(row.names = 1, stringsAsFactors = FALSE) %>%
         Biobase::AnnotatedDataFrame()
 }
-
-vignette_mock_MgDb <- function(){
-    ## note same as demoMgDb
-    get_demoMgDb()
-}

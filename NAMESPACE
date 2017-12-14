@@ -2,9 +2,7 @@
 
 export("%>%")
 export(aggregate_taxa)
-export(get_demoMgDb)
 export(get_gg13.8_97MgDb)
-export(get_mockMgDb)
 export(make_mgdb_sqlite)
 export(mgF_meta)
 export(mgF_seq)

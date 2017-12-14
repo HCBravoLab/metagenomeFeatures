@@ -16,6 +16,6 @@ list
 MgDb metadata slot accessor
 }
 \examples{
-demoMgDb <- get_demoMgDb()
-mgdb_meta(demoMgDb)
+gg97 <- get_gg13.8_97MgDb()
+mgdb_meta(gg97)
 }

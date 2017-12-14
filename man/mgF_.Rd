@@ -19,6 +19,9 @@ mgF_meta(mgF)
 \arguments{
 \item{mgF}{mgFeatures-class object.}
 }
+\value{
+appropriate class object for the slot accessed
+}
 \description{
 Accessors for \linkS4class{mgFeatures}-class object slots. \code{mgF_seq} - refDbSeq slot, \code{mgF_taxa} - taxa slot, \code{mgF_tree} - phylogenetic tree slot, and \code{mgF_meta} - metadata slot.
 }
