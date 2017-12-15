@@ -22,6 +22,6 @@ tbl_df
 Taxonomy values for a given keytype
 }
 \examples{
-demoMgDb <- get_demoMgDb()
-taxa_keys(demoMgDb, keytype = "Phylum")
+gg97 <- get_gg13.8_97MgDb()
+taxa_keys(gg97, keytype = "Phylum")
 }

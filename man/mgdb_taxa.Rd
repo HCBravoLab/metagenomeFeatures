@@ -16,6 +16,6 @@ tbl_sql connection to sqlite table
 MgDb taxa slot accessor
 }
 \examples{
-demoMgDb <- get_demoMgDb()
-mgdb_taxa(demoMgDb)
+gg97 <- get_gg13.8_97MgDb()
+mgdb_taxa(gg97)
 }
