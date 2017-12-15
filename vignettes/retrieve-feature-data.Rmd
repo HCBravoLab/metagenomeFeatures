@@ -1,0 +1,24 @@
+---
+title: "Retrieve Feature Data"
+author: "Nate D. Olson"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Outline
+* Vignette overview
+* Example closed-reference dataset
+* gg97 MgDb description
+* make mgFeatures object using dataset Keys and gg97  
+* Show new mgFeatures object
