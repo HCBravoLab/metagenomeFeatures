@@ -120,6 +120,7 @@ make_mgdb_sqlite <- function(db_name, db_file, taxa_tbl, seqs) {
     ## Taxa tbl ids and string ids match and are in the same order
     taxa_tbl$Keys <- as.character(taxa_tbl$Keys)
     taxa_tbl <- taxa_tbl[match(names(seqs), taxa_tbl$Keys),]
+    rownames(taxa_tbl) <- 1:nrow(taxa_tbl)
 
     ## Create database with taxa and sequence data
     db_conn <- RSQLite::dbConnect(RSQLite::SQLite(), db_file)
