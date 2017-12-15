@@ -8,7 +8,3 @@ test_that("vignette_assay_data",{
 test_that("vignette_pheno_data",{
     expect_is(vignette_pheno_data(),"AnnotatedDataFrame")
 })
-
-test_that("vignette_mock_MgDb",{
-    expect_is(vignette_mock_MgDb(),"MgDb")
-})
