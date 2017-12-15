@@ -9,67 +9,46 @@
 ## (e.g. query)
 
 .mgDb_annotateFeatures <- function(mgdb, query) {
-
-    #SELECT_KEYS
-
-    # check query type: vector or data.frame
-    # process as vector of database keys or data.frame with column Keys
-
+    ##### SELECT_KEYS
+    ## check query type: vector or data.frame
+    ## process as vector of database keys or data.frame with column Keys
     if (is.data.frame(query)) {
-
         if (is.element("Keys", colnames(query))) {
-
             query$Keys <- as.character(query$Keys) # process Keys column as character
             select_keys <- query$Keys
-
         } else {
-
             stop("Need 'Keys' column in 'query' with database ids")
-
         }
-
     } else if (is.vector(query)) { # db_keys used
-
         select_keys <- as.character(query)
-
-    } else { # query_df and db_keys both null
-
+    } else {## query_df and db_keys both null
         stop("query not a vector or data.frame, see documentation for query requirements")
-
     }
 
 
-    # FILTERED_DB
-
+    #### FILTERED_DB
     filtered_db <- mgDb_select(mgdb, type = "all",
                                keys = select_keys,
                                keytype = "Keys")
 
-    # ANNOTATED_DB
-
+    ##### ANNOTATED_DB
     if (!is.null(query)) { # using query_df
-
         annotated_db <- dplyr::right_join(query, filtered_db$taxa)
-
     } else if (!is.null(db_keys)) { # using db_keys
-
         annotated_db <- as.data.frame(filtered_db$taxa)
-
-    } else { # sanity check -- should not enter here
-
+    } else {## sanity check -- should not enter here
         stop("issue: no query")
     }
 
-    # ANNO_METADATA
-
+    #### ANNO_METADATA
     anno_metadata <- mgdb$metadata
 
     # CREATE mgFeatures Object
     new("mgFeatures",
         DataFrame(annotated_db),
         metadata = anno_metadata,
-        refDbSeq=filtered_db$seq,
-        refDbTree=filtered_db$tree
+        refDbSeq = filtered_db$seq,
+        refDbTree = filtered_db$tree
     )
 }
 
