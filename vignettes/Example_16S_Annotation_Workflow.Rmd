@@ -8,6 +8,10 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+__VIGNETTE UNDER CONSTRUCTION__  
+We are updating the class definition for mgFeatures to contain a DataFrame class object instead of a AnnotatedDataFrame class object. 
+This will allow for mgFeatures to define the rowData of a summarizedExperiment class object, used by curratedMetagenomeData, but not eSet objects which MRexperiment-objects currently extend. 
+We are planning to convert MRexperiment-objects to summerizedExperiment class objects.
 
 ## Overview
 The metagenomeFeatures package and associated annotation packages (e.g. greengene13.5MgDb) can be used to and taxonomic annotations to MRexperiment objects.  The metagenomeSeq package includes the MRexperiment-class, and has a number of methods for analyzing marker-gene metagenome datasets.  This vignette demonstrate how to add taxonomic annotation to a MRexperiment-class object using metagenomeFeatures.   
@@ -51,11 +55,12 @@ mock_MgDb <- metagenomeFeatures:::vignette_mock_MgDb()
 
 
 ### annotateMRexp_fData
+__This no longer works with new mgFeature class definition__
 The `annotateMRexp_fData` function takes an `MgDb` and `MRexperiment` objects as input and defines the `featureData` slot using the OTU ids from the `assayData` slot. The slot is defined with a `mgFeatures` object which extends the `AnnotatedDataFrame` object with additional slots with the database reference sequences (`refDbSeq`), phylogenetic tree (`refDbtree`, if available), and metadata about the reference database used.
 
 ```{r}
-demoMRexp <- annotateMRexp_fData(mgdb = mock_MgDb, MRobj = demoMRexp)
-demoMRexp
+# demoMRexp <- annotateMRexp_fData(mgdb = mock_MgDb, MRobj = demoMRexp)
+# demoMRexp
 ```
 
 The `featureData` slot in the `demoMRexp` object now contains the taxonomic data for the OTUs as well as the database reference sequences as well as the phylogenetic tree.
@@ -65,24 +70,24 @@ Each mgFeature slot can be accessed using the approporiate accessor function.
 
 __Seq Data__
 ```{r}
-featureData(demoMRexp) %>% mgF_seq() %>% head()
+# featureData(demoMRexp) %>% mgF_seq() %>% head()
 ```
 
 __Taxonomy__
 ```{r}
-featureData(demoMRexp) %>% mgF_taxa() %>% head()
+# featureData(demoMRexp) %>% mgF_taxa() %>% head()
 ```
 
 __Metadata__
 ```{r}
-featureData(demoMRexp) %>% mgF_meta() %>% head()
+# featureData(demoMRexp) %>% mgF_meta() %>% head()
 ```
 
 __Phylogenetic Tree__
 The tree slot is not defined for `demoMRexp`. If available the tree would be accessed using the following command.
 
 ```{r eval=FALSE}
-featureData(demoMRexp) %>% mgF_tree()
+# featureData(demoMRexp) %>% mgF_tree()
 ```
 
 

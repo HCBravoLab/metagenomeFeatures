@@ -1,0 +1,123 @@
+---
+title: "Annotating summarizedExperiment"
+author: "Nate Olson"
+date: "11/20/2017"
+output:
+  pdf_document: default
+---
+```{r message = FALSE, warning = FALSE}
+library(SummarizedExperiment)
+library(metagenomeFeatures)
+library(Biostrings)
+library(S4Vectors)
+```
+
+
+Example annotating defining rowData of a summarized experiment object with mgFeatures. 
+
+## mgFeatures object  
+Generating a toy example mgFeatures object with taxa, seq, and tree data.  
+```{r}
+n <- 10 
+taxa_levels <- c("Kingdom","Phylum","Class","Order", "Family","Genus","Species")
+test_keys <- as.character(1:10)
+tax_names <- matrix(paste0("tax_",0:69), ncol = 7)
+
+## Test taxa
+n_taxa_levels <- length(taxa_levels)
+OTU <- paste0("OTU_",1:n)
+tax_ids <- paste0("tax_",c(0:(n*(n_taxa_levels - 1) - 1)))
+
+test_taxa <- matrix(c(OTU, tax_ids), ncol = n_taxa_levels) %>%
+   DataFrame(row.names = OTU)
+
+colnames(test_taxa) <- c(taxa_levels)
+
+## Test seq data
+rand_seq <- function(x){
+    paste(sample(c("A","T","G","C"), 21, replace = T), collapse = "")
+}
+
+set.seed <- 10
+rand <- sapply(1:10, rand_seq)
+test_seq <- DNAStringSet(rand)
+names(test_seq) <- test_keys
+
+## Test tree 
+f_name = tempfile()
+writeLines("((1,(2,3,4),5),((6,7,8),9),10);",con = f_name)
+test_tree <- ape::read.tree(f_name) %>% as(Class = "phylo")
+
+
+toy_mgF <- new("mgFeatures", test_taxa, metadata = list(),
+               refDbSeq = test_seq, refDbTree = test_tree)
+```
+
+### mgFeatures slots
+```{r}
+toy_mgF
+```
+
+Sequence slot accessor
+```{r}
+mgF_seq(toy_mgF)
+```
+
+Tree slot accessor
+```{r}
+mgF_tree(toy_mgF)
+```
+
+```{r}
+plot(mgF_tree(toy_mgF))
+```
+
+## summarizedExperiment object
+A toy dataset with count data for a set of samples 
+```{r}
+## Test count data
+test_count <- data.frame(sam1 = c(1:n), row.names = paste0("OTU_",1:n))
+test_count$sam2 <- c(1:n)^2
+test_count <- as.matrix(test_count)
+
+toy_se <- SummarizedExperiment(assays = as.matrix(test_count))
+toy_se
+```
+
+## Annotating Features
+Annotating the features of the toy `summarizedExperiment` with the toy mgFeatures
+
+When using the `rowData` function to define the `summarizedExperiment` elementMetadata the seq and tree data is dropped. 
+```{r}
+rowData(toy_se) <- toy_mgF
+```
+
+```{r}
+se_features <- rowData(toy_se)
+```
+
+```{r}
+str(se_features)
+```
+
+```{r}
+# mgF_seq(se_features)
+```
+Error message when code is run
+
+```
+Error in mgF_seq(se_features) : 
+  no slot of name "refDbSeq" for this object of class "DataFrame"
+```
+
+Able to define row data without using the `rowData` accessor function. 
+Will need to modify the `rowData` function for classes that extend the `DataFrame` class. 
+```{r}
+toy_se@elementMetadata <- toy_mgF
+```
+
+```{r}
+mgF_seq(toy_se@elementMetadata)
+```
+
+

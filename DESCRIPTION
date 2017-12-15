@@ -16,6 +16,7 @@ LazyData: true
 Imports:
     Biostrings (>= 2.36.4),
     ShortRead (>= 1.26.0),
+    S4Vectors (>= 0.14.7),
     dplyr (>= 0.7.0),
     dbplyr(>= 1.0.0),
     stringr (>= 1.0.0),
@@ -42,7 +43,6 @@ Collate:
     'mgDb-taxa_accessors.R'
     'aggregate_taxa.R'
     'vignette_data.R'
-    'mgDb_method_annotateMRexp.R'
     'mgDb_method_select.R'
     'mgDb_method_annotateFeatures.R'
     'mock_query_df.R'
