@@ -27,9 +27,9 @@ This method is used to create a \linkS4class{mgFeatures} class object
 }
 \examples{
 ## MgDb with mock community ids
-mockMgDb <- get_mockMgDb()
+gg97 <- get_gg13.8_97MgDb()
 ## generating mgFeatures object
 data(mock_query_df)
-mock_mgF <- annotateFeatures(mockMgDb, mock_query_df)
+mock_mgF <- annotateFeatures(gg97, mock_query_df)
 
 }
