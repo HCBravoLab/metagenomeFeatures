@@ -25,7 +25,6 @@ Imports:
     magrittr (>= 1.5),
     methods (>= 3.3.1),
     lattice (>= 0.20.33),
-    metagenomeSeq (>= 1.14.2),
     ape (>= 3.5),
     purrr (>= 0.2.2),
     DECIPHER (>= 2.4.0)
@@ -41,8 +40,6 @@ Collate:
     'mgFeatures-class.R'
     'gg13.8_97MgDb.R'
     'mgDb-taxa_accessors.R'
-    'aggregate_taxa.R'
-    'vignette_data.R'
     'mgDb_method_select.R'
     'mgDb_method_annotateFeatures.R'
     'mock_query_df.R'
