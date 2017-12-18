@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 
 ## Greengenes 13.8 97\% OTU MgDb
 The gg 13.8 97% OTU is provided as part of the `metagenomeFeatures` package. 
-```{r}
+```{r message = FALSE}
 library(metagenomeFeatures)
 gg97 <- get_gg13.8_97MgDb()
 ```
@@ -44,7 +44,7 @@ data_dir <- system.file("extdata", package = "metagenomeFeatures")
 soil_gg_ids <-  readRDS(file.path(data_dir, "qiita_study_94_gg_ids.RDS"))
 ```
 
-## Obtianing Sequences and Phylogenetic Tree 
+## Obtaining Sequences and Phylogenetic Tree 
 ```{r}
 soil_mgF <- annotateFeatures(gg97, soil_gg_ids)
 ```
@@ -52,5 +52,15 @@ soil_mgF <- annotateFeatures(gg97, soil_gg_ids)
 The resulting `mgFeatures` class object has the taxonomic heirarchy, phylogeny, and sequence data for the study OTUs. 
 ```{r}
 soil_mgF
+```
+
+Sequence data
+```{r}
+mgF_seq(soil_mgF)
+```
+
+Tree data 
+```{r}
+mgF_tree(soil_mgF)
 ```
 
