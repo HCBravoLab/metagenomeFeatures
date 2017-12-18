@@ -16,9 +16,41 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Outline
-* Vignette overview
-* Example closed-reference dataset
-* gg97 MgDb description
-* make mgFeatures object using dataset Keys and gg97  
-* Show new mgFeatures object
+## Overview  
+* `metagenomeFeatures` and associated annotation packages can be used to obtain phylogentic trees, and representative sequences for 16S rRNA marker gene sequences when closed reference clustering is used.  
+* QIITA (URL) is a public repository for sharing OTU tables and raw sequence data from 16S rRNA marker gene studies.  
+* In this vignette we will demostrate using `metagenomeFeatures` and the Greengenes 16S rRNA database version 13.8 97\% OTUs to obtain a phylogenetic tree and representative sequences for __XYZ__ study obtained from QIITA.  
+
+## Greengenes 13.8 97\% OTU MgDb
+The gg 13.8 97% OTU is provided as part of the `metagenomeFeatures` package. 
+```{r}
+library(metagenomeFeatures)
+gg97 <- get_gg13.8_97MgDb()
+```
+
+`gg97` is a `MgDb` class object with the taxonomic heirarchy, sequence data, and phylogeny for the Greengenes database clustered at the 0.97 similarity threshold. 
+```{r}
+gg97
+```
+
+
+##  QIITA Dataset 
+For this vignette we are using 16S rRNA data from Rousk et al. 2010, a soil microbiome study, https://qiita.ucsd.edu/study/description/94. 
+A BIOM and qiime mapping file for the study can be obtained from QIITA. 
+A vector of Greengenes for the study cluster centers is included in this package for use in this vignette. 
+
+```{r}
+data_dir <- system.file("extdata", package = "metagenomeFeatures")
+soil_gg_ids <-  readRDS(file.path(data_dir, "qiita_study_94_gg_ids.RDS"))
+```
+
+## Obtianing Sequences and Phylogenetic Tree 
+```{r}
+soil_mgF <- annotateFeatures(gg97, soil_gg_ids)
+```
+
+The resulting `mgFeatures` class object has the taxonomic heirarchy, phylogeny, and sequence data for the study OTUs. 
+```{r}
+soil_mgF
+```
+
