@@ -11,6 +11,7 @@ Keys <- c(1,2,3,4,5)
 incomplete_query_df <- data.frame(OTU)
 wrong_query_df <- data.frame(Keys_not, OTU)
 query_df <- data.frame(Keys, OTU)
+query_vctr <- Keys
 
 
 # check parameters
@@ -22,10 +23,13 @@ test_that("annotateFeatures parameter check", {
     expect_error(annotateFeatures(testMgDb, wrong_query_df))
 })
 
+test_that("mgFeatures query types", {
+    expect_is(annotateFeatures(testMgDb, query_df), "mgFeatures")
+    expect_is(annotateFeatures(testMgDb, query_vctr), "mgFeatures")
+})
 
 # check resulting mgFeatures object result
-
-test_that("mgFeatures object", {
+test_that("mgFeatures accessory", {
     features_obj <- annotateFeatures(testMgDb, query_df)
 
     # check type breakdown of mgFeatures object
@@ -39,3 +43,4 @@ test_that("mgFeatures object", {
     expect_is(mgF_tree(features_obj), "phylo")
     expect_is(mgF_meta(features_obj), "list")
 })
+
