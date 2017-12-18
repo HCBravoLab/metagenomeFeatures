@@ -12,6 +12,10 @@
     ##### SELECT_KEYS
     ## check query type: vector or data.frame
     ## process as vector of database keys or data.frame with column Keys
+    if (is.null(query)) {
+        stop("query not provided, see documentation for query requirements")
+    }
+
     if (is.data.frame(query)) {
         if (is.element("Keys", colnames(query))) {
             query$Keys <- as.character(query$Keys) # process Keys column as character
@@ -21,7 +25,7 @@
         }
     } else if (is.vector(query)) { # db_keys used
         select_keys <- as.character(query)
-    } else {## query_df and db_keys both null
+    } else {## query not a data frame or vector
         stop("query not a vector or data.frame, see documentation for query requirements")
     }
 
@@ -32,12 +36,10 @@
                                keytype = "Keys")
 
     ##### ANNOTATED_DB
-    if (!is.null(query)) { # using query_df
+    if (is.data.frame(query)) {
         annotated_db <- dplyr::right_join(query, filtered_db$taxa)
-    } else if (!is.null(db_keys)) { # using db_keys
+    } else {
         annotated_db <- as.data.frame(filtered_db$taxa)
-    } else {## sanity check -- should not enter here
-        stop("issue: no query")
     }
 
     #### ANNO_METADATA
