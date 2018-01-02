@@ -130,6 +130,8 @@ make_mgdb_sqlite <- function(db_name, db_file, taxa_tbl, seqs) {
 
     ### Adding taxonomic data to database
     DECIPHER::Add2DB(myData = taxa_tbl, dbFile = db_conn)
+    
+    RSQLite::dbDisconnect(db_conn)
 }
 
 
