@@ -7,9 +7,9 @@
 
 .select.seq <- function(seqObj, ids){
 
-    result <- dbGetQuery(seqObj, paste("select row_names, sequence from _Seqs where row_names in ", paste0("(", paste0(ids, collapse = ','), ")")))
+    result <- RSQLite::dbGetQuery(seqObj, paste("select row_names, sequence from _Seqs where row_names in ", paste0("(", paste0(ids, collapse = ','), ")")))
     seqs <- DECIPHER::Codec(result$sequence)
-    dnaStringSet <- DNAStringSet(seqs)
+    dnaStringSet <- Biostrings::DNAStringSet(seqs)
     names(dnaStringSet) <- result[,1]
     
     dnaStringSet
