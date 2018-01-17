@@ -31,7 +31,7 @@ test_that("MgDb-class select return",{
                       tree = testMgDb@tree))
 })
 
-## TODO add test for Greengenes format
+## TODO add tests for Greengenes format
 
 
 test_that("MgDb-class select taxa",{
@@ -58,7 +58,8 @@ test_that("MgDb-class select seq", {
     expect_is(test_select_seq, "DNAStringSet")
 
     ## test value
-    expect_equal( test_select_seq, test_seq[c(2,4)])
+    ## Using test equivalent instead of test equal due to attribute differences
+    expect_equivalent( test_select_seq, test_seq[c(2,4)])
 })
 
 
