@@ -9,11 +9,16 @@
 
 ## Tree can be either rds with phylo class object or tree file
 .load_tree <- function(tree_file){
-    if (grepl("rds",tree_file)) {
+    if (!file.exists(tree_file)) {
+        stop(paste0("tree_file:", tree_file, " is not a valid file path"))
+    }
+
+    if (grepl("rds",tree_file,ignore.case = TRUE)) {
         tree <- readRDS(tree_file)
     }else{
         tree <- ape::read.tree(tree_file)
     }
+
     tree
 }
 
@@ -158,8 +163,17 @@ newMgDb <- function(db_file, tree, metadata){
     taxa_dbi <- dplyr::tbl(src = db_conn, from = "Seqs")
 
     ## tree slot
+    if (is.character(tree) | is.null(tree)) {
+        stop("Tree must be NULL or character string with tree file path")
+    }
+
     if (is.character(tree)) {
-        tree = .load_tree(tree)
+        ## For consistency with MgDb version 1 tree slot definition
+        if (tree == "not available") {
+            tree <- NULL
+        } else {
+            tree <- .load_tree(tree)
+        }
     }
 
     ## Return new MgDb class object
