@@ -6,11 +6,13 @@
 ## Select ----------------------------------------------------------------------
 
 .select.seq <- function(seqObj, ids){
-    ## Returns full seq set - it would be more efficient to filter before
-    ## extracting seqs.
-    seqs <- DECIPHER::SearchDB(seqObj)
 
-    seqs[names(seqs) %in% ids,]
+    result <- RSQLite::dbGetQuery(seqObj, paste("select row_names, sequence from _Seqs where row_names in ", paste0("(", paste0(ids, collapse = ','), ")")))
+    seqs <- DECIPHER::Codec(result$sequence)
+    dnaStringSet <- Biostrings::DNAStringSet(seqs)
+    names(dnaStringSet) <- result[,1]
+    
+    dnaStringSet
 }
 
 
