@@ -130,7 +130,7 @@ make_mgdb_sqlite <- function(db_name, db_file, taxa_tbl, seqs) {
 
     ### Adding taxonomic data to database
     DECIPHER::Add2DB(myData = taxa_tbl, dbFile = db_conn)
-    
+
     RSQLite::dbDisconnect(db_conn)
 }
 
@@ -222,7 +222,11 @@ setMethod("show", "MgDb",
               print("Taxonomy Data:")
               print(mgdb_taxa(object))
               print("Tree Data:")
-              ape::print.phylo(mgdb_tree(object))
+              if (!is.null(mgdb_tree(object))) {
+                  ape::print.phylo(mgdb_tree(object))
+              } else {
+                  print("Tree not available")
+              }
           }
 )
 
