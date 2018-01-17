@@ -2,7 +2,7 @@
 #' mgFeature-class object
 #'
 #' Object contains taxonomic annotation and reference sequence data for
-#' classified OTUs. The class extends the \link[Biobase]{AnnotatedDataFrame}
+#' classified OTUs. The class extends the \link[S4Vectors]{DataFrame}
 #' class with a slot with a subset of the reference database sequences and
 #' phylogenetic tree for taxonomically classified OTUs, along with an additional
 #' slot for metadata including information on the database source.
@@ -15,14 +15,12 @@
 #' @examples
 #' data(mock_mgF)
 #' @rdname mgFeatures-class
+#' @importFrom S4Vectors DataFrame
 setClass("mgFeatures",
          slots = list(metadata = "list",
-                      refDbSeq="DNAStringSet",
+                      refDbSeq = "DNAStringSet",
                       refDbTree = "phyloOrNULL"),
-         contains = c("AnnotatedDataFrame"),
-         prototype = new("VersionedBiobase",
-                         versions = c(classVersion("AnnotatedDataFrame"),
-                                      mgFeatures = "1.0.1"))
+         contains = c("DataFrame")
 )
 
 ## making sure new object conforms to class definition
@@ -50,6 +48,32 @@ setValidity("mgFeatures", function(object) {
 ##
 ################################################################################
 ################################################################################
+
+## subset ----------------------------------------------------------------------
+.subset_tree <- function(tree, ids){
+    drop_tips <- tree$tip.label[!(tree$tip.label %in% ids)]
+    # drop.tip return class phy defining class to match mgFeature class description
+    ape::drop.tip(tree,drop_tips) # %>% ape::as.phylo()
+}
+
+setMethod("[", "mgFeatures",
+          function(x, i, j, ..., drop = FALSE) {
+              obj = callNextMethod()
+
+              ## Letting subset call to DataFrame define subset rows
+              ids <- rownames(obj)
+
+              ## Subsetting tree
+              obj@refDbTree <- .subset_tree(obj@refDbTree, ids)
+
+              ## Subsetting seq
+              obj@refDbSeq <- obj@refDbSeq[names(obj@refDbSeq) %in% ids]
+
+              ## Return updated object
+              obj
+          }
+)
+
 ## accessors -------------------------------------------------------------------
 
 #' mgFeatures accessors
@@ -80,10 +104,13 @@ mgF_seq <- function(mgF){
     mgF@refDbSeq
 }
 
+## Note using DataFrame the taxa information is stored as lists and not a data
+# frame. Function returns a DataFrame but no assignment function is defined.
+
 #' @rdname mgF_
 #' @export
 mgF_taxa <- function(mgF){
-    mgF@data
+    DataFrame(mgF)
 }
 
 #' @rdname mgF_

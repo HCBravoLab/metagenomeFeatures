@@ -1,6 +1,6 @@
 Package: metagenomeFeatures
 Title: Exploration of marker-gene sequence taxonomic annotations
-Version: 1.11.0
+Version: 1.9.9
 Author: Nathan D. Olson, Joseph Nathaniel Paulson, Hector Corrada Bravo
 Maintainer: Nathan D. Olson <nolson@umiacs.umd.edu>
 Description: metagenomeFeatures was developed for use in exploring
@@ -15,7 +15,7 @@ License: Artistic-2.0
 LazyData: true
 Imports:
     Biostrings (>= 2.36.4),
-    ShortRead (>= 1.26.0),
+    S4Vectors (>= 0.14.7),
     dplyr (>= 0.7.0),
     dbplyr(>= 1.0.0),
     stringr (>= 1.0.0),
@@ -24,9 +24,9 @@ Imports:
     magrittr (>= 1.5),
     methods (>= 3.3.1),
     lattice (>= 0.20.33),
-    metagenomeSeq (>= 1.14.2),
     ape (>= 3.5),
-    purrr (>= 0.2.2)
+    purrr (>= 0.2.2),
+    DECIPHER (>= 2.4.0)
 Suggests:
     knitr (>= 1.11),
     msd16s (>= 0.102.0),
@@ -37,14 +37,10 @@ Collate:
     'phylo-class.R'
     'mgDb-class.R'
     'mgFeatures-class.R'
-    'demoMgDb.R'
+    'gg13.8_97MgDb.R'
     'mgDb-taxa_accessors.R'
-    'aggregate_taxa.R'
-    'vignette_data.R'
-    'mgDb_method_annotateMRexp.R'
     'mgDb_method_select.R'
     'mgDb_method_annotateFeatures.R'
-    'mockMgDb.R'
     'mock_query_df.R'
     'mock_mgF.R'
 VignetteBuilder: knitr

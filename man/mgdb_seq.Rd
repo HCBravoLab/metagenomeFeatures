@@ -16,6 +16,6 @@ DNAStringSet class object
 MgDb seq slot accessor
 }
 \examples{
-demoMgDb <- get_demoMgDb()
-mgdb_seq(demoMgDb)
+gg97 <- get_gg13.8_97MgDb()
+mgdb_seq(gg97)
 }

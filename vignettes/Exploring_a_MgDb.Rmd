@@ -9,29 +9,29 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-The MgDb Class in the metagenomeFeatures package includes the sequences and taxonomic information for a 16S database.  The following vignette demonstrates the class methods for exploring and subsetting a `MgDb-class` object using the `demoMgDb` included in the `metagenomeFeatures` package. `MgDb-class` object with full databases are in separate packages such as the `greengenes13.5MgDb` package.
+The MgDb Class in the metagenomeFeatures package includes the sequences and taxonomic information for a 16S database.  The following vignette demonstrates the class methods for exploring and subsetting a `MgDb-class` object using the `gg97` included in the `metagenomeFeatures` package. `MgDb-class` object with full databases are in separate packages such as the `greengenes13.5MgDb` package.
 
 ## Demonstration `MgDb-class` Object
 ```{r}
 library(metagenomeFeatures)
-demoMgDb <- get_demoMgDb()
-demoMgDb
+gg97 <- get_gg13.8_97MgDb()
+gg97
 ```
 
 
 ## MgDb Methods
 taxa_keytypes
 ```{r}
-taxa_keytypes(demoMgDb)
+taxa_keytypes(gg97)
 ```
 
 
 ```{r}
-taxa_columns(demoMgDb)
+taxa_columns(gg97)
 ```
 
 ```{r}
-head(taxa_keys(demoMgDb, keytype = c("Kingdom")))
+head(taxa_keys(gg97, keytype = c("Kingdom")))
 ```
 
 
@@ -40,14 +40,14 @@ Used to retrieve db entries for a specified taxonomic group or id list, can retu
 
 ### Selecting taxonomic information
 ```{r}
-mgDb_select(demoMgDb, type = "taxa",
+mgDb_select(gg97, type = "taxa",
             keys = c("Vibrionaceae", "Enterobacteriaceae"),
             keytype = "Family")
 ```
 
 ### Selecting sequence information
 ```{r}
-mgDb_select(demoMgDb, type = "seq",
+mgDb_select(gg97, type = "seq",
             keys = c("Vibrionaceae", "Enterobacteriaceae"),
             keytype = "Family")
 ```
@@ -56,7 +56,7 @@ mgDb_select(demoMgDb, type = "seq",
 
 ### Selecting all
 ```{r}
-# mgDb_select(demoMgDb, type = "all",
+# mgDb_select(gg97, type = "all",
 #                 keys = c("Vibrio", "Salmonella"),
 #                 keytype = "Genus")
 ```

@@ -19,7 +19,6 @@ r_packages:
 bioc_packages:
   - Biostrings
   - ShortRead
-  - metagenomeSeq
 
 env:
  global:

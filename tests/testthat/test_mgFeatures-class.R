@@ -1,6 +1,6 @@
 ## testing mgFeatures class
-library(magrittr)
 library(ape)
+library(S4Vectors)
 
 test_metadata <- list(ACCESSION_DATE = "1/11/1111",
                       URL = "test-data",
@@ -14,29 +14,32 @@ make_test_taxa <- function(){
     tax_names <- matrix(paste0("tax_",0:69), ncol = 7)
     colnames(tax_names) <- c("Kingdom","Phylum","Class","Order",
                              "Family","Genus","Species")
-    as.data.frame(tax_names) %>%
-        data.frame(Keys = test_keys, .)
+    df <- as.data.frame(tax_names)
+    data.frame(Keys = test_keys, df)
 }
 
 test_taxa <- make_test_taxa()
 
 test_seq <- readRDS("../test_seq.rds")
-test_tree <- readRDS("../test_tree.rds") %>% as(Class = "phylo")
+test_tree <- as(readRDS("../test_tree.rds"), Class = "phylo")
 
-
-
+test_mgF <- new("mgFeatures",
+                DataFrame(test_taxa, row.names = test_taxa$Keys),
+                metadata = test_metadata,
+                refDbSeq = test_seq,
+                refDbTree = test_tree)
 
 context("mgFeatures-class")
 ## mgF new ---------------------------------------------------------------------
 ## testing for errors when generating new metagenomeFeatures object
 test_that("mgFeatures-class-new",{
     expect_is(new("mgFeatures",
-                  data = test_taxa,
+                  listData = test_taxa,
                   metadata = test_metadata,
                   refDbSeq = test_seq,
                   refDbTree = test_tree), "mgFeatures")
     expect_is(new("mgFeatures",
-                  data = test_taxa,
+                  listData = test_taxa,
                   metadata = test_metadata,
                   refDbSeq = test_seq,
                   refDbTree = NULL), "mgFeatures")
@@ -75,14 +78,8 @@ test_that("mgFeatures-class-new",{
 
 ## mgF slots -------------------------------------------------------------------
 test_that("mgFeatures-class-slots",{
-    test_mgF <- new("mgFeatures",
-                    data = test_taxa,
-                    metadata = test_metadata,
-                    refDbSeq = test_seq,
-                    refDbTree = test_tree)
-    ## test slots
     expect_is(test_mgF, "mgFeatures")
-    expect_identical(test_mgF@data, test_taxa)
+    expect_identical(test_mgF@listData, as.list(test_taxa))
     expect_identical(test_mgF@metadata, test_metadata)
     expect_identical(test_mgF@refDbSeq, test_seq)
     expect_identical(test_mgF@refDbTree, test_tree)
@@ -90,16 +87,25 @@ test_that("mgFeatures-class-slots",{
 
 ## mgF accessors ---------------------------------------------------------------
 test_that("mgFeatures-accessors",{
-    test_mgF <- new("mgFeatures",
-                    data = test_taxa,
-                    metadata = test_metadata,
-                    refDbSeq=test_seq,
-                    refDbTree = test_tree)
-
-    expect_identical(mgF_taxa(test_mgF), test_mgF@data)
+    expect_identical(mgF_taxa(test_mgF), DataFrame(test_mgF))
     expect_identical(mgF_meta(test_mgF), test_mgF@metadata)
     expect_identical(mgF_seq(test_mgF), test_mgF@refDbSeq)
     expect_identical(mgF_tree(test_mgF), test_mgF@refDbTree)
 })
 
-## test for subsetting
+## mgF subset ------------------------------------------------------------------
+test_that("mgFeature-subset", {
+    ## Checking the subset function works for numeric and text based subsets
+    expect_s4_class(test_mgF[1:5,],"mgFeatures")
+    expect_s4_class(test_mgF[rownames(test_mgF) %in% 1:5,], "mgFeatures")
+    expect_equal(test_mgF[1:5,], test_mgF[test_mgF$Keys %in% 1:5,])
+
+    ## Checking individual slots were subset correctly
+    subset_test_mgF <- test_mgF[1:5,]
+    expect_equal(subset_test_mgF@listData, as.list(test_taxa[1:5,]))
+
+    expect_equal(subset_test_mgF@refDbTree,
+                 drop.tip(test_tree,tip = as.character(6:10)))
+    expect_equal(subset_test_mgF@refDbSeq, test_seq[1:5])
+
+})

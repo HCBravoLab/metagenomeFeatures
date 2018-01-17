@@ -23,6 +23,6 @@ Column names for MgDb taxonomy slot object
 Same function as \code{\link{taxa_keytypes}}.
 }
 \examples{
-demoMgDb <- get_demoMgDb()
-taxa_columns(demoMgDb)
+gg97 <- get_gg13.8_97MgDb()
+taxa_columns(gg97)
 }

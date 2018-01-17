@@ -7,23 +7,31 @@ test_that("MgDb-class select arguments",{
     expect_error(mgDb_select(testMgDb, type = "all", keys = "Streptomyces"))
 })
 
+## Test select will fail for seqs as the seq slot contains a different representation, seqDB than the select returns, DNAStringSet.
+##
+## Removing Decipher columns
+test_taxa_df <- dplyr::collect(testMgDb@taxa)
+test_taxa_df$row_names <- NULL
+test_taxa_df$description <- NULL
+test_taxa_df$identifier <- NULL
+
 test_that("MgDb-class select return",{
     expect_equal(mgDb_select(testMgDb, type = c("seq","tree")),
-                 list(seq = testMgDb$seq, tree = testMgDb$tree))
+                 list(seq = test_seq, tree = testMgDb@tree))
 
     expect_equal(mgDb_select(testMgDb, type = c("taxa","tree")),
-                 list(taxa = testMgDb$taxa, tree = testMgDb$tree))
+                 list(taxa = test_taxa_df, tree = testMgDb@tree))
 
     expect_equal(mgDb_select(testMgDb, type = c("seq","tree")),
-                 list(seq = testMgDb$seq, tree = testMgDb$tree))
+                 list(seq = test_seq, tree = testMgDb@tree))
 
     expect_equal(mgDb_select(testMgDb, type = "all"),
-                 list(taxa = testMgDb$taxa,
-                      seq = testMgDb$seq,
-                      tree = testMgDb$tree))
+                 list(taxa = test_taxa_df,
+                      seq = test_seq,
+                      tree = testMgDb@tree))
 })
 
-## TODO add test for Greengenes format
+## TODO add tests for Greengenes format
 
 
 test_that("MgDb-class select taxa",{
@@ -50,7 +58,8 @@ test_that("MgDb-class select seq", {
     expect_is(test_select_seq, "DNAStringSet")
 
     ## test value
-    expect_equal( test_select_seq, test_seq[c(2,4)])
+    ## Using test equivalent instead of test equal due to attribute differences
+    expect_equivalent( test_select_seq, test_seq[c(2,4)])
 })
 
 
@@ -77,11 +86,6 @@ test_that("MgDb-class select all",{
         testMgDb,type = "all",
         keys = c("tax_51", "tax_53"),
         keytype = "Genus")
-
-
-    # expect_equal_to_reference(
-    #     test_select_all,
-    #     file = "cache/MgDb_test_select_all.rds")
 
     ## Test type
     expect_is(test_select_all, "list")
