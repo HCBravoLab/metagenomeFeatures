@@ -1,0 +1,78 @@
+---
+title: "Exploring sequence and phylogenetic diversity for a taxonomic group of interest."
+author: "Nate D. Olson"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Overview
+MgDb objects for 16S rRNA sequence reference databases can be used to explore sequnce and phylogenetic diversity of taxonomic groups of interest. 
+In this vignette we will explore the 16S rRNA diversity for the _Enterobacteriace_ family. 
+The Greengenes 16S rRNA database version 13.8 clusted at the 97\% threshold will be used in this vignette. 
+A `MgDb` object with this database (`gg97`) is included in the `metagenomeFeatures` package. 
+We will first load the MgDb class object, then select the taxa of interest, and finally provide a explor the phylogenetic and sequence diversity and taxonomic composition of the _Enterobacteriace_ family.   
+
+## Loading the database 
+First we need to load the `metagenomeFeatues` package. 
+```{r message = FALSE}
+library(metagenomeFeatures)
+```
+
+The `gg97` database is loaded using the `get_gg13.8_97MgDb()`. 
+Other databases are avilable as Bioconductor annotation packages (__ADD LINK__).  
+```{r}
+gg97 <- get_gg13.8_97MgDb()
+```
+
+## Selecting Taxonomic Group 
+The `mgDb_select()` function is used to subset the database 
+```{r}
+entero_16S <- mgDb_select(gg97, 
+                          type = "all", 
+                          keys = "Enterobacteriaceae", 
+                          keytype = "Family")
+```
+
+
+## Numer of Taxa By Genus 
+
+```{r}
+table(entero_16S$taxa$Genus)
+```
+
+
+## Sequence Diversity 
+Not sure how to show sequence diversity
+```{r}
+entero_16S$seq
+```
+
+
+## Phylogenetic Diversity  
+Plot tree color by genera 
+```{r}
+plot(entero_16S$tree)
+```
+
+## System Information
+```{r}
+s_info <- devtools::session_info()
+print(s_info$platform)
+```
+
+
+## Package Versions
+```{r}
+s_info$packages
+```
