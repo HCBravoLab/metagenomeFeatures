@@ -163,7 +163,7 @@ newMgDb <- function(db_file, tree, metadata){
     taxa_dbi <- dplyr::tbl(src = db_conn, from = "Seqs")
 
     ## tree slot
-    if (is.character(tree) & is.null(tree)) {
+    if (!(is.character(tree) & is.null(tree))) {
         stop("Tree must be NULL or character string with tree file path")
     }
 
