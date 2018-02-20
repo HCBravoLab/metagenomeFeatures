@@ -116,4 +116,21 @@ test_that("MgDb-class select all",{
         keytype = "Genus")
 
     expect_equal(test_select_all$tree, test_select_tree)
+
+    ## Equal number of entries
+    expect_equal(length(test_select_all$seq), nrow(test_select_all$taxa))
+    expect_equal(nrow(test_select_all$taxa), ape::Ntip(test_select_all$tree))
+
+})
+
+## Using Entero GG97 as bug first identified when developing
+## database-explore.Rmd vignette
+test_that("MgDb-class select equal entries",{
+    test_select_entero <- mgDb_select(get_gg13.8_97MgDb(),
+                                      type = "all",
+                                      keys = "Enterobacteriaceae",
+                                      keytype = "Family")
+    ## Equal number of entries
+    expect_equal(length(test_select_entero$seq), nrow(test_select_entero$taxa))
+    expect_equal(nrow(test_select_entero$taxa), ape::Ntip(test_select_entero$tree))
 })

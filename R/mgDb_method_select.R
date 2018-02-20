@@ -5,13 +5,12 @@
 ################################################################################
 ## Select ----------------------------------------------------------------------
 
-.select.seq <- function(seqObj, ids){
-
-    result <- RSQLite::dbGetQuery(seqObj, paste("select row_names, sequence from _Seqs where row_names in ", paste0("(", paste0(ids, collapse = ','), ")")))
+.select.seq <- function(seqObj, row_names, Keys){
+    result <- RSQLite::dbGetQuery(seqObj, paste("select row_names, sequence from _Seqs where row_names in ", paste0("(", paste0(row_names, collapse = ','), ")")))
     seqs <- DECIPHER::Codec(result$sequence)
     dnaStringSet <- Biostrings::DNAStringSet(seqs)
-    names(dnaStringSet) <- result[,1]
-    
+    names(dnaStringSet) <- Keys[match(result[,1], row_names)]
+
     dnaStringSet
 }
 
@@ -51,9 +50,6 @@
         select_tbl <- dplyr::select_(select_tbl, .dots = columns)
     }
 
-    ## Removing decipher columns
-    select_tbl <- dplyr::select(select_tbl, -row_names, -description, -identifier)
-
     return(dplyr::collect(select_tbl))
 }
 
@@ -80,13 +76,17 @@
     select_obj <- list()
     taxa_df <- .select.taxa(mgdb_taxa(mgdb), mgdb_meta(mgdb), keys, keytype, columns)
 
+    ## Extracting ids for subsetting seqs
+    row_names <- taxa_df$row_names
+
     # vector with all objects to return
     if ("taxa" %in% type || type == "all") {
-        select_obj$taxa <- taxa_df
+        ## Removing decipher columns
+        select_obj$taxa <- dplyr::select(taxa_df, -row_names, -description, -identifier)
     }
 
     if ("seq" %in% type || type == "all") {
-        select_obj$seq <- .select.seq(mgdb_seq(mgdb), taxa_df$Keys)
+        select_obj$seq <- .select.seq(mgdb_seq(mgdb), taxa_df$row_names, taxa_df$Keys)
     }
 
     if ("tree" %in% type || type == "all") {
