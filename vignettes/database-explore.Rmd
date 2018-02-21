@@ -23,7 +23,8 @@ The Greengenes 16S rRNA database version 13.8 clusted at the 97\% threshold will
 A `MgDb` object with this database (`gg97`) is included in the `metagenomeFeatures` package. 
 We will first load the MgDb class object, then select the taxa of interest, and finally provide a explor the phylogenetic and sequence diversity and taxonomic composition of the _Enterobacteriace_ family.   
 
-The database exploration will consist of four parts. 
+The database exploration will consist of four parts.  
+
 1. Loading and subsetting the database.    
 2. Taxonomic analysis.  
 3. Phylogenetic diversity.   
@@ -101,7 +102,7 @@ Next we will use the phylogenetic information to evaluate this assumption.
 We will use the `ggtree` package to visualize the phylogenetic tree and annotate the tips with Genera information. 
 A number of OTUs unassigned at the genus level are in the same clade as OTUs assigned to the Genera _Escherichia_ and a related Genera _Salmonella_ \@ref(fig:annoTree). 
 
-```{r annoTree, fig.height = 8, fig.width = 6, message = FALSE}
+```{r annoTree, fig.cap = "Phylogenetic tree for Enterobacteriaceae family OTU representative sequences. OTUs not classified to the genus level are annotated with orange dots, and _Escherichia_ and _Salmonella_ OTUs are annotated with blue and green dots respectively.", fig.height = 8, fig.width = 6, message = FALSE}
 library(ggtree)
 
 genus_anno_df <- entero_16S$taxa %>% 
@@ -114,7 +115,8 @@ ggtree(entero_16S$tree) %<+%
     genus_anno_df + 
     geom_tippoint(aes(color = Genus_lab), size = 3) + 
     scale_color_manual(values = c("#FF000000","darkorange","blue", "darkgreen")) + 
-    theme(legend.position = "bottom")
+    theme(legend.position = "bottom") + 
+    labs(color = "Genus")
 ```
 
 ## Sequence Diversity 
