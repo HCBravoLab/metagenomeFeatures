@@ -23,20 +23,37 @@ The Greengenes 16S rRNA database version 13.8 clusted at the 97\% threshold will
 A `MgDb` object with this database (`gg97`) is included in the `metagenomeFeatures` package. 
 We will first load the MgDb class object, then select the taxa of interest, and finally provide a explor the phylogenetic and sequence diversity and taxonomic composition of the _Enterobacteriace_ family.   
 
-## Loading the database 
+The database exploration will consist of four parts. 
+1. Loading and subsetting the database.    
+2. Taxonomic analysis.  
+3. Phylogenetic diversity.   
+4. Sequence diversity.     
+
+## Loading and subsetting the database 
 First we need to load the `metagenomeFeatues` package. 
+The tidyverse packages, dplyr, tidyr, and ggplot are used display the results.
 ```{r message = FALSE}
-library(metagenomeFeatures)
+library(metagenomeFeatures) 
+library(tidyverse)
 ```
 
-The `gg97` database is loaded using the `get_gg13.8_97MgDb()`. 
-Other databases are avilable as Bioconductor annotation packages (__ADD LINK__).  
+<!-- TODO Update links after Bioconductor submission -->
+
+The `gg97` database is loaded using `get_gg13.8_97MgDb()`.  
 ```{r}
 gg97 <- get_gg13.8_97MgDb()
-```
+```  
 
-## Selecting Taxonomic Group 
-The `mgDb_select()` function is used to subset the database 
+Other databases are avilable as [Bioconductor AnnotationData](https://www.bioconductor.org/packages/release/data/annotation/).  
+
+- [Greengenes Release 13.5](http://bioconductor.org/packages/release/data/annotation/html/greengenes13.5MgDb.html)  
+- [Ribosomal Database Project Release 11.5](https://github.com/HCBravoLab/ribosomaldatabaseproject11.5MgDb)  
+- [Silva 123.1](https://github.com/nate-d-olson/silva123.1MgDb)  
+
+Next the `mgDb_select()` function is first used to subset the database, the `key` arguments is used to define the taxonmic group(s) of interest and `keytype` is used to define the taxonomic level for the group(s) of interest. 
+With the subsetted database you can analyze the taxonomy, sequences, and phylogeny for the taxonomic group of interest. 
+The select function returns single object with a subset of the database taxonomic, sequence, or phylogenetic data, as well as a named list with any two or all three data types.  
+
 ```{r}
 entero_16S <- mgDb_select(gg97, 
                           type = "all", 
@@ -44,25 +61,68 @@ entero_16S <- mgDb_select(gg97,
                           keytype = "Family")
 ```
 
-
-## Numer of Taxa By Genus 
+## Taxonomic Analysis 
+We want to know how many genera in the Family Enterobacteriaceae there are sequences for in the Greengenes 97% OTU database as well as how many sequences are assigned to each genera. 
+We will first create a dataframe with the desired information then a plot to summarize the results. 
 
 ```{r}
-table(entero_16S$taxa$Genus)
+## Per genus count data
+entero_df <- entero_16S$taxa %>% 
+    group_by(Genus) %>% 
+    summarise(Count = n()) %>% 
+    ungroup() %>% 
+    mutate(Genus = fct_reorder(Genus, Count)) 
+
+## Count info for text 
+total_otus <- sum(entero_df$Count)
+no_genus_assignment <- entero_df$Count[entero_df$Genus == "g__"]
+escherichia_count <- entero_df$Count[entero_df$Genus == "g__Escherichia"]
+
+## excluding unassigned genera and genera with only one assigned sequence
+entero_trim_df <- entero_df %>% filter(Genus != "g__", Count > 1)
 ```
 
+For the Greengenes database there are a total of `r total_otus` OTUs assigned to `r nlevels(entero_df$Genus)` genera in the Family Enterobacteriaceae. 
+The number of OTUs assigned to specific Enterobacteriaceae genera, range from 76 to 1 \@ref(fig:generaCount). 
+As this database is preclustered to 97\% similarity OTUs per genus is more of an indicator of genera diversity than how well the genera is represented in the database. 
+For example no sequences present in the database are assigned to the genus _Shigella_ and only `r escherichia_count` are assigned to _Escherichia_. 
+OTUs only assigned to the family, `g__`, is the most abundant group, `r no_genus_assignment`, many of which are likely from these two genera. 
+Next we will use the phylogenetic information to evaluate this assumption.
 
-## Sequence Diversity 
-Not sure how to show sequence diversity
-```{r}
-entero_16S$seq
+```{r generCount, fig.cap = "Number of seqeunces assigned to genera in the family Enterobacteriaceae. Only Genera with more than one assigned sequence are shown.", fig.width = 6, fig.height = 6} 
+ ggplot(entero_trim_df) + 
+    geom_bar(aes(x = Genus, y = Count), stat = "identity") + 
+    labs(y = "Number of OTUs") + 
+    coord_flip() + 
+    theme_bw() 
 ```
-
 
 ## Phylogenetic Diversity  
-Plot tree color by genera 
+We will use the `ggtree` package to visualize the phylogenetic tree and annotate the tips with Genera information. 
+A number of OTUs unassigned at the genus level are in the same clade as OTUs assigned to the Genera _Escherichia_ and a related Genera _Salmonella_ \@ref(fig:annoTree). 
+
+```{r annoTree, fig.height = 8, fig.width = 6, message = FALSE}
+library(ggtree)
+
+genus_anno_df <- entero_16S$taxa %>% 
+    group_by(Genus) %>% 
+    mutate(Count = n()) %>% 
+    ungroup() %>% 
+    mutate(Genus_lab = if_else(Genus %in% paste0("g__", c("","Escherichia", "Salmonella")), Genus, ""))
+
+ggtree(entero_16S$tree) %<+% 
+    genus_anno_df + 
+    geom_tippoint(aes(color = Genus_lab), size = 3) + 
+    scale_color_manual(values = c("#FF000000","darkorange","blue", "darkgreen")) + 
+    theme(legend.position = "bottom")
+```
+
+## Sequence Diversity 
+The `mgDb_select` function returns the subsetted sequence data as a biostring object.
+The sequence data can be used for additional analysis such as, multiple sequencing alignment, primer region extraction, or PCR primer design. 
+
 ```{r}
-plot(entero_16S$tree)
+entero_16S$seq
 ```
 
 ## System Information
