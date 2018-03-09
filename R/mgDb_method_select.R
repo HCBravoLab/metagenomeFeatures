@@ -97,6 +97,10 @@
     if (type != "all" && length(type)  == 1) {
         select_obj <- select_obj[[type]]
     }
+    
+    if(nrow(select_obj) == 0) {
+      warning(paste("mgDb_select did not match any", paste(keys, collapse=", "), "from", keytype))
+    }
 
     return(select_obj)
 }
