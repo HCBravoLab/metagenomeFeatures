@@ -45,6 +45,7 @@ Collate:
     'mgDb_method_annotateFeatures.R'
     'mock_query_df.R'
     'mock_mgF.R'
+    'mgDb_aggregate_taxa.R'
 VignetteBuilder: knitr
 URL: https://github.com/HCBravoLab/metagenomeFeatures
 BugReports: https://github.com/HCBravoLab/metagenomeFeatures/issues

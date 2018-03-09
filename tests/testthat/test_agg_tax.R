@@ -1,28 +1,27 @@
-# context("aggregate_taxa")
-#
-# ## agg_taxa fails if only one sample is present in count, unable to assign row names for n X 1 matrix
-#
-# test_that("aggregate_taxa-return-class",{
-#     expect_is(aggregate_taxa(test_MRexp, lvl = "Species"),"MRexperiment")
-#     expect_is(aggregate_taxa(test_MRexp, lvl = "Species",
-#                              out = "matrix"),"matrix")
-# })
-#
-# ## tests for wrong input
-#
-# ## test for wrong params
-# test_that("aggregate_taxa-params", {
-#     expect_error(aggregate_taxa("not MRexp", lvl = "Species"))
-#     expect_error(aggregate_taxa(test_MRexp, lvl = 10))
-#     expect_error(aggregate_taxa(test_MRexp, lvl = "NOT a level"))
-#     expect_error(aggregate_taxa(test_MRexp, lvl = "Species", out = "Wrong!"))
-#     ##  no current check, how to check function is appropriate for matrix?
-#     # expect_error(aggregate_taxa(test_MRexp, lvl = "Species", aggFun = "BAD"))
-#     ## silent arguments - move checks to MRcounts
-#     # expect_warning(aggregate_taxa(test_MRexp, lvl = "Species", sl = "BAD"))
-#     # expect_error(aggregate_taxa(test_MRexp, lvl = "Species", norm = "BAD"))
-#     # expect_error(aggregate_taxa(test_MRexp, lvl = "Species", log = "BAD"))
-# })
+context("aggregate_taxa")
+
+## agg_taxa fails if only one sample is present in count, unable to assign row names for n X 1 matrix
+
+test_that("aggregate_taxa-return-class",{
+    expect_is(aggregate_taxonomy(testMgDb, taxa_level = "Species")[["agg_taxa_table"]],"tbl")
+    expect_is(aggregate_taxonomy(testMgDb, taxa_level = "Species", mapping = TRUE)[["agg_taxa_mapping"]],"tbl")
+})
+
+## tests for wrong input
+
+## test for wrong params
+test_that("aggregate_taxa-params", {
+    expect_error(aggregate_taxa("not MRexp", taxa_level = "Species"))
+    expect_error(aggregate_taxa(testMgDb, taxa_level = 10))
+    expect_error(aggregate_taxa(testMgDb, taxa_level = "NOT a level"))
+    expect_error(aggregate_taxa(testMgDb, taxa_level = "Species", mapping = "Wrong!"))
+    ##  no current check, how to check function is appropriate for matrix?
+    # expect_error(aggregate_taxa(test_MRexp, lvl = "Species", aggFun = "BAD"))
+    ## silent arguments - move checks to MRcounts
+    # expect_warning(aggregate_taxa(test_MRexp, lvl = "Species", sl = "BAD"))
+    # expect_error(aggregate_taxa(test_MRexp, lvl = "Species", norm = "BAD"))
+    # expect_error(aggregate_taxa(test_MRexp, lvl = "Species", log = "BAD"))
+})
 #
 #
 # ## test for single sample
