@@ -26,13 +26,13 @@
     ret_table <- dplyr::select(taxa_table, tidyselect::one_of(aggregated_taxa))
 
     if(mapping){
-        mapping <- dplyr::select(taxa_table, one_of(c("description", taxa_level)))
+        mapping <- dplyr::select(taxa_table, one_of(c("Keys", taxa_level)))
         return(list(agg_taxa_table = ret_table, agg_taxa_mapping = mapping))
     }
     return(list(agg_taxa_table = ret_table, agg_taxa_mapping = NULL))
 }
 
-#' Taxonomy aggregation for a given keytype
+#' Taxonomy aggregation for a given level
 #'
 #' @name aggregate_taxonomy
 #' @param mgdb object of MgDB class
@@ -53,3 +53,55 @@ setGeneric("aggregate_taxonomy", signature = "mgdb",
 #' @aliases aggregate_taxonomy,MgDb-method
 setMethod("aggregate_taxonomy", "MgDb",
           function(mgdb, ...) .aggregate_taxonomy(mgdb, ...))
+
+
+
+
+.aggregate_taxonomy_mgf<-function(mgf, taxa_level = NULL, mapping = FALSE){
+    if(class(mgf)!="mgFeatures"){
+        stop("mgf parameter not correct class")
+    }
+    if(is.null(taxa_level)){
+        return(list(agg_taxa_table = NULL, agg_taxa_mapping = NULL))
+    }
+
+    if(!(taxa_level %in% colnames(mgf))){
+        stop("taxa_level not part of taxa_table")
+    }
+    if(mapping && !is.logical(mapping)){
+        stop("mapping needs to be logical value")
+    }
+
+    aggregated_taxa <- colnames(mgf)[1:which(colnames(mgf) == taxa_level)]
+    ret_table <- mgf[,aggregated_taxa]
+
+    if(mapping){
+        mapping <- mgf[,c("Keys", taxa_level)]
+        return(list(agg_taxa_table = ret_table, agg_taxa_mapping = mapping))
+    }
+    return(list(agg_taxa_table = ret_table, agg_taxa_mapping = NULL))
+}
+
+#' Taxonomy aggregation for a given level
+#'
+#' @name aggregate_taxonomy_mgf
+#' @param mgf object of mgFeatures class
+#' @param taxa_level taxonomic aggregation level
+#' @param mapping logical for returning mapping of ids to aggregated taxa level
+#' @return list(tbl_df, tbl_df)
+#'
+#' @examples
+#' data(mock_mgF)
+#' aggregate_taxonomy_mgf(mock_mgF, taxa_level = "Phylum")
+#' @exportMethod aggregate_taxonomy_mgf
+#' @rdname aggregate_taxonomy_mgf
+setGeneric("aggregate_taxonomy_mgf", signature = "mgf",
+           function(mgf, ...) standardGeneric("aggregate_taxonomy_mgf"))
+
+## MgF aggregate_taxa method
+#' @rdname aggregate_taxonomy_mgf
+#' @aliases aggregate_taxonomy_mgf
+setMethod("aggregate_taxonomy_mgf", "mgFeatures",
+          function(mgf, ...) .aggregate_taxonomy_mgf(mgf, ...))
+
+
