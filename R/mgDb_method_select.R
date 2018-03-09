@@ -74,7 +74,14 @@
 
     ## list with select results
     select_obj <- list()
-    taxa_df <- .select.taxa(mgdb_taxa(mgdb), mgdb_meta(mgdb), keys, keytype, columns)
+    taxa_df <- .select.taxa(mgdb_taxa(mgdb), mgdb_meta(mgdb),
+                            keys, keytype, columns)
+
+    ## Warning if no query matches
+    if (nrow(taxa_df) == 0) {
+        warning(paste("mgDb_select did not match any",
+                      paste(keys, collapse = ", "), "from", keytype))
+    }
 
     ## Extracting ids for subsetting seqs
     row_names <- taxa_df$row_names
