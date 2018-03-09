@@ -54,8 +54,8 @@ test_that("aggregate_taxa-params", {
 })
 
 test_that("aggregate_taxa_mgf-return-class",{
-    expect_is(aggregate_taxonomy_mgf(test_mgF, taxa_level = "Species")[["agg_taxa_table"]],"mgFeatures")
-    expect_is(aggregate_taxonomy_mgf(test_mgF, taxa_level = "Species", mapping = TRUE)[["agg_taxa_mapping"]],"mgFeatures")
+    expect_is(aggregate_taxonomy_mgf(test_mgF, taxa_level = "Species")[["agg_taxa_table"]],"DataFrame")
+    expect_is(aggregate_taxonomy_mgf(test_mgF, taxa_level = "Species", mapping = TRUE)[["agg_taxa_mapping"]],"DataFrame")
 })
 
 ## tests for wrong input

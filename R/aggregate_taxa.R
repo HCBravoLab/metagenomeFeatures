@@ -1,6 +1,6 @@
 ### ============================================================================
 ##
-##                              MgDb Taxa Aggregation methods
+##                              Taxa Aggregation methods
 ##
 ### ============================================================================
 
@@ -55,7 +55,7 @@ setMethod("aggregate_taxonomy", "MgDb",
           function(mgdb, ...) .aggregate_taxonomy(mgdb, ...))
 
 
-
+# mgFeatures taxa_aggregation method
 
 .aggregate_taxonomy_mgf<-function(mgf, taxa_level = NULL, mapping = FALSE){
     if(class(mgf)!="mgFeatures"){
@@ -64,19 +64,20 @@ setMethod("aggregate_taxonomy", "MgDb",
     if(is.null(taxa_level)){
         return(list(agg_taxa_table = NULL, agg_taxa_mapping = NULL))
     }
+    taxa_table <- mgF_taxa(mgf)
 
-    if(!(taxa_level %in% colnames(mgf))){
+    if(!(taxa_level %in% colnames(taxa_table))){
         stop("taxa_level not part of taxa_table")
     }
     if(mapping && !is.logical(mapping)){
         stop("mapping needs to be logical value")
     }
 
-    aggregated_taxa <- colnames(mgf)[1:which(colnames(mgf) == taxa_level)]
-    ret_table <- mgf[,aggregated_taxa]
+    aggregated_taxa <- colnames(taxa_table)[1:which(colnames(taxa_table) == taxa_level)]
+    ret_table <- taxa_table[,aggregated_taxa]
 
     if(mapping){
-        mapping <- mgf[,c("Keys", taxa_level)]
+        mapping <- taxa_table[,c("Keys", taxa_level)]
         return(list(agg_taxa_table = ret_table, agg_taxa_mapping = mapping))
     }
     return(list(agg_taxa_table = ret_table, agg_taxa_mapping = NULL))
