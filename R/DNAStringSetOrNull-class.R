@@ -1,6 +1,6 @@
 ## Setting phylo and phyloOrNULL class for MGDb and mgFeatures
 
-#setOldClass("DNAStringSet")
+setOldClass("DNAStringSetOrNull")
 
 ## Borrowed from https://github.com/joey711/phyloseq/blob/master/R/allClasses.R
 # Use setClassUnion to define the unholy NULL-data union as a virtual class.
