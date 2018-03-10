@@ -8,7 +8,7 @@
 #' slot for metadata including information on the database source.
 #'
 #' @slot metadata list
-#' @slot refDbSeq DNAStringSet
+#' @slot refDbSeq DNAStringSetOrNull
 #' @slot refDbTree phyloOrNULL
 #' @return mgFeature class object
 #' @export
@@ -18,7 +18,7 @@
 #' @importFrom S4Vectors DataFrame
 setClass("mgFeatures",
          slots = list(metadata = "list",
-                      refDbSeq = "DNAStringSet",
+                      refDbSeq = "DNAStringSetOrNull",
                       refDbTree = "phyloOrNULL"),
          contains = c("DataFrame")
 )
@@ -27,9 +27,9 @@ setClass("mgFeatures",
 setValidity("mgFeatures", function(object) {
     msg <- NULL
     if(!("refDbSeq" %in% slotNames(object)) ||
-       !is(object@refDbSeq, "DNAStringSet"))
+       (is(object@refDbSeq, "DNAStringSet") && is(object@refDbSeq, "NULL")))
         msg <- paste(msg,
-                     "'refDbSeq' slot must be a DNAStringSeq object",
+                     "'refDbSeq' slot must be a DNAStringSeq or NULL object",
                      sep = "\n")
     if(!("refDbTree" %in% slotNames(object)) ||
        (is(object@refDbTree, "phylo") && is(object@refDbTree, "NULL")))

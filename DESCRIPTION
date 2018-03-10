@@ -37,6 +37,7 @@ Suggests:
 Collate:
     'utils.R'
     'phylo-class.R'
+    'DNAStringSetOrNull-class.R'
     'mgDb-class.R'
     'mgFeatures-class.R'
     'gg13.8_97MgDb.R'

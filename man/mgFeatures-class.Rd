@@ -19,7 +19,7 @@ slot for metadata including information on the database source.
 \describe{
 \item{\code{metadata}}{list}
 
-\item{\code{refDbSeq}}{DNAStringSet}
+\item{\code{refDbSeq}}{DNAStringSetOrNull}
 
 \item{\code{refDbTree}}{phyloOrNULL}
 }}
