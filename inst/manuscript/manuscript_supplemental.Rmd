@@ -10,16 +10,17 @@ output: bookdown::pdf_document2
 16S rRNA amplicon sequencing is commonly used for microbial community characterization, including differential abundance analysis. 
 A limitation to 16S rRNA amplicon sequencing is a lack of taxonomic resolution, where organisms are only identifiable to the genus or family level. 
 We define taxonomic resolution as the ability to differentiate between groups within a taxonomic level, for example differentiating between species within a genus. 
-Taxonomic resolution can vary by clade and amplicon regions, though the extent to which it varies is not well characterized. 
+While similar to determining whether a sequence represents a novel species, here we are only interested in determining whether the 16S rRNA region of interest contains sufficient information for species level taxonomic assignment.
+Taxonomic resolution can vary by clade and amplicon regions, though the extent to which it varies has not been characterized. 
 
 
-Here we demonstrate how `metagenomeFeatures` and the `MgDb` annotation packages can be used to characterize taxonomic resolution for a specific clade and amplicon region, specifically for the _Paenibacillus_ genus and V12 and V4 regions 
+Here we demonstrate how `metagenomeFeatures` and `MgDb` annotation packages can be used to characterize taxonomic resolution for a specific clade and amplicon region, specifically for the _Paenibacillus_ genus and V12 and V4 regions 
 Using the Greengenes 13.5, `greengenes13.5MgDb` we will first subset the database to obtain _Paenibacillus_ taxonomic and sequence data. 
 Next we will explore the _Paenibacillus_ species composition, then characterize the within and between species sequence similarity for the 16S rRNA gene V12 and V4 regions. 
 
 ## Required Packages  
-Our analysis uses the `DECIPHER` package to extract the amplicon regions, perform multiple sequence alignment, and generate a pairwise sequence distance matrix. 
-The `tidyverse` and `ggpubr` packages will be used to reformat the taxonomic and distance matrix data and generate summary figures.  
+Our analysis uses the `DECIPHER` package to extract the amplicon regions, perform multiple sequence alignment, and generate a pairwise sequence distance matrix [@decipher]. 
+The `tidyverse` and `ggpubr` packages will be used to reformat the taxonomic and distance matrix data and generate summary figures [@tidyverse;@ggpubr].  
 
 ```{r message = FALSE, echo = TRUE}
 library(tidyverse); packageVersion("tidyverse")
@@ -32,11 +33,11 @@ library(greengenes13.5MgDb); packageVersion("greengenes13.5MgDb")
 
 ## _Paenibacillus_ Sequence and Taxonomy Data
 We first subset the Greeengenes 13.5 database using the `mgDb_select` function. 
-Then summarize the taxonomy data using the `tidyverse` package. 
+Then summarize the taxonomy data using functions from `tidyverse` package, specifically `dplyr`, `stringr` and `forcats` functions for manipulating `data.frames`, `strings`, and `factor` vectors respectively. 
 <!-- Loading metagenomeFeatues and greengenes db -->
 
 ```{r}
-paeni_16S <- mgDb_select(gg13.5MgDb, 
+paeni_16S <- metagenomeFeatures::mgDb_select(gg13.5MgDb, 
                           type = c("taxa","seq"), 
                           keys = "Paenibacillus", 
                           keytype = "Genus")
@@ -45,7 +46,7 @@ paeni_16S <- mgDb_select(gg13.5MgDb,
 
 
 ```{r}
-## Per genus count data
+## Per genus count data 
 taxa_df <- paeni_16S$taxa %>% 
     ## cleaning up species names
     mutate(Species = if_else(Species == "s__", "Unassigned", Species),
@@ -117,7 +118,7 @@ The resulting alingment can be viewed using the `BrowseSeqs` function in the `DE
 BrowseSeqs(v12_align)
 ```
 
-Generating pairwise distance matrix for taxonomic resolution analysis and converting distance matrix to data frame for analysis. 
+Generating pairwise distance matrix using the `DistanceMatrix` function in the `DECIPHER` package for taxonomic resolution analysis and converting distance matrix to data frame for analysis. 
 
 ```{r}
 v12_dist <- DistanceMatrix(v12_align, 
