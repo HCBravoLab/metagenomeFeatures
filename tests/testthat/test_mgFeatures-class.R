@@ -75,6 +75,18 @@ test_that("mgFeatures-class-new",{
     #                  refDbTree = test_tree))
 })
 
+test_that("mgFeatures-class-constructor",{
+    expect_is(mgFeatures(
+        taxa = test_taxa,
+        meta = test_metadata,
+        seq = test_seq,
+        tree = test_tree), "mgFeatures")
+    expect_is(mgFeatures(
+        taxa = test_taxa,
+        meta = test_metadata,
+        seq = test_seq,
+        tree = NULL), "mgFeatures")
+})
 
 ## mgF slots -------------------------------------------------------------------
 test_that("mgFeatures-class-slots",{
@@ -109,3 +121,5 @@ test_that("mgFeature-subset", {
     expect_equal(subset_test_mgF@refDbSeq, test_seq[1:5])
 
 })
+
+

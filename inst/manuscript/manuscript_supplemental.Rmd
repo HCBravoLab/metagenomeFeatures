@@ -1,0 +1,297 @@
+---
+title: "_Paenibacillus_ species resolution for 16S rRNA V12 and V4 regions."
+author: "Nate Olson"
+date: "`r Sys.Date()`"
+output: bookdown::pdf_document2
+---
+
+
+## Background
+16S rRNA amplicon sequencing is commonly used for microbial community characterization, including differential abundance analysis. 
+A limitation to 16S rRNA amplicon sequencing is a lack of taxonomic resolution, where organisms are only identifiable to the genus or family level. 
+We define taxonomic resolution as the ability to differentiate between groups within a taxonomic level, for example differentiating between species within a genus. 
+While similar to determining whether a sequence represents a novel species, here we are only interested in determining whether the 16S rRNA region of interest contains sufficient information for species level taxonomic assignment.
+Taxonomic resolution can vary by clade and amplicon regions, though the extent to which it varies has not been characterized. 
+
+
+Here we demonstrate how `metagenomeFeatures` and `MgDb` annotation packages can be used to characterize taxonomic resolution for a specific clade and amplicon region, specifically for the _Paenibacillus_ genus and V12 and V4 regions 
+Using the Greengenes 13.5, `greengenes13.5MgDb` we will first subset the database to obtain _Paenibacillus_ taxonomic and sequence data. 
+Next we will explore the _Paenibacillus_ species composition, then characterize the within and between species sequence similarity for the 16S rRNA gene V12 and V4 regions. 
+
+## Required Packages  
+Our analysis uses the `DECIPHER` package to extract the amplicon regions, perform multiple sequence alignment, and generate a pairwise sequence distance matrix [@decipher]. 
+The `tidyverse` and `ggpubr` packages will be used to reformat the taxonomic and distance matrix data and generate summary figures [@tidyverse;@ggpubr].  
+
+```{r message = FALSE, echo = TRUE}
+library(tidyverse); packageVersion("tidyverse")
+library(ggpubr); packageVersion("ggpubr")
+library(DECIPHER); packageVersion("DECIPHER")
+library(metagenomeFeatures); packageVersion("metagenomeFeatures")
+library(greengenes13.5MgDb); packageVersion("greengenes13.5MgDb")
+```
+
+
+## _Paenibacillus_ Sequence and Taxonomy Data
+We first subset the Greeengenes 13.5 database using the `mgDb_select` function. 
+Then summarize the taxonomy data using functions from `tidyverse` package, specifically `dplyr`, `stringr` and `forcats` functions for manipulating `data.frames`, `strings`, and `factor` vectors respectively. 
+<!-- Loading metagenomeFeatues and greengenes db -->
+
+```{r}
+paeni_16S <- metagenomeFeatures::mgDb_select(gg13.5MgDb, 
+                          type = c("taxa","seq"), 
+                          keys = "Paenibacillus", 
+                          keytype = "Genus")
+```
+
+
+
+```{r}
+## Per genus count data 
+taxa_df <- paeni_16S$taxa %>% 
+    ## cleaning up species names
+    mutate(Species = if_else(Species == "s__", "Unassigned", Species),
+           Species = str_replace(Species, "s__","")) %>% 
+    group_by(Species) %>% 
+    summarise(Count = n()) %>% 
+    ungroup() %>% 
+    mutate(Species = fct_reorder(Species, Count)) 
+
+## Count info for text 
+total_otus <- sum(taxa_df$Count)
+no_species_assignment <- taxa_df$Count[taxa_df$Species == "Unassigned"]
+```
+
+For the Greengenes 13.5 database there are a total of `r total_otus` sequences classified as `r nlevels(taxa_df$Species)` species in the Genus _Paenibacillus_. 
+The number of sequences assigned to specific _Paenibacillus_ species, range from 199 for _Paenibacillus amylolyticus_ to 2 for _Paenibacillus illinoisensis_ (Fig. \@ref(fig:speciesCount)). 
+Sequences only classified to the genus level, "Unassigned", is the most abundant group, `r no_species_assignment`. 
+```{r speciesCount, fig.cap = "Number of sequences assigned to species in the genus _Paenibacillus_."} 
+taxa_df %>% 
+ggplot() + 
+    geom_bar(aes(x = Species, y = Count), stat = "identity") + 
+    geom_text(aes(x = Species, y = Count, label = Count),nudge_y = 75) +
+    labs(y = "Number of OTUs") + 
+    coord_flip() + 
+    theme_bw() + 
+    theme(axis.text.y = element_text(face = "italic"))
+```
+
+********************************************************************************
+
+## Taxonomic resolution 
+Next we evaluate the 16S rRNA amplicon sequencing taxonomic resolution for _Paenibacillus_ species by comparing within and between species amplicon pairwise distance for the V12 and V4 regions. 
+Inorder to differentiate between species the pairwise distances for within species amplicon seqences must be less than the between species distances. 
+Additionally the difference in amplicon sequence pairwise distances between and within species must be greater than the sequencing error rate to detect the difference. 
+For our taxonomic resolution analysis we use _in-silico_ PCR to extract the V12 and V4 regions of the 16S rRNA sequences. 
+We will then generate a pairwise distance matrix for the two regions and compare the within and between species pairwise distances. 
+
+For our _in-silico_ PCR we will use the following PCR primers:  
+
+|Region |Forward                    |Reverse                        |  
+|:------|:--------------------------|:------------------------------|  
+|V12    |27F - AGAGTTTGATCATGGCTCAG |336R - CACTGCTGCSYCCCGTAGGAGTCT|  
+|V4     |515F - GTGCCAGCMGCCGCGGTAA |806R - GGACTACHVGGGTWTCTAAT    |  
+
+### V12 
+Extracting the V12 region from the database sequences, only sequences with the expected amplicon length of 318 basepairs are included in the analysis. 
+```{r}
+forward_primer <- "AGAGTTTGATCATGGCTCAG" 
+## reverse complementing reverse primer
+reverse_primer <- as.character(reverseComplement(DNAString("CACTGCTGCSYCCCGTAGGAGTCT")))
+
+paeni_V12 <- TrimDNA(paeni_16S$seq, 
+                               leftPatterns = forward_primer, 
+                               rightPatterns = reverse_primer,
+                               type = "both")
+
+seqs_to_use <- (width(paeni_V12[[2]]) == 318)
+v12_filtered <- paeni_V12[[2]][seqs_to_use]
+```
+
+Generating a multiple sequence alignment using the `AlignSeqs` function in the `DECIPHER` package.
+```{r}
+
+v12_align <- AlignSeqs(v12_filtered, verbose = FALSE)
+```
+
+The resulting alingment can be viewed using the `BrowseSeqs` function in the `DECIPHER` package.
+```{r eval = FALSE}
+BrowseSeqs(v12_align)
+```
+
+Generating pairwise distance matrix using the `DistanceMatrix` function in the `DECIPHER` package for taxonomic resolution analysis and converting distance matrix to data frame for analysis. 
+
+```{r}
+v12_dist <- DistanceMatrix(v12_align, 
+                           correction = "none", 
+                           verbose = FALSE, 
+                           includeTerminalGaps = FALSE)  
+
+v12_dist_df <- v12_dist %>% 
+    as.data.frame() %>% 
+    rownames_to_column(var = "Keys") %>% 
+    gather("Keys2","distance", -Keys) %>% 
+    mutate(Keys = as.numeric(Keys), Keys2 = as.numeric(Keys2)) %>% 
+    filter(Keys < Keys2) %>% 
+    mutate(Keys = as.character(Keys), Keys2 = as.character(Keys2))
+
+tax_df <- dplyr::select(paeni_16S$taxa, "Keys", "Species") 
+v12_dist_anno_df <- v12_dist_df %>% 
+    left_join(tax_df) %>% 
+    left_join(tax_df,by = c("Keys2" = "Keys")) %>% 
+    dplyr::rename(Keys_Species = Species.x, Keys2_Species = Species.y) %>% 
+        mutate(group_comp = if_else(Keys_Species == Keys2_Species, "within","between")) %>% 
+    filter(Keys_Species != "s__", Keys2_Species != "s__")
+```
+
+### V4 
+For the V4 region we will use the same approach, extract amplicon region, filter extracted sequences based on amplicon length, generate pairwise distance matrix using a multiple sequence alignment, and then evaluate pairwise distances.    
+
+```{r}
+## Extract amplicon region
+paeni_V4 <- TrimDNA(paeni_16S$seq, 
+                               leftPatterns = "GTGCCAGCMGCCGCGGTAA", 
+                               rightPattern = "ATTAGAWACCCBDGTAGTCC",
+                               type = "both") 
+
+## Filter based on amplicon length
+v4_filtered <- paeni_V4[[2]][width(paeni_V4[[2]]) == 252] 
+
+### Calculate distance matrix from multiple sequence alignment
+v4_align <- AlignSeqs(v4_filtered, verbose = FALSE)
+v4_dist <- DistanceMatrix(v4_align, 
+                          correction = "none", 
+                          verbose = FALSE, 
+                          includeTerminalGaps = FALSE) 
+
+## Creating a data frame for exploratory analysis
+v4_dist_df <- v4_dist %>% 
+    as.data.frame() %>% 
+    rownames_to_column(var = "Keys") %>% 
+    gather("Keys2","distance", -Keys) %>% 
+    mutate(Keys = as.numeric(Keys), Keys2 = as.numeric(Keys2)) %>% 
+    filter(Keys < Keys2) %>% 
+    mutate(Keys = as.character(Keys), Keys2 = as.character(Keys2))
+
+tax_df <- dplyr::select(paeni_16S$taxa, "Keys", "Species") 
+v4_dist_anno_df <- v4_dist_df %>% 
+    left_join(tax_df) %>% 
+    left_join(tax_df,by = c("Keys2" = "Keys")) %>% 
+    dplyr::rename(Keys_Species = Species.x, Keys2_Species = Species.y) %>% 
+    mutate(group_comp = if_else(Keys_Species == Keys2_Species, "within","between")) %>% 
+    filter(Keys_Species != "s__", Keys2_Species != "s__") 
+
+## Excluding outlier sequence "329842" - mean pairwise distance to all other
+## sequences is 0.2
+ v4_dist_anno_filt <- filter(v4_dist_anno_df,  Keys != "329842", Keys2 != "329842")
+```
+
+********************************************************************************
+
+### Amplicon Sequence Lengths
+The trimmed sequence length ranges between 0 and 1500, due to sequences without primer matches (Fig. \@ref(fig:trimInfo)). 
+These are likey partial sequences or sequences with mutation in the primer binding regions. 
+The R package `PrimerMatch` (__REF__) can be used evaluate mismatches in the primer binding regions. 
+Here we will limit our taxonomic resolution analysis to trimmed sequences that are consistent with the expected amplicon length of 318 bp and 252 bp for the V12 and V4 regions repectively. 
+
+```{r trimInfo, fig.cap = "Primer trimmed sequence length and start and end positions relative to full length sequences for the V12 and V4 regions.", fig.height = 4}
+list(V12 = paeni_V12[[1]], V4 = paeni_V4[[1]]) %>% 
+    map_dfr(as.data.frame, .id = "amplicon") %>% 
+    gather("key","value", -names, -amplicon) %>% 
+    mutate(key = if_else(key == "width", "length", key),
+           key = factor(key, levels = c("length","start","end"))) %>% 
+    mutate(position_type = if_else(key == "length","position", "length")) %>% 
+    ggplot() + 
+    geom_histogram(aes(x = value, fill = key), bins = 100) + 
+    facet_grid(position_type~amplicon, scales = "free") +
+    theme_bw()
+```
+
+********************************************************************************
+
+#### Genus Level Comparison
+
+Pairwise distance is significantly different for within and between species comparisons indicating that the V12 and V4 regions can potentially be used to classify members of the _Paenibacillus_ genus to the species level (Fig. \@ref(fig:pairDist)).
+Overall the V12 region had greater pairwise distances than V4 for both within and between species.
+It is important to also consider that the majority of sequences in the database were only classified to the genus level. 
+Species level information for these sequences might yield results that are inconsistent with our analysis.   
+
+
+
+```{r pairDist, fig.cap = "Distribution of within and between species pairwise distances for the V4 16S rRNA region. Sequences not classified to the species level were excluded from the analysis.", fig.height = 3}
+list("V4" = v4_dist_anno_filt, "V12" = v12_dist_anno_df) %>% 
+    bind_rows(.id = "amplicon")  %>% 
+    ggplot(aes(x = group_comp, y = distance, fill = group_comp)) + 
+    geom_boxplot(aes(x = group_comp, y = distance, fill = group_comp)) + 
+      stat_compare_means(label.y = 0.2) +
+    facet_wrap(~amplicon) + 
+    labs(x = "Amplicon", fill = "Species Comparison") + 
+        theme_bw() + 
+    theme(legend.position = "bottom")
+```
+
+
+********************************************************************************
+
+#### Species level comparison
+While the overall pairwise distance is greater between species than within species for the _Paenibacillus_ genus, it is important to understand how the within and between species pairwise distances compare for individual species. 
+The heatmap below shows pairwise distance information for within and between different _Paenibacillus_ species for the V12 and V4 regions (Fig. \@ref(fig:distHeatMap)). 
+Whether the sequences are assigned to more than one OTU depends on the pairwise sequence distance metric and linkage method employed by the clustering algorithm. 
+In general though for species levels classification the maximum within species distance should be less than the minimum between species distance. 
+For example as the maximum within species pairwise distance for _P. marcerans_ is 0.06 and the minimum between species pairwise distance for _P. marcerans_ and _P. barengoltzii_ is 0.02 (Fig. \@ref(fig:distHeatMap)A), correctly assigning a V12 amplicon sequences to one of these two species is not possible. 
+
+
+```{r distHeatMap, fig.cap = "Pairwise distances between _Paenibacillus_ species (A) V12 and (B) V4 amplicon regions. Fill color indicates the mean pairwise sequence distance within and between species. The text indicates the maximum pairwise distance for within species comparisons, values along the diagonal, and maximum pairwise distance for between species comparisons.", fig.height = 8}
+v12_heat <- v12_dist_anno_df %>% 
+    group_by(Keys_Species, Keys2_Species, group_comp) %>% 
+    summarise(mean_dist = mean(distance),
+              max_dist = max(distance),
+              min_dist = min(distance)) %>% 
+    mutate(lab_dist = if_else(group_comp == "within", max_dist, min_dist)) %>% 
+    ggplot() + 
+    geom_raster(aes(x = Keys_Species, 
+                    y = Keys2_Species, 
+                    fill = mean_dist)) +
+    geom_text(aes(x = Keys_Species, y = Keys2_Species, label = round(lab_dist,2)), color = "white") + 
+    labs(x = "Species",y = "Species", fill = "Mean Dist") + 
+    theme_bw() + 
+    theme(axis.text.x = element_text(angle = -45, hjust = -0.1)) 
+
+v4_heat <- v4_dist_anno_df %>% 
+    filter(Keys != "329842", Keys2 != "329842") %>% 
+    group_by(Keys_Species, Keys2_Species, group_comp) %>% 
+    summarise(mean_dist = mean(distance),
+              max_dist = max(distance),
+              min_dist = min(distance)) %>% 
+    mutate(lab_dist = if_else(group_comp == "within", max_dist, min_dist)) %>% 
+    ggplot() + 
+    geom_raster(aes(x = Keys_Species, 
+                    y = Keys2_Species, 
+                    fill = mean_dist)) +
+    geom_text(aes(x = Keys_Species, y = Keys2_Species, label = round(lab_dist,2)), color = "white") + 
+    labs(x = "Species",y = "Species", fill = "Mean Dist") + 
+    theme_bw() + 
+    theme(axis.text.x = element_text(angle = -45, hjust = -0.1)) 
+
+ggpubr::ggarrange(v12_heat, v4_heat,labels = "AUTO",ncol = 1, nrow = 2,align = "v")
+```
+
+
+## Conclusion
+Here we demonstrate how the `metagenomeFeatures` package in conjunction with one of the associated 16S rRNA database packages, `greengenes13.5MgDb`, and other R packages, can be used to evaluate whether species level taxonomic classification is possible for a specific amplicon region. 
+The approach used here can easily be extended to use different 16S rRNA databases (starting with a different `MgDb`clas object), taxonomic groups (changing filtering parameters), or amplicon regions (changing primer sequences). 
+
+
+********************************************************************************
+
+## Session Information
+### System Information
+```{r}
+s_info <- devtools::session_info(include_base = FALSE)
+pander::pander(s_info$platform)
+```
+
+### Package Versions
+```{r}
+s_info$packages %>% filter(`*` == "*") %>% select(-`*`) %>% 
+    knitr::kable(booktabs = TRUE)
+```
