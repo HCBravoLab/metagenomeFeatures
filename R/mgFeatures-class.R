@@ -41,6 +41,29 @@ setValidity("mgFeatures", function(object) {
     if (is.null(msg)) TRUE else msg
 })
 
+
+
+#' mgFeatures-class constructor
+#'
+#' @param taxa a DataFrame-class or object that can be coerced into a DataFrame
+#' @param tree a phylo-class object with phylogenetic tree
+#' @param metadata a list
+#' @param seq DNAStringSet-object with feature sequences
+#'
+#' @return
+#' @export
+#'
+#' @examples
+mgFeatures <- function(taxa, tree, seq, metadata){
+    new("mgFeatures",
+        DataFrame(taxa),
+        metadata = metadata,
+        refDbSeq = seq,
+        refDbTree = tree
+    )
+}
+
+
 ################################################################################
 ################################################################################
 ##
