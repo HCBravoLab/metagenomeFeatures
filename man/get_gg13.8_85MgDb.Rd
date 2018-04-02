@@ -2,7 +2,7 @@
 % Please edit documentation in R/gg13.8_85MgDb.R
 \name{get_gg13.8_85MgDb}
 \alias{get_gg13.8_85MgDb}
-\title{MgDb-class object with Greengenes Database Version 13.8 97\% OTUs}
+\title{MgDb-class object with Greengenes Database Version 13.8 85\% OTUs}
 \usage{
 get_gg13.8_85MgDb()
 }
@@ -11,8 +11,8 @@ MgDb-class object
 }
 \description{
 Example \link[=MgDb]{MgDb-class} object with Greengenes Database Version
-13.8 97\% OTUs.
+13.8 85\% OTUs.
 }
 \examples{
-get_gg13.8_97MgDb()
+get_gg13.8_85MgDb()
 }

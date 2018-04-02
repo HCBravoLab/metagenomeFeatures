@@ -1,11 +1,11 @@
-#' MgDb-class object with Greengenes Database Version 13.8 97\% OTUs
+#' MgDb-class object with Greengenes Database Version 13.8 85\% OTUs
 #'
 #' Example \link[=MgDb]{MgDb-class} object with Greengenes Database Version
-#' 13.8 97\% OTUs.
+#' 13.8 85\% OTUs.
 #' @return MgDb-class object
 #' @export
 #' @examples
-#' get_gg13.8_97MgDb()
+#' get_gg13.8_85MgDb()
 get_gg13.8_85MgDb <- function(){
     ## Source data generated using the make_greengenes13.8_85.R script in inst/scripts
 
