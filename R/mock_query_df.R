@@ -13,7 +13,7 @@
 #' @format data.frame
 #'
 #' @source
-#' \url{http://bioconductor.org/packages/release/data/experiment/html/msd16s.html}
+#' \url{https://qiita.ucsd.edu}
 #'
 #' @examples
 #' data(mock_query_df)

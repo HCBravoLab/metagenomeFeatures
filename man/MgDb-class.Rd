@@ -14,7 +14,7 @@ tree (optional) for a 16S rRNA taxonomic database, see the
 \pkg{greengenes13.5MgDb} package as an example database. The
 \code{get_gg13.8_85MgDb()} function in \pkg{metagenomeFeatures} exports a small
 subset of the database in the \pkg{greengenes13.5MgDb} annotation package as
-an example of a MgDb-class object.
+an example MgDb-class object.
 }
 \section{Slots}{
 

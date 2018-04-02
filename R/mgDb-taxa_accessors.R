@@ -4,6 +4,22 @@
 ##
 ### ============================================================================
 
+#' MgDb-class Taxa slot helper functions
+#'
+#' Helper functions for for \linkS4class{MgDb}-class taxa slot. \code{taxa_columns} - taxa slot column names, \code{taxa_keytypes} - taxa slot keytypes (values used with \code{taxa_columns} and \code{mgDb_select} functions), and \code{taxa_keys} - database values for a specific keytype.
+#'
+#' @name taxa_
+#' @param mgdb MgDb-class object.
+#'
+#' @return appropriate class object for the slot accessed
+#' @examples
+#' gg85 <- get_gg13.8_85MgDb()
+#' taxa_columns(gg85)
+#' taxa_keytypes(gg85)
+#' taxa_keys(gg85, keytype = "Phylum")
+NULL
+
+
 ### Taxa keys function ---------------------------------------------------------
 .taxa_keys <- function(mgdb, keytype){
     if (length(keytype) > 0) {
@@ -28,23 +44,14 @@
     }
 }
 
-#' Taxonomy values for a given keytype
-#'
-#' @name taxa_keys
-#' @param mgdb object of MgDB class
-#' @param keytype taxonomic classification level
-#' @return tbl_df
-#'
-#' @examples
-#' gg85 <- get_gg13.8_85MgDb()
-#' taxa_keys(gg85, keytype = "Phylum")
-#' @exportMethod taxa_keys
-#' @rdname taxa_keys
+# Taxonomy values for a given keytype
+#' @export
+#' @rdname taxa_
 setGeneric("taxa_keys", signature = "mgdb",
            function(mgdb, keytype) standardGeneric("taxa_keys"))
 
 ## MgDb taxa_keys method
-#' @rdname taxa_keys
+#' @rdname taxa_
 #' @aliases taxa_keys,MgDb-method
 setMethod("taxa_keys", "MgDb",
           function(mgdb, keytype) .taxa_keys(mgdb, keytype))
@@ -60,22 +67,14 @@ setMethod("taxa_keys", "MgDb",
 }
 
 #' Column names for MgDb taxonomy slot object
-#'
-#' @name taxa_columns
-#' @param mgdb object of MgDB class
-#' @return character vector
-#' @note Same function as \code{\link{taxa_keytypes}}.
-#' @examples
-#' gg85 <- get_gg13.8_85MgDb()
-#' taxa_columns(gg85)
-#' @exportMethod taxa_columns
-#' @rdname taxa_columns
+#' @export
+#' @rdname taxa_
 setGeneric("taxa_columns", signature = "mgdb",
            function(mgdb) standardGeneric("taxa_columns"))
 
 ## MgDb taxa_columns method
+#' @rdname taxa_
 #' @aliases taxa_columns,MgDb-method
-#' @rdname taxa_columns
 setMethod("taxa_columns", "MgDb",
           function(mgdb) .taxa_columns(mgdb))
 
@@ -85,16 +84,9 @@ setMethod("taxa_columns", "MgDb",
     colnames(mgdb_taxa(mgdb))
 }
 
-#' Column names for MgDb taxonomy slot object
-#'
-#' @name taxa_keytypes
-#' @param mgdb object of MgDB class
-#' @return tbl_df
-#' @examples
-#' gg85 <- get_gg13.8_85MgDb()
-#' taxa_keytypes(gg85)
+# Column names for MgDb taxonomy slot object
 #' @exportMethod taxa_keytypes
-#' @rdname taxa_keytypes
+#' @rdname taxa_
 setGeneric("taxa_keytypes", signature = "mgdb",
            function(mgdb) standardGeneric("taxa_keytypes"))
 
@@ -102,6 +94,6 @@ setGeneric("taxa_keytypes", signature = "mgdb",
 
 ## MgDb taxa_keytypes method
 #' @aliases taxa_keytypes,MgDb-method
-#' @rdname taxa_keytypes
+#' @rdname taxa_
 setMethod("taxa_keytypes", "MgDb",
           function(mgdb) .taxa_keytypes(mgdb))

@@ -30,7 +30,7 @@ setOldClass(c("tbl_dbi"))
 #' \pkg{greengenes13.5MgDb} package as an example database. The
 #' \code{get_gg13.8_85MgDb()} function in \pkg{metagenomeFeatures} exports a small
 #' subset of the database in the \pkg{greengenes13.5MgDb} annotation package as
-#' an example of a MgDb-class object.
+#' an example MgDb-class object.
 #' @aliases mgdb
 #' @slot seq database reference sequences
 #' @slot tree reference phylogenetic tree
@@ -71,7 +71,7 @@ setClass("MgDb",
 #'
 #' @examples
 #' \dontrun{
-#' make_mgdb_sqlite(db_name = "greengenes13.8_97",
+#' make_mgdb_sqlite(db_name = "greengenes13.8_85",
 #'     db_file = db_file,
 #'     taxa_tbl = taxa_tbl,
 #'     seqs = seqs)
@@ -280,62 +280,51 @@ setMethod("show", "MgDb",
 
 ## Accessors -------------------------------------------------------------------
 
-#' MgDb tree slot accessor
+#' MgDb-class accessors
 #'
-#' @param mgdb  MgDb class object
+#' Accessors for \linkS4class{MgDb}-class object slots. \code{mgDb_seq} - sequence slot, \code{mgDb_taxa} - taxa slot, \code{mgDb_tree} - phylogenetic tree slot, and \code{mgDb_meta} - metadata slot.
 #'
-#' @return phylo class object
-#' @export
+#' @name mgDb_
+#' @param mgdb MgDb-class object.
 #'
+#' @return appropriate class object for the slot accessed
 #' @examples
 #' gg85 <- get_gg13.8_85MgDb()
-#' mgdb_tree(gg85)
-mgdb_tree <- function(mgdb){
+#' mgDb_seq(gg85)
+#' mgDb_taxa(gg85)
+#' mgDb_tree(gg85)
+#' mgDb_meta(gg85)
+NULL
+
+
+# MgDb tree slot accessor
+#' @export
+#' @rdname mgDb_
+mgDb_tree <- function(mgdb){
     ## Add assertion for MgDb class object
     mgdb@tree
 }
 
-#' MgDb seq slot accessor
-#'
-#' @param mgdb  MgDb class object
-#'
-#' @return DNAStringSet class object
+# MgDb seq slot accessor
 #' @export
-#'
-#' @examples
-#' gg85 <- get_gg13.8_85MgDb()
-#' mgdb_seq(gg85)
-mgdb_seq <- function(mgdb){
+#' @rdname mgDb_
+mgDb_seq <- function(mgdb){
     ## Add assertion for MgDb class object
     mgdb@seq
 }
 
-#' MgDb taxa slot accessor
-#'
-#' @param mgdb  MgDb class object
-#'
-#' @return tbl_sql connection to sqlite table
+# MgDb taxa slot accessor
 #' @export
-#'
-#' @examples
-#' gg85 <- get_gg13.8_85MgDb()
-#' mgdb_taxa(gg85)
-mgdb_taxa <- function(mgdb){
+#' @rdname mgDb_
+mgDb_taxa <- function(mgdb){
     ## Add assertion for MgDb class object
     mgdb@taxa
 }
 
-#' MgDb metadata slot accessor
-#'
-#' @param mgdb  MgDb class object
-#'
-#' @return list
+# MgDb metadata slot accessor
 #' @export
-#'
-#' @examples
-#' gg85 <- get_gg13.8_85MgDb()
-#' mgdb_meta(gg85)
-mgdb_meta <- function(mgdb){
+#' @rdname mgDb_
+mgDb_meta <- function(mgdb){
     ## Add assertion for MgDb class object
     mgdb@metadata
 }

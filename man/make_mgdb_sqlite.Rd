@@ -23,7 +23,7 @@ make_mgdb_sqlite
 }
 \examples{
 \dontrun{
-make_mgdb_sqlite(db_name = "greengenes13.8_97",
+make_mgdb_sqlite(db_name = "greengenes13.8_85",
     db_file = db_file,
     taxa_tbl = taxa_tbl,
     seqs = seqs)

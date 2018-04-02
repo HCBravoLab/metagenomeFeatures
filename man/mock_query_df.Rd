@@ -6,7 +6,7 @@
 \title{Example Query Data Frame}
 \format{data.frame}
 \source{
-\url{http://bioconductor.org/packages/release/data/experiment/html/msd16s.html}
+\url{https://qiita.ucsd.edu}
 }
 \usage{
 mock_query_df

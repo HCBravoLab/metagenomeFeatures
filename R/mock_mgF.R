@@ -12,6 +12,9 @@
 #'
 #' @format mgFeatures
 #'
+#' @source
+#' \url{https://qiita.ucsd.edu}
+#'
 #' @examples
 #' data(mock_mgF)
 "mock_mgF"

@@ -5,6 +5,9 @@
 \alias{mock_mgF}
 \title{Example mgFeatures class object}
 \format{mgFeatures}
+\source{
+\url{https://qiita.ucsd.edu}
+}
 \usage{
 mock_mgF
 }
