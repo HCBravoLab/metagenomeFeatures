@@ -76,7 +76,8 @@ mgFeatures <- function(taxa, tree = NULL, seq = NULL, metadata){
 ## subset ----------------------------------------------------------------------
 .subset_tree <- function(tree, ids){
     drop_tips <- tree$tip.label[!(tree$tip.label %in% ids)]
-    # drop.tip return class phy defining class to match mgFeature class description
+    # drop.tip return class phy defining class to match mgFeature class
+    # description
     ape::drop.tip(tree,drop_tips) # %>% ape::as.phylo()
 }
 

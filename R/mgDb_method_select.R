@@ -68,7 +68,8 @@
     select_types <- c("seq","taxa", "tree", "all")
     if (FALSE %in% (type %in% select_types)) {
         bad_type <- type[!(type %in% select_types)]
-        stop(paste(bad_type, "not valid type value, type must be either 'seq', 'taxa', 'tree', 'all' or a character vector with types"))
+        stop(paste(bad_type, "not valid type value, type must be either 'seq',",
+                    "'taxa', 'tree', 'all' or a character vector with types"))
     }
 
     if (is.null(keys) != is.null(keytype)) {
