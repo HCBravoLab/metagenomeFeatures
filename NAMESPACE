@@ -2,7 +2,6 @@
 
 export("%>%")
 export(get_gg13.8_97MgDb)
-export(make_mgdb_sqlite)
 export(mgF_meta)
 export(mgF_seq)
 export(mgF_taxa)

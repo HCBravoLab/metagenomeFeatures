@@ -50,11 +50,12 @@ setValidity("mgFeatures", function(object) {
 #' @param metadata a list
 #' @param seq DNAStringSet-object with feature sequences
 #'
-#' @return
+#' @return mgFeatures-class object
 #' @export
 #'
 #' @examples
-mgFeatures <- function(taxa, tree, seq, metadata){
+#' mgFeatures(taxa = data.frame(), metadata = list())
+mgFeatures <- function(taxa, tree = NULL, seq = NULL, metadata){
     new("mgFeatures",
         DataFrame(taxa),
         metadata = metadata,

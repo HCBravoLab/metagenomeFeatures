@@ -66,10 +66,17 @@ setClass("MgDb",
 #' @param taxa_tbl data frame with database taxonomy data
 #' @param seqs database sequences, path to fasta file or DNAStringSet object
 #'
-#' @return
-#' @export
+#' @return writes SQLite file
+#' @keywords internal
 #'
 #' @examples
+#' \dontrun{
+#' make_mgdb_sqlite(db_name = "greengenes13.8_97",
+#'     db_file = db_file,
+#'     taxa_tbl = taxa_tbl,
+#'     seqs = seqs)
+#'}
+
 make_mgdb_sqlite <- function(db_name, db_file, taxa_tbl, seqs) {
     ## Parameter check -----------------------------------------
     ## db_name - character string
@@ -134,18 +141,18 @@ make_mgdb_sqlite <- function(db_name, db_file, taxa_tbl, seqs) {
                       dbFile = db_conn, identifier = "MgDb")
 
     ### Adding taxonomic data to database
-    
+
     # get seqs table from database
     db_seqs <- RSQLite::dbReadTable(db_conn, "Seqs")
-    
+
     taxa_tbl$row_names <- seq(1:nrow(taxa_tbl))
-    
+
     # merge taxa data with seq table
     db_merge_table <- merge(db_seqs, taxa_tbl, by='row_names')
-    
+
     # write seq data back to database
     RSQLite::dbWriteTable(db_conn, "Seqs", db_merge_table, overwrite=TRUE)
-    
+
     # DECIPHER::Add2DB(myData = taxa_tbl, dbFile = db_conn)
 
     RSQLite::dbDisconnect(db_conn)
@@ -155,14 +162,29 @@ make_mgdb_sqlite <- function(db_name, db_file, taxa_tbl, seqs) {
 ### Initialize Function --------------------------------------------------------
 #' MgDb
 #'
-#' @param db_file
-#' @param tree
-#' @param metadata
+#' @param db_file SQLite filename with database taxonomy and sequence data
+#' @param tree newick filename with database tree data
+#' @param metadata list with database metadata
 #'
 #' @return MbDb class object
 #' @export
 #'
 #' @examples
+#' metadata_file <- system.file("extdata", 'gg13.8_97_metadata.RData',
+#'     package = "metagenomeFeatures")
+#' load(metadata_file)
+#'
+#' gg_db_file <- system.file("extdata", 'gg13.8_97.sqlite',
+#'                           package = "metagenomeFeatures")
+#'
+#' gg_tree_file <- system.file("extdata", "gg13.8_97.tre",
+#'                             package = "metagenomeFeatures")
+#'
+#' ## Creating a new MgDb class object with gg13.8_97 data
+#' newMgDb(db_file = gg_db_file,
+#'         tree = gg_tree_file,
+#'         metadata =  metadata)
+#'
 newMgDb <- function(db_file, tree, metadata){
     ## db_file is character string, file exists, is a properly formatted sqlite database
     ## Check tree is either a phylo class object or newick tree file

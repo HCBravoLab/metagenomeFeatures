@@ -7,11 +7,32 @@
 newMgDb(db_file, tree, metadata)
 }
 \arguments{
-\item{metadata}{}
+\item{db_file}{SQLite filename with database taxonomy and sequence data}
+
+\item{tree}{newick filename with database tree data}
+
+\item{metadata}{list with database metadata}
 }
 \value{
 MbDb class object
 }
 \description{
 MgDb
+}
+\examples{
+metadata_file <- system.file("extdata", 'gg13.8_97_metadata.RData',
+    package = "metagenomeFeatures")
+load(metadata_file)
+
+gg_db_file <- system.file("extdata", 'gg13.8_97.sqlite',
+                          package = "metagenomeFeatures")
+
+gg_tree_file <- system.file("extdata", "gg13.8_97.tre",
+                            package = "metagenomeFeatures")
+
+## Creating a new MgDb class object with gg13.8_97 data
+newMgDb(db_file = gg_db_file,
+        tree = gg_tree_file,
+        metadata =  metadata)
+
 }

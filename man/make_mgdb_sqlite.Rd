@@ -15,6 +15,18 @@ make_mgdb_sqlite(db_name, db_file, taxa_tbl, seqs)
 
 \item{seqs}{database sequences, path to fasta file or DNAStringSet object}
 }
+\value{
+writes SQLite file
+}
 \description{
 make_mgdb_sqlite
 }
+\examples{
+\dontrun{
+make_mgdb_sqlite(db_name = "greengenes13.8_97",
+    db_file = db_file,
+    taxa_tbl = taxa_tbl,
+    seqs = seqs)
+}
+}
+\keyword{internal}

@@ -4,7 +4,7 @@
 \alias{mgFeatures}
 \title{mgFeatures-class constructor}
 \usage{
-mgFeatures(taxa, tree, seq, metadata)
+mgFeatures(taxa, tree = NULL, seq = NULL, metadata)
 }
 \arguments{
 \item{taxa}{a DataFrame-class or object that can be coerced into a DataFrame}
@@ -15,6 +15,12 @@ mgFeatures(taxa, tree, seq, metadata)
 
 \item{metadata}{a list}
 }
+\value{
+mgFeatures-class object
+}
 \description{
 mgFeatures-class constructor
+}
+\examples{
+mgFeatures(taxa = data.frame(), metadata = list())
 }
