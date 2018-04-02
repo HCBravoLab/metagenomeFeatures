@@ -105,13 +105,13 @@ A number of OTUs unassigned at the genus level are in the same clade as OTUs ass
 ```{r annoTree, fig.cap = "Phylogenetic tree for Gammaproteobacteria class OTU representative sequences. OTUs not classified to the genus level are annotated with orange dots, and _Escherichia_ and _Salmonella_ OTUs are annotated with blue and green dots respectively.", fig.height = 8, fig.width = 6, message = FALSE}
 library(ggtree)
 
-genus_anno_df <- entero_16S$taxa %>% 
+genus_anno_df <- gamma_16S$taxa %>% 
     group_by(Genus) %>% 
     mutate(Count = n()) %>% 
     ungroup() %>% 
     mutate(Genus_lab = if_else(Genus %in% paste0("g__", c("","Escherichia", "Salmonella")), Genus, ""))
 
-ggtree(entero_16S$tree) %<+% 
+ggtree(gamma_16S$tree) %<+% 
     genus_anno_df + 
     geom_tippoint(aes(color = Genus_lab), size = 3) + 
     scale_color_manual(values = c("#FF000000","darkorange","blue", "darkgreen")) + 
