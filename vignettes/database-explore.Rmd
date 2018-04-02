@@ -56,42 +56,42 @@ With the subsetted database you can analyze the taxonomy, sequences, and phyloge
 The select function returns single object with a subset of the database taxonomic, sequence, or phylogenetic data, as well as a named list with any two or all three data types.  
 
 ```{r}
-entero_16S <- mgDb_select(gg85, 
+gamma_16S <- mgDb_select(gg85, 
                           type = "all", 
-                          keys = "Enterobacteriaceae", 
-                          keytype = "Family")
+                          keys = "Gammaproteobacteria", 
+                          keytype = "Class")
 ```
 
 ## Taxonomic Analysis 
-We want to know how many genera in the Family Enterobacteriaceae there are sequences for in the Greengenes 97% OTU database as well as how many sequences are assigned to each genera. 
+We want to know how many genera in the Order Enterobacteriaceae there are sequences for in the Greengenes 85% OTU database as well as how many sequences are assigned to each genera. 
 We will first create a dataframe with the desired information then a plot to summarize the results. 
 
 ```{r}
 ## Per genus count data
-entero_df <- entero_16S$taxa %>% 
+gamma_df <- gamma_16S$taxa %>% 
     group_by(Genus) %>% 
     summarise(Count = n()) %>% 
     ungroup() %>% 
     mutate(Genus = fct_reorder(Genus, Count)) 
 
 ## Count info for text 
-total_otus <- sum(entero_df$Count)
-no_genus_assignment <- entero_df$Count[entero_df$Genus == "g__"]
-escherichia_count <- entero_df$Count[entero_df$Genus == "g__Escherichia"]
+total_otus <- sum(gamma_df$Count)
+no_genus_assignment <- gamma_df$Count[gamma_df$Genus == "g__"]
+escherichia_count <- gamma_df$Count[gamma_df$Genus == "g__Escherichia"]
 
 ## excluding unassigned genera and genera with only one assigned sequence
-entero_trim_df <- entero_df %>% filter(Genus != "g__", Count > 1)
+gamma_trim_df <- gamma_df %>% filter(Genus != "g__", Count > 1)
 ```
 
-For the Greengenes database there are a total of `r total_otus` OTUs assigned to `r nlevels(entero_df$Genus)` genera in the Family Enterobacteriaceae. 
-The number of OTUs assigned to specific Enterobacteriaceae genera, range from 76 to 1 \@ref(fig:generaCount). 
-As this database is preclustered to 85\% similarity OTUs per genus is more of an indicator of genera diversity than how well the genera is represented in the database. 
+For the Greengenes database there are a total of `r total_otus` OTUs assigned to `r nlevels(gamma_df$Genus)` genera in the Class Gammaproteobacteria. 
+The number of OTUs assigned to specific genera, range from 76 to 1 \@ref(fig:generaCount). 
+As this database is preclustered to 85\% similarity the number of OTUs per genus is more of an indicator of genera diversity than how well the genera is represented in the database. 
 For example no sequences present in the database are assigned to the genus _Shigella_ and only `r escherichia_count` are assigned to _Escherichia_. 
 OTUs only assigned to the family, `g__`, is the most abundant group, `r no_genus_assignment`, many of which are likely from these two genera. 
 Next we will use the phylogenetic information to evaluate this assumption.
 
-```{r generCount, fig.cap = "Number of seqeunces assigned to genera in the family Enterobacteriaceae. Only Genera with more than one assigned sequence are shown.", fig.width = 6, fig.height = 6} 
- ggplot(entero_trim_df) + 
+```{r generCount, fig.cap = "Number of seqeunces assigned to genera in the Class Gammaproteobacteria. Only Genera with more than one assigned sequence are shown.", fig.width = 6, fig.height = 6} 
+ ggplot(gamma_trim_df) + 
     geom_bar(aes(x = Genus, y = Count), stat = "identity") + 
     labs(y = "Number of OTUs") + 
     coord_flip() + 
@@ -102,7 +102,7 @@ Next we will use the phylogenetic information to evaluate this assumption.
 We will use the `ggtree` package to visualize the phylogenetic tree and annotate the tips with Genera information. 
 A number of OTUs unassigned at the genus level are in the same clade as OTUs assigned to the Genera _Escherichia_ and a related Genera _Salmonella_ \@ref(fig:annoTree). 
 
-```{r annoTree, fig.cap = "Phylogenetic tree for Enterobacteriaceae family OTU representative sequences. OTUs not classified to the genus level are annotated with orange dots, and _Escherichia_ and _Salmonella_ OTUs are annotated with blue and green dots respectively.", fig.height = 8, fig.width = 6, message = FALSE}
+```{r annoTree, fig.cap = "Phylogenetic tree for Gammaproteobacteria class OTU representative sequences. OTUs not classified to the genus level are annotated with orange dots, and _Escherichia_ and _Salmonella_ OTUs are annotated with blue and green dots respectively.", fig.height = 8, fig.width = 6, message = FALSE}
 library(ggtree)
 
 genus_anno_df <- entero_16S$taxa %>% 
@@ -124,7 +124,7 @@ The `mgDb_select` function returns the subsetted sequence data as a biostring ob
 The sequence data can be used for additional analysis such as, multiple sequencing alignment, primer region extraction, or PCR primer design. 
 
 ```{r}
-entero_16S$seq
+gamma_16S$seq
 ```
 
 ## System Information
