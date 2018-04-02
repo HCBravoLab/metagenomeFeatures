@@ -10,15 +10,18 @@ r_packages:
   - knitr
   - rmarkdown
   - covr
-  - dplyr
-  - stringr
   - testthat
   - magrittr
   - RSQLite
+  - lazyeval
+  - ape
+  - DECIPHER
+  - tidyverse
+  - ggtree
 
 bioc_packages:
   - Biostrings
-  - ShortRead
+  - S4Vectors
 
 env:
  global:
