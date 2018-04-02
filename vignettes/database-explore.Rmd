@@ -19,8 +19,8 @@ knitr::opts_chunk$set(
 ## Overview
 MgDb objects for 16S rRNA sequence reference databases can be used to explore sequnce and phylogenetic diversity of taxonomic groups of interest. 
 In this vignette we will explore the 16S rRNA diversity for the _Enterobacteriace_ family. 
-The Greengenes 16S rRNA database version 13.8 clusted at the 97\% threshold will be used in this vignette. 
-A `MgDb` object with this database (`gg97`) is included in the `metagenomeFeatures` package. 
+The Greengenes 16S rRNA database version 13.8 clusted at the 85\% threshold will be used in this vignette. 
+A `MgDb` object with this database (`gg85`) is included in the `metagenomeFeatures` package. 
 We will first load the MgDb class object, then select the taxa of interest, and finally provide a explor the phylogenetic and sequence diversity and taxonomic composition of the _Enterobacteriace_ family.   
 
 The database exploration will consist of four parts.  
@@ -40,9 +40,9 @@ library(tidyverse)
 
 <!-- TODO Update links after Bioconductor submission -->
 
-The `gg97` database is loaded using `get_gg13.8_97MgDb()`.  
+The `gg85` database is loaded using `get_gg13.8_85MgDb()`.  
 ```{r}
-gg97 <- get_gg13.8_97MgDb()
+gg85 <- get_gg13.8_85MgDb()
 ```  
 
 Other databases are avilable as [Bioconductor AnnotationData](https://www.bioconductor.org/packages/release/data/annotation/).  
@@ -56,7 +56,7 @@ With the subsetted database you can analyze the taxonomy, sequences, and phyloge
 The select function returns single object with a subset of the database taxonomic, sequence, or phylogenetic data, as well as a named list with any two or all three data types.  
 
 ```{r}
-entero_16S <- mgDb_select(gg97, 
+entero_16S <- mgDb_select(gg85, 
                           type = "all", 
                           keys = "Enterobacteriaceae", 
                           keytype = "Family")
@@ -85,7 +85,7 @@ entero_trim_df <- entero_df %>% filter(Genus != "g__", Count > 1)
 
 For the Greengenes database there are a total of `r total_otus` OTUs assigned to `r nlevels(entero_df$Genus)` genera in the Family Enterobacteriaceae. 
 The number of OTUs assigned to specific Enterobacteriaceae genera, range from 76 to 1 \@ref(fig:generaCount). 
-As this database is preclustered to 97\% similarity OTUs per genus is more of an indicator of genera diversity than how well the genera is represented in the database. 
+As this database is preclustered to 85\% similarity OTUs per genus is more of an indicator of genera diversity than how well the genera is represented in the database. 
 For example no sequences present in the database are assigned to the genus _Shigella_ and only `r escherichia_count` are assigned to _Escherichia_. 
 OTUs only assigned to the family, `g__`, is the most abundant group, `r no_genus_assignment`, many of which are likely from these two genera. 
 Next we will use the phylogenetic information to evaluate this assumption.

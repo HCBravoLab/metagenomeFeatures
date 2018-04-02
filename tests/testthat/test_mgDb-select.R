@@ -123,10 +123,10 @@ test_that("MgDb-class select all",{
 
 })
 
-## Using Entero GG97 as bug first identified when developing
+## Using Entero GG85 as bug first identified when developing
 ## database-explore.Rmd vignette
 test_that("MgDb-class select equal entries",{
-    test_select_entero <- mgDb_select(get_gg13.8_97MgDb(),
+    test_select_entero <- mgDb_select(get_gg13.8_85MgDb(),
                                       type = "all",
                                       keys = "Enterobacteriaceae",
                                       keytype = "Family")

@@ -42,19 +42,19 @@ use \code{keytype="Keys"}. Additionally, users can specify whether they want
 only the taxonomic and sequence data, or both.
 }
 \examples{
-gg97 <- get_gg13.8_97MgDb()
+gg97 <- get_gg13.8_85MgDb()
 # select taxa only
-mgDb_select(gg97, type = "taxa",
+mgDb_select(gg85, type = "taxa",
      keys = c("Vibrionaceae", "Enterobacteriaceae"),
      keytype = "Family")
 
 # select seq only
- mgDb_select(gg97, type = "seq",
+ mgDb_select(gg85, type = "seq",
       keys = c("Vibrionaceae", "Enterobacteriaceae"),
       keytype = "Family")
 
 # select all taxa, seq, and tree
-mgDb_select(gg97, type = "all",
+mgDb_select(gg85, type = "all",
        keys = c("Vibrionaceae", "Enterobacteriaceae"),
        keytype = "Family")
 }

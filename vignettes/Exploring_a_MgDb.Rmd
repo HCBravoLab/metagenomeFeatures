@@ -9,29 +9,29 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-The MgDb Class in the metagenomeFeatures package includes the sequences and taxonomic information for a 16S database.  The following vignette demonstrates the class methods for exploring and subsetting a `MgDb-class` object using the `gg97` included in the `metagenomeFeatures` package. `MgDb-class` object with full databases are in separate packages such as the `greengenes13.5MgDb` package.
+The MgDb Class in the metagenomeFeatures package includes the sequences and taxonomic information for a 16S database.  The following vignette demonstrates the class methods for exploring and subsetting a `MgDb-class` object using the `gg85` included in the `metagenomeFeatures` package. `MgDb-class` object with full databases are in separate packages such as the `greengenes13.5MgDb` package.
 
 ## Demonstration `MgDb-class` Object
 ```{r}
 library(metagenomeFeatures)
-gg97 <- get_gg13.8_97MgDb()
-gg97
+gg85 <- get_gg13.8_85MgDb()
+gg85
 ```
 
 
 ## MgDb Methods
 taxa_keytypes
 ```{r}
-taxa_keytypes(gg97)
+taxa_keytypes(gg85)
 ```
 
 
 ```{r}
-taxa_columns(gg97)
+taxa_columns(gg85)
 ```
 
 ```{r}
-head(taxa_keys(gg97, keytype = c("Kingdom")))
+head(taxa_keys(gg85, keytype = c("Kingdom")))
 ```
 
 
@@ -40,14 +40,14 @@ Used to retrieve db entries for a specified taxonomic group or id list, can retu
 
 ### Selecting taxonomic information
 ```{r}
-mgDb_select(gg97, type = "taxa",
+mgDb_select(gg85, type = "taxa",
             keys = c("Vibrionaceae", "Enterobacteriaceae"),
             keytype = "Family")
 ```
 
 ### Selecting sequence information
 ```{r}
-mgDb_select(gg97, type = "seq",
+mgDb_select(gg85, type = "seq",
             keys = c("Vibrionaceae", "Enterobacteriaceae"),
             keytype = "Family")
 ```
@@ -56,7 +56,7 @@ mgDb_select(gg97, type = "seq",
 
 ### Selecting all
 ```{r}
-# mgDb_select(gg97, type = "all",
+# mgDb_select(gg85, type = "all",
 #                 keys = c("Vibrio", "Salmonella"),
 #                 keytype = "Genus")
 ```

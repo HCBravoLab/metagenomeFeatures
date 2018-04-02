@@ -16,6 +16,6 @@ phylo class object
 MgDb tree slot accessor
 }
 \examples{
-gg97 <- get_gg13.8_97MgDb()
-mgdb_tree(gg97)
+gg85 <- get_gg13.8_85MgDb()
+mgdb_tree(gg85)
 }
