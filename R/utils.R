@@ -25,3 +25,6 @@ NULL
 
 #' @import lattice
 NULL
+
+#' @import purrr
+NULL
