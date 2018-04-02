@@ -20,6 +20,6 @@ tbl_df
 Column names for MgDb taxonomy slot object
 }
 \examples{
-gg97 <- get_gg13.8_97MgDb()
-taxa_keytypes(gg97)
+gg85 <- get_gg13.8_85MgDb()
+taxa_keytypes(gg85)
 }

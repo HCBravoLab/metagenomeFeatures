@@ -28,7 +28,7 @@ setOldClass(c("tbl_dbi"))
 #' The MgDb-class object contains sequence, taxonomic data, and a phylogenetic
 #' tree (optional) for a 16S rRNA taxonomic database, see the
 #' \pkg{greengenes13.5MgDb} package as an example database. The
-#' \code{get_gg13.8_97MgDb()} function in \pkg{metagenomeFeatures} exports a small
+#' \code{get_gg13.8_85MgDb()} function in \pkg{metagenomeFeatures} exports a small
 #' subset of the database in the \pkg{greengenes13.5MgDb} annotation package as
 #' an example of a MgDb-class object.
 #' @aliases mgdb
@@ -38,8 +38,8 @@ setOldClass(c("tbl_dbi"))
 #' @slot metadata associated metadata for the database
 #' @export
 #' @examples
-#' # example MgDb-class object, Greengenes 13.8 97% OTUs database.
-#' gg97 <- get_gg13.8_97MgDb()
+#' # example MgDb-class object, Greengenes 13.8 85% OTUs database.
+#' gg85 <- get_gg13.8_85MgDb()
 #' @note Currently the only database with a MgDb package is the
 #'   \href{http://greengenes.secondgenome.com/}{Greengenes database} (version
 #'   13.5), additional packages are planned.
@@ -170,17 +170,17 @@ make_mgdb_sqlite <- function(db_name, db_file, taxa_tbl, seqs) {
 #' @export
 #'
 #' @examples
-#' metadata_file <- system.file("extdata", 'gg13.8_97_metadata.RData',
+#' metadata_file <- system.file("extdata", 'gg13.8_85_metadata.RData',
 #'     package = "metagenomeFeatures")
 #' load(metadata_file)
 #'
-#' gg_db_file <- system.file("extdata", 'gg13.8_97.sqlite',
+#' gg_db_file <- system.file("extdata", 'gg13.8_85.sqlite',
 #'                           package = "metagenomeFeatures")
 #'
-#' gg_tree_file <- system.file("extdata", "gg13.8_97.tre",
+#' gg_tree_file <- system.file("extdata", "gg13.8_85.tre",
 #'                             package = "metagenomeFeatures")
 #'
-#' ## Creating a new MgDb class object with gg13.8_97 data
+#' ## Creating a new MgDb class object with gg13.8_85 data
 #' newMgDb(db_file = gg_db_file,
 #'         tree = gg_tree_file,
 #'         metadata =  metadata)
@@ -288,8 +288,8 @@ setMethod("show", "MgDb",
 #' @export
 #'
 #' @examples
-#' gg97 <- get_gg13.8_97MgDb()
-#' mgdb_tree(gg97)
+#' gg85 <- get_gg13.8_85MgDb()
+#' mgdb_tree(gg85)
 mgdb_tree <- function(mgdb){
     ## Add assertion for MgDb class object
     mgdb@tree
@@ -303,8 +303,8 @@ mgdb_tree <- function(mgdb){
 #' @export
 #'
 #' @examples
-#' gg97 <- get_gg13.8_97MgDb()
-#' mgdb_seq(gg97)
+#' gg85 <- get_gg13.8_85MgDb()
+#' mgdb_seq(gg85)
 mgdb_seq <- function(mgdb){
     ## Add assertion for MgDb class object
     mgdb@seq
@@ -318,8 +318,8 @@ mgdb_seq <- function(mgdb){
 #' @export
 #'
 #' @examples
-#' gg97 <- get_gg13.8_97MgDb()
-#' mgdb_taxa(gg97)
+#' gg85 <- get_gg13.8_85MgDb()
+#' mgdb_taxa(gg85)
 mgdb_taxa <- function(mgdb){
     ## Add assertion for MgDb class object
     mgdb@taxa
@@ -333,8 +333,8 @@ mgdb_taxa <- function(mgdb){
 #' @export
 #'
 #' @examples
-#' gg97 <- get_gg13.8_97MgDb()
-#' mgdb_meta(gg97)
+#' gg85 <- get_gg13.8_85MgDb()
+#' mgdb_meta(gg85)
 mgdb_meta <- function(mgdb){
     ## Add assertion for MgDb class object
     mgdb@metadata

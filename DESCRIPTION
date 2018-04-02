@@ -40,7 +40,7 @@ Collate:
     'DNAStringSetOrNull-class.R'
     'mgDb-class.R'
     'mgFeatures-class.R'
-    'gg13.8_97MgDb.R'
+    'gg13.8_85MgDb.R'
     'mgDb-taxa_accessors.R'
     'mgDb_method_select.R'
     'mgDb_method_annotateFeatures.R'
