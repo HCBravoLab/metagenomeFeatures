@@ -18,7 +18,8 @@
 
     if (is.data.frame(query)) {
         if (is.element("Keys", colnames(query))) {
-            query$Keys <- as.character(query$Keys) # process Keys column as character
+            # process Keys column as character
+            query$Keys <- as.character(query$Keys)
             select_keys <- query$Keys
         } else {
             stop("Need 'Keys' column in 'query' with database ids")
@@ -26,7 +27,7 @@
     } else if (is.vector(query)) { # db_keys used
         select_keys <- as.character(query)
     } else {## query not a data frame or vector
-        stop("query not a vector or data.frame, see documentation for query requirements")
+        stop("query must be a vector or data.frame")
     }
 
 

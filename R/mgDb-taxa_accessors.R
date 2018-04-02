@@ -6,7 +6,10 @@
 
 #' MgDb-class Taxa slot helper functions
 #'
-#' Helper functions for for \linkS4class{MgDb}-class taxa slot. \code{taxa_columns} - taxa slot column names, \code{taxa_keytypes} - taxa slot keytypes (values used with \code{taxa_columns} and \code{mgDb_select} functions), and \code{taxa_keys} - database values for a specific keytype.
+#' Helper functions for for \linkS4class{MgDb}-class taxa slot.
+#' \code{taxa_columns} - taxa slot column names, \code{taxa_keytypes} - taxa
+#' slot keytypes (values used with \code{taxa_columns} and \code{mgDb_select}
+#' functions), and \code{taxa_keys} - database values for a specific keytype.
 #'
 #' @name taxa_
 #' @param mgdb MgDb-class object.

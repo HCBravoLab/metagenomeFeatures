@@ -8,7 +8,8 @@
 #' (https://qiita.ucsd.edu).
 #'
 #' Bokulich, Nicholas A., et al. "Quality-filtering vastly improves diversity
-#' estimates from Illumina amplicon sequencing." Nature methods 10.1 (2013): 57-59.
+#' estimates from Illumina amplicon sequencing." Nature methods 10.1 (2013):
+#' 57-59.
 #'
 #' @format mgFeatures
 #'

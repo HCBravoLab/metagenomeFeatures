@@ -25,7 +25,9 @@
     # selecting desired rows
     if (!is.null(keys)) {
         if (keytype !=  "Keys") {
-            level_id <- stringr::str_sub(string = keytype, start = 1,end = 1) %>%
+            level_id <- stringr::str_sub(string = keytype,
+                                         start = 1,
+                                         end = 1) %>%
                 tolower() %>% rep(length(keys))
             if (metaDb$DB_TYPE_NAME == "GreenGenes") {
                 keys <- stringr::str_c(level_id,keys,sep = "__")
@@ -55,7 +57,8 @@
 
 .select.tree <- function(tree, ids){
     drop_tips <- tree$tip.label[!(tree$tip.label %in% ids)]
-    # drop.tip return class phy defining class to match mgFeature class description
+    # drop.tip return class phy defining
+    # class to match mgFeature class description
     ape::drop.tip(tree,drop_tips) %>% ape::as.phylo()
 }
 
@@ -89,11 +92,13 @@
     # vector with all objects to return
     if ("taxa" %in% type || type == "all") {
         ## Removing decipher columns
-        select_obj$taxa <- dplyr::select(taxa_df, -row_names, -description, -identifier)
+        select_obj$taxa <- dplyr::select(taxa_df, -row_names,
+                                         -description, -identifier)
     }
 
     if ("seq" %in% type || type == "all") {
-        select_obj$seq <- .select.seq(mgDb_seq(mgdb), taxa_df$row_names, taxa_df$Keys)
+        select_obj$seq <- .select.seq(mgDb_seq(mgdb),
+                                      taxa_df$row_names, taxa_df$Keys)
     }
 
     if ("tree" %in% type || type == "all") {

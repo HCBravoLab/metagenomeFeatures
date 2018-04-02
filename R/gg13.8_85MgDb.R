@@ -7,7 +7,7 @@
 #' @examples
 #' get_gg13.8_85MgDb()
 get_gg13.8_85MgDb <- function(){
-    ## Source data generated using the make_greengenes13.8_85.R script in inst/scripts
+    ## Data generated using make_greengenes13.8_85.R script in inst/scripts
 
     metadata_file <- system.file("extdata", 'gg13.8_85_metadata.RData',
                            package = "metagenomeFeatures")

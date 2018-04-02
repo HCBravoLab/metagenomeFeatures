@@ -102,7 +102,9 @@ setMethod("[", "mgFeatures",
 
 #' mgFeatures accessors
 #'
-#' Accessors for \linkS4class{mgFeatures}-class object slots. \code{mgF_seq} - refDbSeq slot, \code{mgF_taxa} - taxa slot, \code{mgF_tree} - phylogenetic tree slot, and \code{mgF_meta} - metadata slot.
+#' Accessors for \linkS4class{mgFeatures}-class object slots. \code{mgF_seq} -
+#' refDbSeq slot, \code{mgF_taxa} - taxa slot, \code{mgF_tree} - phylogenetic
+#' tree slot, and \code{mgF_meta} - metadata slot.
 #'
 #' @name mgF_
 #' @param mgF mgFeatures-class object.

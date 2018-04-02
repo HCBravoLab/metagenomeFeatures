@@ -28,9 +28,9 @@ setOldClass(c("tbl_dbi"))
 #' The MgDb-class object contains sequence, taxonomic data, and a phylogenetic
 #' tree (optional) for a 16S rRNA taxonomic database, see the
 #' \pkg{greengenes13.5MgDb} package as an example database. The
-#' \code{get_gg13.8_85MgDb()} function in \pkg{metagenomeFeatures} exports a small
-#' subset of the database in the \pkg{greengenes13.5MgDb} annotation package as
-#' an example MgDb-class object.
+#' \code{get_gg13.8_85MgDb()} function in \pkg{metagenomeFeatures} exports a
+#' small subset of the database in the \pkg{greengenes13.5MgDb} annotation
+#' package as an example MgDb-class object.
 #' @aliases mgdb
 #' @slot seq database reference sequences
 #' @slot tree reference phylogenetic tree
@@ -186,8 +186,8 @@ make_mgdb_sqlite <- function(db_name, db_file, taxa_tbl, seqs) {
 #'         metadata =  metadata)
 #'
 newMgDb <- function(db_file, tree, metadata){
-    ## db_file is character string, file exists, is a properly formatted sqlite database
-    ## Check tree is either a phylo class object or newick tree file
+    ## db_file is character string, file exists, is a properly formatted sqlite
+    ## database Check tree is either a phylo class object or newick tree file
     ## Check metadata is list with required entries
 
     ## sequence slot
@@ -282,7 +282,9 @@ setMethod("show", "MgDb",
 
 #' MgDb-class accessors
 #'
-#' Accessors for \linkS4class{MgDb}-class object slots. \code{mgDb_seq} - sequence slot, \code{mgDb_taxa} - taxa slot, \code{mgDb_tree} - phylogenetic tree slot, and \code{mgDb_meta} - metadata slot.
+#' Accessors for \linkS4class{MgDb}-class object slots. \code{mgDb_seq} -
+#' sequence slot, \code{mgDb_taxa} - taxa slot, \code{mgDb_tree} - phylogenetic
+#' tree slot, and \code{mgDb_meta} - metadata slot.
 #'
 #' @name mgDb_
 #' @param mgdb MgDb-class object.
