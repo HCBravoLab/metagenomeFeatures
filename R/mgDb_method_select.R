@@ -74,7 +74,7 @@
 
     ## list with select results
     select_obj <- list()
-    taxa_df <- .select.taxa(mgdb_taxa(mgdb), mgdb_meta(mgdb),
+    taxa_df <- .select.taxa(mgDb_taxa(mgdb), mgDb_meta(mgdb),
                             keys, keytype, columns)
 
     ## Warning if no query matches
@@ -93,11 +93,11 @@
     }
 
     if ("seq" %in% type || type == "all") {
-        select_obj$seq <- .select.seq(mgdb_seq(mgdb), taxa_df$row_names, taxa_df$Keys)
+        select_obj$seq <- .select.seq(mgDb_seq(mgdb), taxa_df$row_names, taxa_df$Keys)
     }
 
     if ("tree" %in% type || type == "all") {
-        select_obj$tree <- .select.tree(mgdb_tree(mgdb), taxa_df$Keys)
+        select_obj$tree <- .select.tree(mgDb_tree(mgdb), taxa_df$Keys)
     }
 
     ## return single obj if only selecting one type
