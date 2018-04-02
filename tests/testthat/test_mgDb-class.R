@@ -63,9 +63,8 @@ test_that("MgDb-class taxa_keys at different taxonomic levels", {
 
 ## MgDb accessors ---------------------------------------------------------------
 test_that("MgDb-accessors",{
-    expect_identical(mgdb_taxa(testMgDb), testMgDb@taxa)
-    expect_identical(mgdb_meta(testMgDb), testMgDb@metadata)
-    expect_identical(mgdb_seq(testMgDb), testMgDb@seq)
-    expect_identical(mgdb_tree(testMgDb), testMgDb@tree)
+    expect_identical(mgDb_taxa(testMgDb), testMgDb@taxa)
+    expect_identical(mgDb_meta(testMgDb), testMgDb@metadata)
+    expect_identical(mgDb_seq(testMgDb), testMgDb@seq)
 })
 

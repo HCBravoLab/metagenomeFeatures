@@ -43,7 +43,7 @@
     }
 
     #### ANNO_METADATA
-    anno_metadata <- mgdb_meta(mgdb)
+    anno_metadata <- mgDb_meta(mgdb)
 
     # CREATE mgFeatures Object
     new("mgFeatures",

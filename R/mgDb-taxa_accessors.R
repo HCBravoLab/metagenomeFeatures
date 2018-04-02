@@ -35,12 +35,12 @@ NULL
                          use `taxa_keytypes()` for valid keytypes")
             stop(msg)
         }
-        mgdb_taxa(mgdb) %>%
+        mgDb_taxa(mgdb) %>%
             dplyr::select_(keytype) %>%
             dplyr::collect() %>%
             return()
     }else{
-        mgdb_taxa(mgdb)
+        mgDb_taxa(mgdb)
     }
 }
 
@@ -60,7 +60,7 @@ setMethod("taxa_keys", "MgDb",
 
 ### Taxa columns function ------------------------------------------------------
 .taxa_columns = function(mgdb){
-    taxa_cols <- colnames(mgdb_taxa(mgdb))
+    taxa_cols <- colnames(mgDb_taxa(mgdb))
     ## Excluding decipher column names
     decipher_cols <- c("row_names", "identifier", "description")
     taxa_cols[!(taxa_cols %in% decipher_cols)]
@@ -81,7 +81,7 @@ setMethod("taxa_columns", "MgDb",
 
 ### taxa keytypes function -----------------------------------------------------
 .taxa_keytypes = function(mgdb){
-    colnames(mgdb_taxa(mgdb))
+    colnames(mgDb_taxa(mgdb))
 }
 
 # Column names for MgDb taxonomy slot object
