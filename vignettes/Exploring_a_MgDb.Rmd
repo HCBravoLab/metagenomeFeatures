@@ -56,9 +56,9 @@ mgDb_select(gg85, type = "seq",
 
 ### Selecting all
 ```{r}
-# mgDb_select(gg85, type = "all",
-#                 keys = c("Vibrio", "Salmonella"),
-#                 keytype = "Genus")
+mgDb_select(gg85, type = "all",
+                keys = c("Vibrio", "Salmonella"),
+                keytype = "Genus")
 ```
 
 
