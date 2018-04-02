@@ -1,3 +1,13 @@
+version 1.99.9 (last updated 2018-04-02)
+    + This version is in prepration for the version 2.0
+    + The MgDb-class definition was been redefined.
+        + To reduce memory usage the and sequence data is now stored
+in the SQLite file along with the taxonomy data.
+    + The mgFeatures-class now extends the DataFrame-class instead of the AnnotatedDataFrame-class so that mgFeatures can be used to define the rowData slot in a summarizedExperiment-class object.
+    + The vignettes have been revised and new vignettes were added providing examples for working with the new class definitions.
+    + Along with the new class definitions we have annotation packages for the three major 16S rRNA databases, SILVA, RDP, and Greengenes.
+    + Greengenes version 13.8 97% similarity OTUs database is now included in the package.
+
 version 1.6.0 (last update 2017-04-14)
     + Bioc release cleaned up documentation and debugging MgDb class definition with tree slot
 
