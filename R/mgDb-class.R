@@ -261,17 +261,17 @@ setMethod("show", "MgDb",
           function(object){
               cat(class(object), "object:")
               print("Metadata")
-              metadata <- mgdb_meta(object)
+              metadata <- mgDb_meta(object)
               for (i in names(metadata)) {
                   cat("|", i, ": ", metadata[[i]], "\n", sep = "")
               }
               print("Sequence Data:")
               print("DECIPHER formatted seqDB")
               print("Taxonomy Data:")
-              print(mgdb_taxa(object))
+              print(mgDb_taxa(object))
               print("Tree Data:")
-              if (!is.null(mgdb_tree(object))) {
-                  ape::print.phylo(mgdb_tree(object))
+              if (!is.null(mgDb_tree(object))) {
+                  ape::print.phylo(mgDb_tree(object))
               } else {
                   print("Tree not available")
               }
