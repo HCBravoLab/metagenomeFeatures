@@ -23,7 +23,9 @@ mgDb_meta(mgdb)
 appropriate class object for the slot accessed
 }
 \description{
-Accessors for \linkS4class{MgDb}-class object slots. \code{mgDb_seq} - sequence slot, \code{mgDb_taxa} - taxa slot, \code{mgDb_tree} - phylogenetic tree slot, and \code{mgDb_meta} - metadata slot.
+Accessors for \linkS4class{MgDb}-class object slots. \code{mgDb_seq} -
+sequence slot, \code{mgDb_taxa} - taxa slot, \code{mgDb_tree} - phylogenetic
+tree slot, and \code{mgDb_meta} - metadata slot.
 }
 \examples{
 gg85 <- get_gg13.8_85MgDb()

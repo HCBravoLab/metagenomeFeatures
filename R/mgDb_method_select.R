@@ -116,8 +116,8 @@
 
 #' Querying MgDb objects
 #'
-#' Function for querying \code{\link{MgDb}} class objects, user defines the
-#' taxonomic levels (\code{keytype}) and a vector of taxonomic names
+#' Function for querying \code{\link{MgDb-class}} class objects, user defines
+#' the taxonomic levels (\code{keytype}) and a vector of taxonomic names
 #' (\code{keys}) being selected. If specific database ids are being selected for
 #' use \code{keytype="Keys"}. Additionally, users can specify whether they want
 #' only the taxonomic and sequence data, or both.
@@ -136,7 +136,7 @@
 #'   tree of class phylo; 'all' - list with the dataframe, DNAStringSet, and
 #'   phylo.
 #' @examples
-#' gg97 <- get_gg13.8_85MgDb()
+#' gg85 <- get_gg13.8_85MgDb()
 #' # select taxa only
 #' mgDb_select(gg85, type = "taxa",
 #'      keys = c("Vibrionaceae", "Enterobacteriaceae"),

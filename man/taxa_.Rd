@@ -25,12 +25,17 @@ taxa_keytypes(mgdb)
 }
 \arguments{
 \item{mgdb}{MgDb-class object.}
+
+\item{keytype}{character string specifying keys to return}
 }
 \value{
 appropriate class object for the slot accessed
 }
 \description{
-Helper functions for for \linkS4class{MgDb}-class taxa slot. \code{taxa_columns} - taxa slot column names, \code{taxa_keytypes} - taxa slot keytypes (values used with \code{taxa_columns} and \code{mgDb_select} functions), and \code{taxa_keys} - database values for a specific keytype.
+Helper functions for for \linkS4class{MgDb}-class taxa slot.
+\code{taxa_columns} - taxa slot column names, \code{taxa_keytypes} - taxa
+slot keytypes (values used with \code{taxa_columns} and \code{mgDb_select}
+functions), and \code{taxa_keys} - database values for a specific keytype.
 
 Column names for MgDb taxonomy slot object
 }

@@ -1,6 +1,6 @@
 #' MgDb-class object with Greengenes Database Version 13.8 85\% OTUs
 #'
-#' Example \link[=MgDb]{MgDb-class} object with Greengenes Database Version
+#' Example \link[=MgDb-class]{MgDb-class} object with Greengenes Database Version
 #' 13.8 85\% OTUs.
 #' @return MgDb-class object
 #' @export

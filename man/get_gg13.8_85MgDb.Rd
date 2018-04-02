@@ -10,7 +10,7 @@ get_gg13.8_85MgDb()
 MgDb-class object
 }
 \description{
-Example \link[=MgDb]{MgDb-class} object with Greengenes Database Version
+Example \link[=MgDb-class]{MgDb-class} object with Greengenes Database Version
 13.8 85\% OTUs.
 }
 \examples{

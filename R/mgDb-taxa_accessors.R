@@ -13,6 +13,7 @@
 #'
 #' @name taxa_
 #' @param mgdb MgDb-class object.
+#' @param keytype character string specifying keys to return
 #'
 #' @return appropriate class object for the slot accessed
 #' @examples

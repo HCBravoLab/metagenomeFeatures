@@ -1,7 +1,7 @@
 #' Example Query Data Frame
 #'
 #' Example \code{query_df} for use in generating a \link{mgFeatures-class}
-#' object using the \link{annotateFeatures} \link[=MgDb]{MgDb-class} method. The
+#' object using the \link{annotateFeatures} \link[=MgDb-class]{MgDb-class} method. The
 #' dataset contains the OTU ids and Greengenes database version 13.5 ids.
 #' Specifically, the OTU centers came from a mock community dataset from the
 #' study Bokulich et al. 2013, the OTU ids were extracted from a biom file

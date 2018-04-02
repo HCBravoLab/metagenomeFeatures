@@ -23,7 +23,9 @@ mgF_meta(mgF)
 appropriate class object for the slot accessed
 }
 \description{
-Accessors for \linkS4class{mgFeatures}-class object slots. \code{mgF_seq} - refDbSeq slot, \code{mgF_taxa} - taxa slot, \code{mgF_tree} - phylogenetic tree slot, and \code{mgF_meta} - metadata slot.
+Accessors for \linkS4class{mgFeatures}-class object slots. \code{mgF_seq} -
+refDbSeq slot, \code{mgF_taxa} - taxa slot, \code{mgF_tree} - phylogenetic
+tree slot, and \code{mgF_meta} - metadata slot.
 }
 \examples{
 data(mock_mgF)
