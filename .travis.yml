@@ -1,9 +1,11 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: r
-bioc_required: true
+r:
+  - 3.5.0
 warnings_are_errors: false
 sudo: false
+bioc_use_devel: true
 cache: packages
 
 r_packages:
