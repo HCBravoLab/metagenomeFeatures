@@ -19,8 +19,8 @@ rand <- sapply(1:10, function(x) paste(sample(c("A","T","G","C"), 21, replace = 
 test_seq <- Biostrings::DNAStringSet(rand)
 names(test_seq) <- test_keys
 
-## test_tree_file <- "../test_tree.rds"
-## test_tree <- readRDS(test_tree_file)
+test_tree_file <- "../test_tree.rds"
+test_tree <- readRDS(test_tree_file)
 
 ## Update to work with new class definition
 testMgDb <- newMgDb(db_file = test_db_file, tree = test_tree_file, metadata = test_metadata)
