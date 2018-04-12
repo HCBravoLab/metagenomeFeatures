@@ -10,11 +10,17 @@ test_metadata <- list(ACCESSION_DATE = "1/11/1111",
 
 test_db_file <- "../test_db.sqlite3"
 
-test_seq_file <- "../test_seq.rds"
-test_seq <- readRDS(test_seq_file)
 
-test_tree_file <- "../test_tree.rds"
-test_tree <- readRDS(test_tree_file)
+## Test seq data
+# Creating DNAStringSet in test - to address build test error on devl branch
+test_keys <- as.character(1:10)
+set.seed <- 10
+rand <- sapply(1:10, function(x) paste(sample(c("A","T","G","C"), 21, replace = T), collapse = ""))
+test_seq <- Biostrings::DNAStringSet(rand)
+names(test_seq) <- test_keys
+
+## test_tree_file <- "../test_tree.rds"
+## test_tree <- readRDS(test_tree_file)
 
 ## Update to work with new class definition
 testMgDb <- newMgDb(db_file = test_db_file, tree = test_tree_file, metadata = test_metadata)
