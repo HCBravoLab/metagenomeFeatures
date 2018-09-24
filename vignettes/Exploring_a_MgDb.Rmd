@@ -1,17 +1,35 @@
 ---
-title: "Exploring a MgDb Object"
-author: "Nathan D. Olson"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+title: "metagenomeFeatures classes and methods."
+author: 
+- name: Nathan D. Olson
+  affiliation: National Institute of Standards and Technology, Maryland, USA
+package: metagenomeFeatures
+output: 
+    BiocStyle::html_document:
+        toc_float: true
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{`metagenomeFeatures` classes and methods.}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-The MgDb Class in the metagenomeFeatures package includes the sequences and taxonomic information for a 16S database.  The following vignette demonstrates the class methods for exploring and subsetting a `MgDb-class` object using the `gg85` included in the `metagenomeFeatures` package. `MgDb-class` object with full databases are in separate packages such as the `greengenes13.5MgDb` package.
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+suppressPackageStartupMessages(library(metagenomeFeatures)) 
+```
 
-## Demonstration `MgDb-class` Object
+__TODO__ `metagenomeFeatures` package description
+
+The MgDb Class in the metagenomeFeatures package includes the sequences and taxonomic information for a 16S database.  The following vignette demonstrates the class methods for exploring and subsetting a `MgDb-class` object using the `gg85` included in the `r Biocpkg("metagenomeFeatures")` package. `MgDb-class` object with full databases are in separate packages such as the `r Biocpkg("greengenesMgDb13.5")` package.
+
+__TODO__ add text about `mgFeatures`
+
+# `MgDb-class` Object 
+__TODO__ Class structure description 
+
 ```{r}
 library(metagenomeFeatures)
 gg85 <- get_gg13.8_85MgDb()
@@ -19,26 +37,29 @@ gg85
 ```
 
 
-## MgDb Methods
-taxa_keytypes
+## `MgDb-class` Accessor Methods
+__TODO__ Describe - taxa_keytypes 
 ```{r}
 taxa_keytypes(gg85)
 ```
 
-
+__TODO__ Describe - columns
 ```{r}
 taxa_columns(gg85)
 ```
 
+__TODO__ Describe - keys
 ```{r}
 head(taxa_keys(gg85, keytype = c("Kingdom")))
 ```
 
 
-## Select Methods
+## `MgDb-class` Select Methods
 Used to retrieve db entries for a specified taxonomic group or id list, can return either taxonomic, sequences information, or both.
 
+
 ### Selecting taxonomic information
+__TODO__ Describe - 
 ```{r}
 mgDb_select(gg85, type = "taxa",
             keys = c("Vibrionaceae", "Enterobacteriaceae"),
@@ -46,6 +67,7 @@ mgDb_select(gg85, type = "taxa",
 ```
 
 ### Selecting sequence information
+__TODO__ Describe - 
 ```{r}
 mgDb_select(gg85, type = "seq",
             keys = c("Vibrionaceae", "Enterobacteriaceae"),
@@ -55,13 +77,48 @@ mgDb_select(gg85, type = "seq",
 
 
 ### Selecting all
+__TODO__ Describe
 ```{r}
 mgDb_select(gg85, type = "all",
                 keys = c("Vibrio", "Salmonella"),
                 keytype = "Genus")
 ```
 
+# `mgFeatures-class` Object
+
+__TODO__ Describe - 
+
+## Creating new `mgFeatures-class`
+__TODO__ Describe - 
+```{r}
+#mgFeatures()
+```
 
 ```{r}
+#annotateFeatures()
+```
+
+
+## `mgFeatures-class` accessor Methods
+
+```{r}
+#mgF_meta()
+```
+
+```{r}
+#mgF_seq()
+```
+
+```{r}
+#mgF_taxa()
+```
+
+```{r}
+#mgF_tree()
+```
+
+
+# Session info {.unnumbered}
+```{r sessionInfo, echo=FALSE}
 sessionInfo()
 ```

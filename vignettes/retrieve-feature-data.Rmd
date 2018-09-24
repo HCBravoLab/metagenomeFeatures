@@ -1,10 +1,14 @@
 ---
 title: "Retrieve Feature Data"
-author: "Nate D. Olson"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+author: 
+- name: Nathan D. Olson
+  affiliation: National Institute of Standards and Technology, Maryland, USA
+package: metagenomeFeatures
+output: 
+    BiocStyle::html_document:
+        toc_float: true
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Retrieve Feature Data.}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,15 +18,18 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+suppressPackageStartupMessages(library(metagenomeFeatures)) 
 ```
 
-## Overview  
-* `metagenomeFeatures` and associated annotation packages can be used to obtain phylogentic trees, and representative sequences for 16S rRNA marker gene sequences when closed reference clustering is used.  
-* QIITA (URL) is a public repository for sharing OTU tables and raw sequence data from 16S rRNA marker gene studies.  
-* In this vignette we will demostrate using `metagenomeFeatures` and the Greengenes 16S rRNA database version 13.8 85\% OTUs to obtain a phylogenetic tree and representative sequences for __XYZ__ study obtained from QIITA.  
+# Vignette Overview  
+* `r Biocpkg("metagenomeFeatures")` and associated annotation packages can be used to obtain phylogentic trees, and representative sequences for 16S rRNA marker gene sequences when closed reference clustering is used.  
+* [QIITA](https://qiita.ucsd.edu) is a public repository for sharing OTU tables and raw sequence data from 16S rRNA marker gene studies.  
+* In this vignette we will demostrate using `metagenomeFeatures` and the Greengenes 16S rRNA database version 13.8 85\% OTUs to obtain a phylogenetic tree and representative sequences for a soil microbiome study __TODO-ADD REF__ obtained from QIITA.  
+* The tree and seq data will be used to generate a phyloseq object. 
 
+##
 ## Greengenes 13.8 85\% OTU MgDb
-The gg 13.8 85% OTU is provided as part of the `metagenomeFeatures` package. 
+The gg 13.8 85% OTU is provided as part of the `r Biocpkg("metagenomeFeatures")` package. 
 ```{r message = FALSE}
 library(metagenomeFeatures)
 gg85 <- get_gg13.8_85MgDb()
@@ -35,7 +42,7 @@ gg85
 
 
 ##  QIITA Dataset 
-For this vignette we are using 16S rRNA data from Rousk et al. 2010, a soil microbiome study, https://qiita.ucsd.edu/study/description/94. 
+For this vignette we are using 16S rRNA data from Rousk et al. 2010, a soil microbiome study, https://qiita.ucsd.edu/study/description/94. __TODO- ADD REFERENCE__ 
 A BIOM and qiime mapping file for the study can be obtained from QIITA. 
 A vector of Greengenes for the study cluster centers is included in this package for use in this vignette. 
 
@@ -64,3 +71,25 @@ Tree data
 mgF_tree(soil_mgF)
 ```
 
+## Creating a `phyloseq` object
+
+* Phyloseq objects 
+* Create object
+* Example analysis
+
+# Session info {.unnumbered}
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```
+
+
+<!-- @article{rousk2010soil, -->
+<!--   title={Soil bacterial and fungal communities across a pH gradient in an arable soil}, -->
+<!--   author={Rousk, Johannes and B{\aa}{\aa}th, Erland and Brookes, Philip C and Lauber, Christian L and Lozupone, Catherine and Caporaso, J Gregory and Knight, Rob and Fierer, Noah}, -->
+<!--   journal={The ISME journal}, -->
+<!--   volume={4}, -->
+<!--   number={10}, -->
+<!--   pages={1340}, -->
+<!--   year={2010}, -->
+<!--   publisher={Nature Publishing Group} -->
+<!-- } -->
