@@ -11,12 +11,6 @@ NULL
 #' @import Biobase
 NULL
 
-# @import dplyr
-#NULL
-
-# @import stringr
-#NULL
-
 #' @import lazyeval
 NULL
 
@@ -26,5 +20,3 @@ NULL
 #' @import lattice
 NULL
 
-#' @import purrr
-NULL
