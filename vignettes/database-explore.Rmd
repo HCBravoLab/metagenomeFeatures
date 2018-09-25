@@ -16,7 +16,8 @@ vignette: >
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  warning = FALSE
 )
 suppressPackageStartupMessages(library(metagenomeFeatures)) 
 suppressPackageStartupMessages(library(tidyverse))

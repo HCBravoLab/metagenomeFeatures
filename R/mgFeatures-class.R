@@ -1,21 +1,19 @@
 ## ========================= mgFeature Class ========================
-#' mgFeature-class object
+#' Class mgFeature
 #'
-#' Object contains taxonomic annotation and reference sequence data for
+#' Class defines taxonomic annotation and reference sequence data for
 #' classified OTUs. The class extends the \link[S4Vectors]{DataFrame}
 #' class with a slot with a subset of the reference database sequences and
 #' phylogenetic tree for taxonomically classified OTUs, along with an additional
 #' slot for metadata including information on the database source.
 #'
-#' @slot metadata list
-#' @slot refDbSeq DNAStringSetOrNull
-#' @slot refDbTree phyloOrNULL
 #' @return mgFeature class object
-#' @export
-#' @examples
-#' data(mock_mgF)
+#' @name mgFeatures-class
 #' @rdname mgFeatures-class
 #' @importFrom S4Vectors DataFrame
+#' @exportClass mgFeatures
+#' @examples
+#' data(mock_mgF)
 setClass("mgFeatures",
          slots = list(metadata = "list",
                       refDbSeq = "DNAStringSetOrNull",
@@ -44,18 +42,18 @@ setValidity("mgFeatures", function(object) {
 
 
 #' mgFeatures-class constructor
-#'
 #' @param taxa a DataFrame-class or object that can be coerced into a DataFrame
 #' @param tree a phylo-class object with phylogenetic tree
 #' @param metadata a list
 #' @param seq DNAStringSet-object with feature sequences
-#'
 #' @return mgFeatures-class object
+#' @name mgFeatures-class
+#' @rdname mgFeatures-class
 #' @export
 #'
 #' @examples
 #' mgFeatures(taxa = data.frame(), metadata = list())
-mgFeatures <- function(taxa, tree = NULL, seq = NULL, metadata){
+mgFeatures <- function(taxa = data.frame(), tree = NULL, seq = NULL, metadata){
     new("mgFeatures",
         DataFrame(taxa),
         metadata = metadata,
@@ -81,6 +79,14 @@ mgFeatures <- function(taxa, tree = NULL, seq = NULL, metadata){
     ape::drop.tip(tree,drop_tips) # %>% ape::as.phylo()
 }
 
+#' mgFeatures-class subset method
+#' @param x Object to extract elements
+#' @param i,j element indices to extract or replace
+#' @param ... other parameters to subset function
+#' @param drop default to FALSE
+#' @name mgFeatures-methods
+#' @rdname mgFeatures-methods
+#' @aliases [,mgFeatures-method
 setMethod("[", "mgFeatures",
           function(x, i, j, ..., drop = FALSE) {
               obj = callNextMethod()
@@ -103,14 +109,17 @@ setMethod("[", "mgFeatures",
 
 #' mgFeatures accessors
 #'
-#' Accessors for \linkS4class{mgFeatures}-class object slots. \code{mgF_seq} -
-#' refDbSeq slot, \code{mgF_taxa} - taxa slot, \code{mgF_tree} - phylogenetic
-#' tree slot, and \code{mgF_meta} - metadata slot.
+#' Accessors for \linkS4class{mgFeatures}-class object slots.\cr
+#' \code{mgF_seq} - refDbSeq slot,\cr
+#' \code{mgF_taxa} - taxa slot,\cr
+#' \code{mgF_tree} - phylogenetic tree slot, and\cr
+#' \code{mgF_meta} - metadata slot.\cr
 #'
-#' @name mgF_
 #' @param mgF mgFeatures-class object.
 #'
 #' @return appropriate class object for the slot accessed
+#' @name mgFeatures-accessors
+#' @rdname mgFeatures-accessors
 #' @examples
 #' data(mock_mgF)
 #' mgF_seq(mock_mgF)
@@ -119,13 +128,17 @@ setMethod("[", "mgFeatures",
 #' mgF_meta(mock_mgF)
 NULL
 
-#' @rdname mgF_
+#' Extract \code{mgF_tree} - phylogenetic tree slot
+#' @name mgFeatures-accessors
+#' @rdname mgFeatures-accessors
 #' @export
 mgF_tree <- function(mgF){
     mgF@refDbTree
 }
 
-#' @rdname mgF_
+#' Extract  \code{mgF_seq} - - refDbSeq slot
+#' @name mgFeatures-accessors
+#' @rdname mgFeatures-accessors
 #' @export
 mgF_seq <- function(mgF){
     mgF@refDbSeq
@@ -134,13 +147,17 @@ mgF_seq <- function(mgF){
 ## Note using DataFrame the taxa information is stored as lists and not a data
 # frame. Function returns a DataFrame but no assignment function is defined.
 
-#' @rdname mgF_
+#' Extract \code{mgF_taxa} - taxa slot
+#' @name mgFeatures-accessors
+#' @rdname mgFeatures-accessors
 #' @export
 mgF_taxa <- function(mgF){
     DataFrame(mgF)
 }
 
-#' @rdname mgF_
+#' Extract \code{mgF_meta} - metadata slot
+#' @name mgFeatures-accessors
+#' @rdname mgFeatures-accessors
 #' @export
 mgF_meta <- function(mgF){
     mgF@metadata

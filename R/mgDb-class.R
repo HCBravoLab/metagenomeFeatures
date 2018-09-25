@@ -43,6 +43,7 @@ setOldClass(c("tbl_dbi"))
 #' @note Currently the only database with a MgDb package is the
 #'   \href{http://greengenes.secondgenome.com/}{Greengenes database} (version
 #'   13.5), additional packages are planned.
+#' @name MgDb-class
 #' @rdname MgDb-class
 #' @return MgDb-class object
 #' @importFrom dbplyr tbl_sql
@@ -256,6 +257,12 @@ setValidity("MgDb", function(object) {
 #' Display summary of MgDb-class object
 #' @param object MgDb-class object
 #' @return MgDb-class summary
+#' @name MgDb-methods
+#' @rdname MgDb-methods
+#' @aliases show,MgDb-method
+#' @examples
+#' gg85 <- get_gg13.8_85MgDb()
+#' show(gg85)
 #' @export
 setMethod("show", "MgDb",
           function(object){
@@ -286,7 +293,8 @@ setMethod("show", "MgDb",
 #' sequence slot, \code{mgDb_taxa} - taxa slot, \code{mgDb_tree} - phylogenetic
 #' tree slot, and \code{mgDb_meta} - metadata slot.
 #'
-#' @name mgDb_
+#' @name MgDb-accessor
+#' @rdname MgDb-accessor
 #' @param mgdb MgDb-class object.
 #'
 #' @return appropriate class object for the slot accessed
@@ -301,7 +309,8 @@ NULL
 
 # MgDb tree slot accessor
 #' @export
-#' @rdname mgDb_
+#' @name MgDb-accessor
+#' @rdname MgDb-accessor
 mgDb_tree <- function(mgdb){
     ## Add assertion for MgDb class object
     mgdb@tree
@@ -309,7 +318,8 @@ mgDb_tree <- function(mgdb){
 
 # MgDb seq slot accessor
 #' @export
-#' @rdname mgDb_
+#' @name MgDb-accessor
+#' @rdname MgDb-accessor
 mgDb_seq <- function(mgdb){
     ## Add assertion for MgDb class object
     mgdb@seq
@@ -317,7 +327,8 @@ mgDb_seq <- function(mgdb){
 
 # MgDb taxa slot accessor
 #' @export
-#' @rdname mgDb_
+#' @name MgDb-accessor
+#' @rdname MgDb-accessor
 mgDb_taxa <- function(mgdb){
     ## Add assertion for MgDb class object
     mgdb@taxa
@@ -325,7 +336,8 @@ mgDb_taxa <- function(mgdb){
 
 # MgDb metadata slot accessor
 #' @export
-#' @rdname mgDb_
+#' @name MgDb-accessor
+#' @rdname MgDb-accessor
 mgDb_meta <- function(mgdb){
     ## Add assertion for MgDb class object
     mgdb@metadata

@@ -16,7 +16,8 @@ vignette: >
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  warning = FALSE
 )
 suppressPackageStartupMessages(library(metagenomeFeatures)) 
 ```
@@ -47,8 +48,8 @@ A BIOM and qiime mapping file for the study can be obtained from QIITA.
 A vector of Greengenes for the study cluster centers is included in this package for use in this vignette. 
 
 ```{r}
-data_dir <- system.file("extdata", package = "metagenomeFeatures")
-soil_gg_ids <-  readRDS(file.path(data_dir, "qiita_study_94_gg_ids.RDS"))
+data(qiita_study_94_gg_ids)
+soil_gg_ids <-  qiita_study_94_gg_ids
 ```
 
 ## Obtaining Sequences and Phylogenetic Tree 
