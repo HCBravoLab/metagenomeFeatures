@@ -3,27 +3,33 @@
 \docType{class}
 \name{mgFeatures-class}
 \alias{mgFeatures-class}
-\title{mgFeature-class object}
+\alias{mgFeatures}
+\title{Class mgFeature}
+\usage{
+mgFeatures(taxa = data.frame(), tree = NULL, seq = NULL, metadata)
+}
+\arguments{
+\item{taxa}{a DataFrame-class or object that can be coerced into a DataFrame}
+
+\item{tree}{a phylo-class object with phylogenetic tree}
+
+\item{seq}{DNAStringSet-object with feature sequences}
+
+\item{metadata}{a list}
+}
 \value{
 mgFeature class object
+
+mgFeatures-class object
 }
 \description{
-Object contains taxonomic annotation and reference sequence data for
+Class defines taxonomic annotation and reference sequence data for
 classified OTUs. The class extends the \link[S4Vectors]{DataFrame}
 class with a slot with a subset of the reference database sequences and
 phylogenetic tree for taxonomically classified OTUs, along with an additional
 slot for metadata including information on the database source.
 }
-\section{Slots}{
-
-\describe{
-\item{\code{metadata}}{list}
-
-\item{\code{refDbSeq}}{DNAStringSetOrNull}
-
-\item{\code{refDbTree}}{phyloOrNULL}
-}}
-
 \examples{
 data(mock_mgF)
+mgFeatures(taxa = data.frame(), metadata = list())
 }
