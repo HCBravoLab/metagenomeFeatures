@@ -1,0 +1,120 @@
+---
+title: "metagenomeFeatures classes and methods."
+author: 
+- name: Nathan D. Olson
+  affiliation: National Institute of Standards and Technology, Maryland, USA
+package: metagenomeFeatures
+output: 
+    BiocStyle::html_document:
+        toc_float: true
+vignette: >
+  %\VignetteIndexEntry{`metagenomeFeatures` classes and methods.}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+suppressPackageStartupMessages(library(metagenomeFeatures)) 
+```
+
+The `r Biocpkg("metagenomeFeatures")` package defines two classes, `MgDb-class` for working with 16S rRNA databases, and `mgFeatures-class` for marker-gene survey feature data. 
+Both classes are S4 object-oriented classes and contain slots for (1) the sequences themselves, 
+(2) sequence taxonomic lineage, 
+and (3) a phylogenetic tree representing the evolutionary relationship between features, 
+and (4) metadata.
+This vignette demonstrates how exploring and subsetting a `MgDb-class` object and creating new `mgFeatures-class` objects. 
+
+# `MgDb-class` Object 
+The `MgDb-class` provides a consistent data structure for working with different 16S rRNA databases. 
+16S rRNA databases contain hundreds of thousands to millions of sequences, therefore an SQLite database is used to store the taxonomic and sequence data. 
+Using an SQLite database prevents the user from loading the full database into memory.  
+The database connection is managed using the `r CRANpkg("RSQLite")` R package, and the taxonomic data are accessed using the dplyr and dbplyr packages. 
+The `r Biocpkg("DECIPHER")` package is used to format the sequence data as an SQLite database and provides functions for working directly with the sequence data in the SQLite database. 
+The phylo class, from the `r CRANpkg("APE")` R package, defines the tree slot. 
+
+The following examples utilize `gg85` the example `MgDb-class` object included in the `r Biocpkg("metagenomeFeatures")` package. `MgDb-class` objects with full databases are in separate Bioconductor Annotation packages such as the `r Biocpkg("greengenesMgDb13.5")` package.
+
+After loading the `r Biocpkg("metagenomeFeatures")`, the `get_gg13.8_85MgDb()` is use to load the `gg85` database. The taxonomy table is stored in a SQLite database and the taxonomy slot is an open connection to the database. 
+
+```{r}
+library(metagenomeFeatures)
+gg85 <- get_gg13.8_85MgDb()
+```
+
+
+## `MgDb-class` Accessor Methods
+The `r Biocpkg("metagenomeFeatures")` package includes accessor methods for the four slots `mgDb_meta()`, `mgDb_tree()`, `mgDb_taxa()`, `mgDb_seq()`.  
+
+Additional accessor methods, `taxa_()` are provided for different taxonomy table elements. 
+These accessors are useful in determining appropriate parameters for the `mgDb_select()` function __TODO - Link to section.
+The `taxa_keytypes()` accessor provide vector with taxonomy table column names and the `taxa_columns()` return a vector of taxonomy relevant column names. 
+The `taxa_keys()` method returns a data frame with all values in a database for specified keytype(s). 
+
+```{r}
+taxa_keytypes(gg85)
+
+taxa_columns(gg85)
+
+head(taxa_keys(gg85, keytype = c("Kingdom")))
+```
+
+
+## `MgDb-class` Select Methods
+The `MgDb-class` select method is used to retrieve database entries for a specified taxonomic group or id list and can return either taxonomic, sequences information, or both.
+The `type` argument defines the type of information the database returns. 
+
+```{r}
+## Only returns taxa
+mgDb_select(gg85, type = "taxa",
+            keys = c("Vibrionaceae", "Enterobacteriaceae"),
+            keytype = "Family")
+
+## Only returns seq
+mgDb_select(gg85, type = "seq",
+            keys = c("Vibrionaceae", "Enterobacteriaceae"),
+            keytype = "Family")
+
+## Returns taxa, seq, and tree
+mgDb_select(gg85, type = "all",
+                keys = c("Vibrio", "Salmonella"),
+                keytype = "Genus")
+```
+
+# `mgFeatures-class` Object
+`mgFeatures-class` is used for storing and working with marker-gene survey feature data.  
+Similar to the `MgDb-class`, the mgFeatures-class has four slots, for taxonomy, sequences, phylogenetic tree, and metadata. 
+As the number of features in a marker-gene survey dataset is significantly smaller than the number of sequences in a reference database, 
+`mgFeatures` uses common Bioconductor data structures, 
+`DataFrames` and `DNAStringSets` to define the taxonomic and sequence slots. 
+Similar to `MgDb-class`, a `phylo` class object is used to define the tree slot. 
+Similar to the `MgDb-class` there are accessor methods, `mgF_*()`, for the fours slots. 
+
+New `mgFeatures-class` objects can be defined directly or from a `MgDb-class` object and a user defined values for subsetting the database, including database sequence ids. 
+The two approaches are demonstrated below. 
+
+```{r}
+ve_select <- mgDb_select(gg85, type = "all",
+               keys = c("Vibrionaceae", "Enterobacteriaceae"),
+            keytype = "Family")
+mgFeatures(taxa = ve_select$taxa, 
+           tree = ve_select$tree, 
+           seq = ve_select$seq,
+           metadata = list("gg85 subset Vibrionaceae and Enterobacteriaceae Family"))
+```
+
+```{r}
+annotateFeatures(gg85, query = vs_select$taxa$Keys)
+```
+
+
+
+
+
+# Session info {.unnumbered}
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```
