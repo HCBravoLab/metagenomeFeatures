@@ -1,5 +1,5 @@
 ---
-title: "Retrieve Feature Data"
+title: "Using metagenomeFeatures to Retrieve Feature Data."
 author: 
 - name: Nathan D. Olson
   affiliation: National Institute of Standards and Technology, Maryland, USA
@@ -8,7 +8,7 @@ output:
     BiocStyle::html_document:
         toc_float: true
 vignette: >
-  %\VignetteIndexEntry{Retrieve Feature Data.}
+  %\VignetteIndexEntry{Using metagenomeFeatures to Retrieve Feature Data.}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,27 +19,25 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 suppressPackageStartupMessages(library(metagenomeFeatures)) 
+suppressPackageStartupMessages(library(phyloseq)) 
 ```
 
-# Vignette Overview  
-* `r Biocpkg("metagenomeFeatures")` and associated annotation packages can be used to obtain phylogentic trees, and representative sequences for 16S rRNA marker gene sequences when closed reference clustering is used.  
-* [QIITA](https://qiita.ucsd.edu) is a public repository for sharing OTU tables and raw sequence data from 16S rRNA marker gene studies.  
-* In this vignette we will demostrate using `metagenomeFeatures` and the Greengenes 16S rRNA database version 13.8 85\% OTUs to obtain a phylogenetic tree and representative sequences for a soil microbiome study __TODO-ADD REF__ obtained from QIITA.  
-* The tree and seq data will be used to generate a phyloseq object. 
+`r Biocpkg("metagenomeFeatures")` and associated annotation packages can be used to obtain phylogentic trees, and representative sequences for 16S rRNA marker gene sequences for experimental datasets when closed reference clustering is used. 
+[QIITA](https://qiita.ucsd.edu) is a public repository for sharing OTU tables and raw sequence data from 16S rRNA marker gene studies, however some of the datasets do not include representative sequences or phylogenetic trees. 
+In this vignette we will demostrate using `metagenomeFeatures` and the Greengenes 16S rRNA database version 13.8 85\% OTUs to obtain a phylogenetic tree and representative sequences for a soil microbiome study __TODO-ADD REF__ obtained from QIITA. 
+The tree and sequence data will then be used to generate a `phyloseq-class` object for community analysis. 
+The `r Biocpkg("phyloseq")` package defines a data structure, `phyloseq-calss`, and for working with 16S rRNA experimental data.
 
-##
 ## Greengenes 13.8 85\% OTU MgDb
 The gg 13.8 85% OTU is provided as part of the `r Biocpkg("metagenomeFeatures")` package. 
+`gg85` is a `MgDb-class` object with the taxonomic heirarchy, sequence data, and phylogeny for the Greengenes database clustered at the 0.85 similarity threshold. 
+
 ```{r message = FALSE}
 library(metagenomeFeatures)
 gg85 <- get_gg13.8_85MgDb()
 ```
 
-`gg85` is a `MgDb` class object with the taxonomic heirarchy, sequence data, and phylogeny for the Greengenes database clustered at the 0.85 similarity threshold. 
-```{r}
-gg85
-```
-
+See the "metagenomeFeatures classes and methods" vignette, `Vignettes("metagenomeFeatures classes and methods")` for more information on `gg85` and methods for working with `MgDb-class` objects. 
 
 ##  QIITA Dataset 
 For this vignette we are using 16S rRNA data from Rousk et al. 2010, a soil microbiome study, https://qiita.ucsd.edu/study/description/94. __TODO- ADD REFERENCE__ 
@@ -59,23 +57,42 @@ soil_mgF <- annotateFeatures(gg85, soil_gg_ids)
 The resulting `mgFeatures` class object has the taxonomic heirarchy, phylogeny, and sequence data for the study OTUs. 
 ```{r}
 soil_mgF
-```
 
-Sequence data
-```{r}
+# Sequence data
 mgF_seq(soil_mgF)
-```
 
-Tree data 
-```{r}
+# Tree data 
 mgF_tree(soil_mgF)
 ```
 
-## Creating a `phyloseq` object
+## Using `mgFeatures-class` object with `phyloseq` 
+```{r}
+library(phyloseq)
+```
 
-* Phyloseq objects 
-* Create object
-* Example analysis
+Load abundance an taxonomy data from QITTA biom file
+```{r}
+biom_file <-  file.path(data_dir, "6692_analysis_dt-16S_r-1_c-3.biom")
+# biom_file <- "inst/extdata/6692_analysis_dt-16S_r-1_c-3.biom"
+soil_ps <- phyloseq::import_biom(BIOMfilename = biom_file)
+```
+
+Use `soil_mgF` to define the `seq` and `tree` slots
+```{r}
+soil_ps@refseq <- mgF_seq(soil_mgF)
+taxa_names(soil_ps)
+mgF_tree(soil_mgF)
+## Fix issue with conflicts between OTUs in soil_ps and soil_mgF
+phy_tree(physeq = soil_ps) <- mgF_tree(soil_mgF)
+```
+
+The phyloseq class can then be used for microbial community analysis requiring a phylogenetic tree such as phylogenetic beta diversity. 
+
+```{r}
+soil_ord <- ordinate(soil_ps, "NMDS", "wunifrac")
+plot_ordination(soil_ps, soil_ord, type="samples", title="Weighted Unifrac")
+```
+
 
 # Session info {.unnumbered}
 ```{r sessionInfo, echo=FALSE}
