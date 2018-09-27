@@ -80,8 +80,8 @@ mgDb_select(gg85, type = "seq",
 
 ## Returns taxa, seq, and tree
 mgDb_select(gg85, type = "all",
-                keys = c("Vibrio", "Salmonella"),
-                keytype = "Genus")
+            keys = c("Vibrionaceae", "Enterobacteriaceae"),
+            keytype = "Family")
 ```
 
 # `mgFeatures-class` Object
@@ -107,7 +107,7 @@ mgFeatures(taxa = ve_select$taxa,
 ```
 
 ```{r}
-annotateFeatures(gg85, query = vs_select$taxa$Keys)
+annotateFeatures(gg85, query = ve_select$taxa$Keys)
 ```
 
 
