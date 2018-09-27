@@ -28,7 +28,7 @@ In this vignette we will demostrate using `metagenomeFeatures` and the Greengene
 The tree and sequence data will then be used to generate a `phyloseq-class` object for community analysis. 
 The `r Biocpkg("phyloseq")` package defines a data structure, `phyloseq-calss`, and for working with 16S rRNA experimental data.
 
-## Greengenes 13.8 85\% OTU MgDb
+# Greengenes 13.8 85\% OTU MgDb
 The gg 13.8 85% OTU is provided as part of the `r Biocpkg("metagenomeFeatures")` package. 
 `gg85` is a `MgDb-class` object with the taxonomic heirarchy, sequence data, and phylogeny for the Greengenes database clustered at the 0.85 similarity threshold. 
 
@@ -65,32 +65,50 @@ mgF_seq(soil_mgF)
 mgF_tree(soil_mgF)
 ```
 
-## Using `mgFeatures-class` object with `phyloseq` 
+# Using `mgFeatures-class` object with `phyloseq` 
 ```{r}
 library(phyloseq)
 ```
 
 Load abundance an taxonomy data from QITTA biom file
 ```{r}
-biom_file <-  file.path(data_dir, "6692_analysis_dt-16S_r-1_c-3.biom")
-# biom_file <- "inst/extdata/6692_analysis_dt-16S_r-1_c-3.biom"
+# biom_file <-  file.path(data_dir, "229_otu_table.biom")
+biom_file <- "inst/extdata/229_otu_table.biom"
 soil_ps <- phyloseq::import_biom(BIOMfilename = biom_file)
 ```
 
+```{r}
+soil_ps
+```
+the `gg85` on has a subset of the representative sequences in the soil_mgF, 
+subsetting soil_ps to only include OTUs in `gg85`.
+```{r}
+soil_tree <- mgF_tree(soil_mgF)
+soil_ps_gg85 <- prune_taxa(taxa = soil_tree$tip.label, x = soil_ps)
+# Removing samples with no OTUs in `gg85`
+soil_ps_gg85 <- prune_samples(samples = sample_sums(soil_ps_gg85) != 0,
+                              x = soil_ps_gg85)
+```
+
+
 Use `soil_mgF` to define the `seq` and `tree` slots
 ```{r}
-soil_ps@refseq <- mgF_seq(soil_mgF)
-taxa_names(soil_ps)
-mgF_tree(soil_mgF)
-## Fix issue with conflicts between OTUs in soil_ps and soil_mgF
-phy_tree(physeq = soil_ps) <- mgF_tree(soil_mgF)
+## Defining tree slot
+phy_tree(physeq = soil_ps_gg85) <- soil_tree
+
+## Defining seq slot
+soil_ps_gg85@refseq <- mgF_seq(soil_mgF)
 ```
+
 
 The phyloseq class can then be used for microbial community analysis requiring a phylogenetic tree such as phylogenetic beta diversity. 
 
+__TODO__ - add sample metadata
 ```{r}
-soil_ord <- ordinate(soil_ps, "NMDS", "wunifrac")
-plot_ordination(soil_ps, soil_ord, type="samples", title="Weighted Unifrac")
+soil_ord <- ordinate(physeq = soil_ps_gg85, distance = "wunifrac", method = "PCoA")
+plot_ordination(soil_ps_gg85, soil_ord, 
+                type="sample", 
+                title="Weighted Unifrac PCoA")
 ```
 
 
