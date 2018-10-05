@@ -13,7 +13,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 references:
 - id: rousk2010soil
-  title: Soil bacterial and fungal communities across a pH gradient in an arable soil
+  title: Soil bacterial and fungal communities across a pH gradient in an arable soil.
   author:
   - family: Rousk
     given: Johannes
@@ -51,39 +51,44 @@ suppressPackageStartupMessages(library(metagenomeFeatures))
 suppressPackageStartupMessages(library(phyloseq)) 
 ```
 
-`r Biocpkg("metagenomeFeatures")` and associated annotation packages can be used to obtain phylogentic trees, and representative sequences for 16S rRNA marker gene sequences for experimental datasets when closed reference clustering is used. 
+`r Biocpkg("metagenomeFeatures")` and associated annotation packages [^1] can be used to obtain phylogentic trees and representative sequences for 16S rRNA marker gene sequence experimental datasets when the reads are clustered using closed reference clustering and a database with an `MgDb` annotation package. 
 [QIITA](https://qiita.ucsd.edu) is a public repository for sharing OTU tables and raw sequence data from 16S rRNA marker gene studies, however some of the datasets do not include representative sequences or phylogenetic trees. 
-In this vignette we will demostrate using `metagenomeFeatures` and the Greengenes 16S rRNA database version 13.8 85\% OTUs to obtain a phylogenetic tree and representative sequences for Rousk et al. [-@rousk2010soil], a soil microbiome study obtained from QIITA. 
-The tree and sequence data will then be used to generate a `phyloseq-class` object for community analysis. 
+In this vignette we demostrate how to use `metagenomeFeatures` and the Greengenes 16S rRNA database version 13.8 85\% OTUs to obtain a phylogenetic tree and representative sequences for Rousk et al. [-@rousk2010soil], a soil microbiome study obtained from QIITA. 
+We then use the tree and sequence data obtained the Greengenes `MgDb` to generate a `phyloseq-class` object for community analysis. 
 The `r Biocpkg("phyloseq")` package defines a data structure, `phyloseq-calss`, and for working with 16S rRNA experimental data.
 
 # Greengenes 13.8 85\% OTU MgDb
 The gg 13.8 85% OTU is provided as part of the `r Biocpkg("metagenomeFeatures")` package. 
 `gg85` is a `MgDb-class` object with the taxonomic heirarchy, sequence data, and phylogeny for the Greengenes database clustered at the 0.85 similarity threshold. 
+After loading the `r Biocpkg("metagenomeFeatures")` package `gg85` can be loaded using `get_gg13.8_85MgDb()`.[^2] 
 
 ```{r message = FALSE}
 library(metagenomeFeatures)
 gg85 <- get_gg13.8_85MgDb()
 ```
 
-See the "metagenomeFeatures classes and methods" vignette, `Vignettes("metagenomeFeatures classes and methods")` for more information on `gg85` and methods for working with `MgDb-class` objects. 
+
 
 ##  QIITA Dataset 
-For this vignette we are using 16S rRNA data from a soil microbiome study, https://qiita.ucsd.edu/study/description/94 [@rousk2010soil]. 
+For this vignette we are using data from a soil microbiome study, https://qiita.ucsd.edu/study/description/94 [@rousk2010soil]. 
 A BIOM and qiime mapping file for the study can be obtained from QIITA. 
-A vector of Greengenes for the study cluster centers is included in this package for use in this vignette. 
+A vector of Greengenes ids for the study cluster centers is included in this package for use in this vignette. 
 
 ```{r}
 data(qiita_study_94_gg_ids)
 soil_gg_ids <-  qiita_study_94_gg_ids
 ```
 
-## Obtaining Sequences and Phylogenetic Tree 
+## Obtaining Representative Sequences and Phylogenetic Tree 
+A `mgFeatures` object is generated from `gg85` (or any other `MgDb-class` object) using the `annotateFeatures()` function along with a set of database ids or keys.
+
 ```{r}
 soil_mgF <- annotateFeatures(gg85, soil_gg_ids)
 ```
 
-The resulting `mgFeatures` class object has the taxonomic heirarchy, phylogeny, and sequence data for the study OTUs. 
+The resulting `mgFeatures` class object has the taxonomic heirarchy, phylogeny, and sequence data for the study OTUs.[^2]
+
+
 ```{r}
 soil_mgF
 
@@ -95,45 +100,45 @@ mgF_tree(soil_mgF)
 ```
 
 # Using `mgFeatures-class` object with `phyloseq` 
-We will use the phyogenetic tree from the `mgFeatures-object` along with the OTU table for a beta diversity analysis.
+Finally we will use the phyogenetic tree from the `mgFeatures-object` along with the OTU table for a beta diversity analysis.
+After loading the `phyloseq` package we will load the abundance data from the QITTA biom file, using the `phyloseq` command `import_biom()`.  
+Next we will define the `sample_data` slot using a modified version of the mapping file `2301_mapping_file.txt` obtained from QITTA, only including sample names and experimental variables pH, carbon/nitrogen ratio, total nitrogen, and total organic carbon. 
+
 ```{r}
 library(phyloseq)
-```
 
-Load abundance an taxonomy data from QITTA biom file
-```{r}
-# biom_file <-  file.path(data_dir, "229_otu_table.biom")
-biom_file <- "inst/extdata/229_otu_table.biom"
+## Load Biom
+biom_file <-  file.path(data_dir, "229_otu_table.biom")
 soil_ps <- phyloseq::import_biom(BIOMfilename = biom_file)
 
-## Adding sample data
-## TODO - move to inst/scripts
-# library(tidyverse)
-# sample_dat <- read_tsv("~/Downloads/mapping_files/2301_mapping_file.txt") %>%
-#     dplyr::rename(SampleID = `#SampleID`) %>%
-#     select(SampleID, carb_nitro_ratio, ph, tot_nitro, tot_org_carb)
-# write_tsv(sample_dat, "inst/extdata/229_sample_data.tsv")
-sample_dat <- read.delim("inst/extdata/229_sample_data.tsv")
+## Define sample data
+sample_file <- file.path(data_dir, "229_sample_data.tsv")
+sample_dat <- read.delim(sample_file)
+## Rownames matching sample_names(), required for phyloseq sample_data slot
 rownames(sample_dat) <- sample_dat$SampleID
 sample_data(soil_ps) <- sample_dat
-```
 
-```{r}
+## Resulting phyloseq object
 soil_ps
 ```
 
-the `gg85` on has a subset of the representative sequences in the soil_mgF, 
-subsetting soil_ps to only include OTUs in `gg85`.
+Rousk et al. [-@rousk2010soil] clustered the sequences at TODO similarity therefore 
+ `gg85` only contains a subset of the OTUs in the dataset.  
+To define the tree and sequence slot we need to subset `soil_ps` to only include OTUs in `gg85`. 
+Samples with no OTUs in `gg85` were also removed for our beta diversity analysis.
+
 ```{r}
+# Removing OTUs not in `gg85`
 soil_tree <- mgF_tree(soil_mgF)
 soil_ps_gg85 <- prune_taxa(taxa = soil_tree$tip.label, x = soil_ps)
+
 # Removing samples with no OTUs in `gg85`
-soil_ps_gg85 <- prune_samples(samples = sample_sums(soil_ps_gg85) != 0,
-                              x = soil_ps_gg85)
+samples_to_keep <- sample_sums(soil_ps_gg85) != 0
+soil_ps_gg85 <- prune_samples(samples = samples_to_keep, x = soil_ps_gg85)
 ```
 
 
-Use `soil_mgF` to define the `seq` and `tree` slots
+Now `soil_mgF` can be used to to define the ``refseq` and `tree` slots of our `soil_ps` object.
 ```{r}
 ## Defining tree slot
 phy_tree(physeq = soil_ps_gg85) <- soil_tree
@@ -143,16 +148,15 @@ soil_ps_gg85@refseq <- mgF_seq(soil_mgF)
 ```
 
 
-The phyloseq class can then be used for microbial community analysis requiring a phylogenetic tree such as phylogenetic beta diversity. 
-For the subset of features used here pH is a primary driver for differences in beta diversity between the samples. 
+Now that the `tree` slot is defined we can perform microbial community analysis requiring a phylogenetic tree such as phylogenetic beta diversity. 
+For the subset of features used here pH is a primary driver for differences in beta diversity between the samples (Fig. (@fig:betaFig)). 
 Nearly 30\% of the total variation in the data is explained by the first axis and sample pH is correlated with the first axis. 
 
-```{r}
+```{r betaFig, fig.cap="Beta diversity and ordination for a subset of features from Rousk et al. [-@rousk2010soil]. Beta diversity was estimated using Weighted Unifrac and Principal Component Analysis was used for ordination. Sampels are represented as individual point and color indicates soil sample pH."}
 soil_ord <- ordinate(physeq = soil_ps_gg85, distance = "wunifrac", method = "PCoA")
-plot_ordination(soil_ps_gg85, soil_ord, color = "ph", 
-                type="sample", 
-                title="pH - Weighted Unifrac PCoA")
+plot_ordination(soil_ps_gg85, soil_ord, color = "ph", type="sample")
 ```
+
 
 # Session info {.unnumbered}
 ```{r sessionInfo, echo=FALSE}
@@ -160,4 +164,7 @@ sessionInfo()
 ```
 
 
+[^1]: Other databases are avilable as [Bioconductor AnnotationData](https://www.bioconductor.org/packages/release/data/annotation/) including; Greengenes Release 13.5: `r Biocpkg("greengenesMgDb13.5")`,  Greengenes Release 13.8 99% OTUs,`r Biocpkg("greengenes13.8_99MgDb")`  Ribosomal Database Project Release 11.5, `r Biocpkg("ribosomaldatabaseproject11.5MgDb")`, and Silva 128.1: `r Biocpkg("silva128.1MgDb")`.
+[^2]: See the "metagenomeFeatures classes and methods" vignette, `Vignettes("metagenomeFeatures classes and methods")` for more information on methods for working with `MgDb-class` and `mgFeatures-class` objects. 
 
+# Reference {.unnumbered}
