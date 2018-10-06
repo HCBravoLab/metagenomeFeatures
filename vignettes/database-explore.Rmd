@@ -25,20 +25,20 @@ suppressPackageStartupMessages(library(ggtree))
 ```
 
 # Vignette overview
-16S rRNA reference databases are most often used to annotate OTUs or sequence variants in experimental dataset. 
-The reference databases can also be used to gain study specific taxonomic groups. 
+16S rRNA reference databases are most often used to annotate OTUs or sequence variants from experimental datasets. 
+The reference databases can also be used to study the diversity of specific taxonomic groups. 
 `MgDb` objects for 16S rRNA sequence reference databases can be used to explore the sequence and phylogenetic diversity of taxonomic groups of interest. 
 In this vignette we will explore the 16S rRNA diversity for the _Gammaproteobaceria_ class using the Greengenes 16S rRNA database version 13.8 clustered at 85\% similarity. 
 A `MgDb` object with the greengenes database version 13.8 85\% similarity OTUs (`gg85`) is included in the `r Biocpkg("metagenomeFeatures")` package.  
 
-Other databases are avilable as [Bioconductor AnnotationData](https://www.bioconductor.org/packages/release/data/annotation/).  
+Other databases are available as [Bioconductor AnnotationData](https://www.bioconductor.org/packages/release/data/annotation/).  
 
 - Greengenes Release 13.5: `r Biocpkg("greengenesMgDb13.5")`  
 - Greengenes Release 13.8 99% OTUs: `r Biocpkg("greengenes13.8_99MgDb")`  
 - Ribosomal Database Project Release 11.5: `r Biocpkg("ribosomaldatabaseproject11.5MgDb")`  
 - Silva 128.1: `r Biocpkg("silva128.1MgDb")`
 
-We will first load the `MgDb` class object, then select the taxa of interest, and finally explore the phylogenetic, and taxonomic composition of the _Enterobacteriace_ family. 
+We will first load the `MgDb-class` object, then select the taxa of interest, and finally explore the phylogenetic, and taxonomic composition of the _Gammaproteobaceria_ class. 
 In addition to using the `r Biocpkg("metagenomeFeatures")` package, the vignette uses `r CRANpkg("dplyr")` and `r CRANpkg("tidyr")` for data manipulation, `r CRANpkg("ggplot2")` and `r Biocpkg("ggtree")` for data visualization.
 
 
@@ -55,9 +55,9 @@ The `gg85` database is loaded using `get_gg13.8_85MgDb()`.
 gg85 <- get_gg13.8_85MgDb()
 ```  
 
-Next the `mgDb_select()` function is first used to subset the database, the `key` arguments is used to define the taxonmic group(s) of interest and `keytype` is used to define the taxonomic level for the group(s) of interest. 
+Next the `mgDb_select()` function is used to subset the database, the `key` arguments is used to define the taxonmic group(s) of interest and `keytype` is used to define the taxonomic level for the group(s) of interest. 
 With the subsetted database you can analyze the taxonomy, sequences, and phylogeny for the taxonomic group of interest. 
-The select function returns single object with a subset of the database taxonomic, sequence, or phylogenetic data, as well as a named list with any two or all three data types.  
+The `mgDb_select()` function returns a subset of the database taxonomic, sequence, or phylogenetic data, as well as a named list with any two or all three data types.  
 
 ```{r}
 gamma_16S <- mgDb_select(gg85, 
