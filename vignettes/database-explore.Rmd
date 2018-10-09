@@ -24,11 +24,11 @@ suppressPackageStartupMessages(library(ggtree))
 ```
 
 # Vignette overview
-16S rRNA reference databases are most often used to annotate OTUs or sequence variants from experimental datasets. 
-The reference databases can also be used to study the diversity of specific taxonomic groups. 
-`MgDb` objects for 16S rRNA sequence reference databases can be used to explore the sequence and phylogenetic diversity of taxonomic groups of interest. 
-In this vignette we will explore the 16S rRNA diversity for the _Gammaproteobaceria_ class using the Greengenes 16S rRNA database version 13.8 clustered at 85\% similarity. 
-A `MgDb` object with the greengenes database version 13.8 85\% similarity OTUs (`gg85`) is included in the `r Biocpkg("metagenomeFeatures")` package.  
+16S rRNA reference databases are most often used to annotate OTUs or sequence variants from marker-gene survey datasets. 
+The reference databases are also used to study the diversity of specific taxonomic groups. 
+As such, `MgDb-class` objects for 16S rRNA sequence reference databases can be used to explore the sequence and phylogenetic diversity of taxonomic groups of interest. 
+In this vignette we will explore the 16S rRNA diversity of the Gammaproteobaceria class using the Greengenes 16S rRNA database version 13.8 clustered at 85\% similarity. 
+A `MgDb-class` object with the greengenes database version 13.8 85\% similarity OTUs (`gg85`) is included in the `r Biocpkg("metagenomeFeatures")` package.  
 
 Other databases are available as [Bioconductor AnnotationData](https://www.bioconductor.org/packages/release/data/annotation/).  
 
@@ -37,8 +37,9 @@ Other databases are available as [Bioconductor AnnotationData](https://www.bioco
 - Ribosomal Database Project Release 11.5: `r Biocpkg("ribosomaldatabaseproject11.5MgDb")`  
 - Silva 128.1: `r Biocpkg("silva128.1MgDb")`
 
-We will first load the `MgDb-class` object, then select the taxa of interest, and finally explore the phylogenetic, and taxonomic composition of the _Gammaproteobaceria_ class. 
-In addition to using the `r Biocpkg("metagenomeFeatures")` package, the vignette uses `r CRANpkg("dplyr")` and `r CRANpkg("tidyr")` for data manipulation, `r CRANpkg("ggplot2")` and `r Biocpkg("ggtree")` for data visualization.
+We will first load the `MgDb-class` object, then select the taxa of interest, and finally explore the Gammaproteobaceria class phylogenetic diversity, and taxonomic composition. 
+In addition to using the `r Biocpkg("metagenomeFeatures")` package, the vignette uses `r CRANpkg("tidyverse")` packages `r CRANpkg("dplyr")` and `r CRANpkg("tidyr")` for data manipulation, `r CRANpkg("ggplot2")` and for data visualization. 
+The `r Biocpkg("ggtree")` Bioconductor package is used to plot the phylogenetic tree.
 
 
 ```{r eval=FALSE}
@@ -49,16 +50,13 @@ library(ggtree)
 
 # Loading and subsetting the database 
 The `gg85` database is loaded using `get_gg13.8_85MgDb()`.  
-
-```{r}
-gg85 <- get_gg13.8_85MgDb()
-```  
-
 Next the `mgDb_select()` function is used to subset the database, the `key` arguments is used to define the taxonmic group(s) of interest and `keytype` is used to define the taxonomic level for the group(s) of interest. 
 With the subsetted database you can analyze the taxonomy, sequences, and phylogeny for the taxonomic group of interest. 
 The `mgDb_select()` function returns a subset of the database taxonomic, sequence, or phylogenetic data, as well as a named list with any two or all three data types.  
 
 ```{r}
+gg85 <- get_gg13.8_85MgDb()
+
 gamma_16S <- mgDb_select(gg85, 
                           type = "all", 
                           keys = "Gammaproteobacteria", 
@@ -66,8 +64,8 @@ gamma_16S <- mgDb_select(gg85,
 ```
 
 # Taxonomic Analysis 
-We want to know how many genera in the Class Gammaproteobacteria there are sequences for in the Greengenes 85% OTU database as well as how many sequences are assigned to each genera. 
-We will first create a data frame with the desired information then plot the results. 
+We want to know how many genera are in the Class Gammaproteobacteria and how many 85\% similarity OTUs are in each genera for in the Greengenes 13.8 85\% database. 
+We first create a data frame with the desired information then plot the results. 
 
 ```{r}
 ## Per genus count data
@@ -90,7 +88,6 @@ As this database is preclustered to 85\% similarity the number of OTUs per genus
 For example no sequences present in the database are assigned to the genus _Shigella_ and only `r escherichia_count` are assigned to _Escherichia_. 
 OTUs only assigned to the family, `g__`, is the most abundant group, `r gamma_df$Count[gamma_df$Genus == "g__"]`.   
 
-__TODO__: interesting genera for a narrative
 
 ```{r generaCount, fig.cap = "Number of seqeunces assigned to genera in the Class Gammaproteobacteria. Only Genera with more than one assigned sequence are shown.", fig.width = 6, fig.height = 6} 
  ggplot(gamma_trim_df) + 
@@ -106,7 +103,6 @@ We will use the `r Biocpkg("ggtree")` package to visualize the phylogenetic tree
 Of the genera with more than 3 representative OTUs _Stenotrophomonas_ is the only genus with unclassified and other OTUs within the clade (Fig. \@ref(fig:annoTree)). 
 
 ```{r annoTree, fig.cap = "Phylogenetic tree of Gammaproteobacteria class OTU representative sequences.", fig.height = 8, fig.width = 6, message = FALSE}
-library(ggtree)
 
 genus_lab <- paste0("g__", c("","Stenotrophomonas", "Pseudomonas"))
 genus_anno_df <- gamma_16S$taxa %>% 
@@ -114,8 +110,6 @@ genus_anno_df <- gamma_16S$taxa %>%
     mutate(Count = n()) %>% 
     ungroup() %>% 
     mutate(Genus_lab = if_else(Count > 3, Genus, ""))
-    # mutate(Genus_lab = if_else(Genus %in% genus_lab, Genus, ""),
-    #        Genus_lab = factor(Genus_lab, levels = c("", genus_lab)))
 
 ggtree(gamma_16S$tree) %<+% 
     genus_anno_df + 
@@ -129,6 +123,8 @@ ggtree(gamma_16S$tree) %<+%
 # Sequence Diversity 
 The `mgDb_select()` function returns the subsetted sequence data as a biostring object.
 The sequence data can be used for additional analysis such as, multiple sequencing alignment, primer region extraction, or PCR primer design. 
+When working with large subsets of the database or the full database, the Bioconductor package `r Biocpkg("DECIPHER")` provides functions for analyzing sequences in an SQLite database. The `MgDb-class` uses `r Biocpkg("DECIPHER")` to format the sequences as an SQLite database. 
+The `MgDb-class` sequence slot, is a connection to the SQLite database, therefore the `r Biocpkg("DECIPHER")` package can be used to analyze the dataset reference sequence data as well. 
 
 ```{r}
 gamma_16S$seq
