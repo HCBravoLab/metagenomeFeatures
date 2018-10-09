@@ -172,6 +172,6 @@ sessionInfo()
 
 [^1]: Other databases are avilable as [Bioconductor AnnotationData](https://www.bioconductor.org/packages/release/data/annotation/) including; Greengenes Release 13.5: `r Biocpkg("greengenesMgDb13.5")`,  Greengenes Release 13.8 99% OTUs,`r Biocpkg("greengenes13.8_99MgDb")`  Ribosomal Database Project Release 11.5, `r Biocpkg("ribosomaldatabaseproject11.5MgDb")`, and Silva 128.1: `r Biocpkg("silva128.1MgDb")`.
 [^2]: The `r Biocpkg("phyloseq")` package defines the `phyloseq-calss` for working with 16S rRNA experimental data.
-[^3]: See the "metagenomeFeatures classes and methods" vignette, `Vignettes("metagenomeFeatures classes and methods")` for more information on methods for working with `MgDb-class` and `mgFeatures-class` objects. 
+[^3]: See the "metagenomeFeatures classes and methods." vignette, `Vignettes("metagenomeFeatures classes and methods.")` for more information on methods for working with `MgDb-class` and `mgFeatures-class` objects. 
 
 # Reference {.unnumbered}
