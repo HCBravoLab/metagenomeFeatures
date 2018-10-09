@@ -101,6 +101,8 @@ mgF_tree(soil_mgF)
 Finally we use the phyogenetic tree from the `mgFeatures-class` object along with the OTU table for a beta diversity analysis.
 After loading the `r Biocpkg("phyloseq")` package we will load the abundance data from the QITTA biom file, using the `r Biocpkg("phyloseq")` command `import_biom()`.  
 Next we will define the `sample_data` slot using a modified version of the mapping file `2301_mapping_file.txt` obtained from QITTA, which only includes sample names and experimental variables pH, carbon/nitrogen ratio, total nitrogen, and total organic carbon. 
+Future development of a common data structure for working with microbiome data  that extends the `SummarizeExperiment-class` is underway.
+For this new class the `mgFeatures-class` will define the `rowData` slot. 
 
 ```{r}
 library(phyloseq)
