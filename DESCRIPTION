@@ -32,7 +32,9 @@ Suggests:
     rmarkdown (>= 1.3),
     tidyverse (>= 1.2.1),
     devtools (>= 1.13.5),
-    ggtree(>= 1.8.2)
+    ggtree(>= 1.8.2),
+    BiocStyle (>= 2.8.2),
+    phyloseq (>= 1.24.2)
 Collate:
     'utils.R'
     'phylo-class.R'
