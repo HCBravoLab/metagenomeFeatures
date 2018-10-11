@@ -55,3 +55,4 @@ biocViews: ImmunoOncology, Microbiome, Metagenomics, Annotation, Infrastructure,
     Software
 NeedsCompilation: no
 RoxygenNote: 6.1.0
+Encoding: UTF-8
