@@ -77,8 +77,7 @@ A BIOM and qiime mapping file for the study can be obtained from QIITA.
 A vector of Greengenes ids for the study cluster centers is included in this package for use in this vignette. 
 
 ```{r}
-data(qiita_study_94_gg_ids)
-soil_gg_ids <-  qiita_study_94_gg_ids
+
 ```
 
 ## Obtaining Representative Sequences and Phylogenetic Tree 
@@ -86,7 +85,7 @@ A `mgFeatures` object is generated from `gg85` (or any other `MgDb-class` object
 The resulting `mgFeatures` class object has the taxonomic heirarchy, phylogeny, and sequence data for the study OTUs.[^3]
 
 ```{r}
-soil_mgF <- annotateFeatures(gg85, soil_gg_ids)
+soil_mgF <- annotateFeatures(gg85, qiita_study_94_gg_ids)
 
 ## Taxonomic heirarchy
 soil_mgF
@@ -107,6 +106,7 @@ For this new class the `mgFeatures-class` will define the `rowData` slot.
 
 ```{r}
 library(phyloseq)
+data_dir <- system.file("extdata", package = "metagenomeFeatures")
 
 ## Load Biom
 biom_file <-  file.path(data_dir, "229_otu_table.biom")
