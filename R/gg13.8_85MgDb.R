@@ -11,7 +11,7 @@ get_gg13.8_85MgDb <- function(){
 
     metadata_file <- system.file("extdata", 'gg13.8_85_metadata.RData',
                            package = "metagenomeFeatures")
-    load(metadata_file)
+    load(metadata_file, envir=globalenv())
 
     gg_db_file <- system.file("extdata", 'gg13.8_85.sqlite',
                                 package = "metagenomeFeatures")

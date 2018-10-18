@@ -7,7 +7,10 @@
 
 ## MgDb Class ------------------------------------------------------------------
 
-## Tree can be either rds with phylo class object or tree file
+#' Tree can be either rds with phylo class object or tree file
+#' @param tree_file location of tree
+#' @importFrom ape read.tree
+#' @keywords internals
 .load_tree <- function(tree_file){
     if (!file.exists(tree_file)) {
         stop(paste0("tree_file:", tree_file, " is not a valid file path"))
@@ -16,7 +19,7 @@
     if (grepl("rds",tree_file,ignore.case = TRUE)) {
         tree <- readRDS(tree_file)
     }else{
-        tree <- ape::read.tree(tree_file)
+        tree <- read.tree(tree_file)
     }
 
     tree
@@ -70,6 +73,9 @@ setClass("MgDb",
 #' @return writes SQLite file
 #' @keywords internal
 #'
+#' @importFrom Biostrings readDNAStringSet
+#' @import RSQLite
+#' @importFrom DECIPHER Seqs2DB
 #' @examples
 #' \dontrun{
 #' make_mgdb_sqlite(db_name = "greengenes13.8_85",
@@ -103,7 +109,7 @@ make_mgdb_sqlite <- function(db_name, db_file, taxa_tbl, seqs) {
     ## seqs either a fasta file or DNAStringSet
     if (is.character(seqs)) {
         if (file.exists(seqs)) {
-            seqs <- Biostrings::readDNAStringSet(seqs)
+            seqs <- readDNAStringSet(seqs)
         } else {
             stop("seqs is a character string but no file exists, check filename")
         }
@@ -136,15 +142,15 @@ make_mgdb_sqlite <- function(db_name, db_file, taxa_tbl, seqs) {
     rownames(taxa_tbl) <- 1:nrow(taxa_tbl)
 
     ## Create database with taxa and sequence data
-    db_conn <- RSQLite::dbConnect(RSQLite::SQLite(), db_file)
+    db_conn <- dbConnect(SQLite(), db_file)
 
-    DECIPHER::Seqs2DB(seqs = seqs, type = "DNAStringSet",
+    Seqs2DB(seqs = seqs, type = "DNAStringSet",
                       dbFile = db_conn, identifier = "MgDb")
 
     ### Adding taxonomic data to database
 
     # get seqs table from database
-    db_seqs <- RSQLite::dbReadTable(db_conn, "Seqs")
+    db_seqs <- dbReadTable(db_conn, "Seqs")
 
     taxa_tbl$row_names <- seq(1:nrow(taxa_tbl))
 
@@ -152,11 +158,11 @@ make_mgdb_sqlite <- function(db_name, db_file, taxa_tbl, seqs) {
     db_merge_table <- merge(db_seqs, taxa_tbl, by='row_names')
 
     # write seq data back to database
-    RSQLite::dbWriteTable(db_conn, "Seqs", db_merge_table, overwrite=TRUE)
+    dbWriteTable(db_conn, "Seqs", db_merge_table, overwrite=TRUE)
 
     # DECIPHER::Add2DB(myData = taxa_tbl, dbFile = db_conn)
 
-    RSQLite::dbDisconnect(db_conn)
+    dbDisconnect(db_conn)
 }
 
 
@@ -169,7 +175,8 @@ make_mgdb_sqlite <- function(db_name, db_file, taxa_tbl, seqs) {
 #'
 #' @return MbDb class object
 #' @export
-#'
+#' @import RSQLite
+#' @importFrom dplyr tbl
 #' @examples
 #' metadata_file <- system.file("extdata", 'gg13.8_85_metadata.RData',
 #'     package = "metagenomeFeatures")
@@ -192,10 +199,10 @@ newMgDb <- function(db_file, tree, metadata){
     ## Check metadata is list with required entries
 
     ## sequence slot
-    db_conn <- RSQLite::dbConnect(RSQLite::SQLite(), db_file)
+    db_conn <- dbConnect(SQLite(), db_file)
 
     ## taxa slot
-    taxa_dbi <- dplyr::tbl(src = db_conn, from = "Seqs")
+    taxa_dbi <- tbl(src = db_conn, from = "Seqs")
 
     ## tree slot
     if (!(is.character(tree) | is.null(tree))) {
@@ -264,6 +271,7 @@ setValidity("MgDb", function(object) {
 #' gg85 <- get_gg13.8_85MgDb()
 #' show(gg85)
 #' @export
+#' @importFrom ape print.phylo
 setMethod("show", "MgDb",
           function(object){
               cat(class(object), "object:")
@@ -278,7 +286,7 @@ setMethod("show", "MgDb",
               print(mgDb_taxa(object))
               print("Tree Data:")
               if (!is.null(mgDb_tree(object))) {
-                  ape::print.phylo(mgDb_tree(object))
+                  print.phylo(mgDb_tree(object))
               } else {
                   print("Tree not available")
               }
