@@ -77,7 +77,7 @@ A BIOM and qiime mapping file for the study can be obtained from QIITA.
 A vector of Greengenes ids for the study cluster centers is included in this package for use in this vignette. 
 
 ```{r}
-
+data(qiita_study_94_gg_ids)
 ```
 
 ## Obtaining Representative Sequences and Phylogenetic Tree 
