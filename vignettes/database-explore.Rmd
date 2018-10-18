@@ -20,8 +20,10 @@ knitr::opts_chunk$set(
   warning = FALSE
 )
 suppressPackageStartupMessages(library(metagenomeFeatures)) 
-suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(ggtree))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(forcats))
 ```
 
 # Vignette overview
@@ -45,7 +47,9 @@ The `r Biocpkg("ggtree")` Bioconductor package is used to plot the phylogenetic 
 
 ```{r eval=FALSE}
 library(metagenomeFeatures)
-library(tidyverse)
+library(dplyr)
+library(forcats)
+library(ggplot2)
 library(ggtree)
 ```
 
