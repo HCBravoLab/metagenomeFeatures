@@ -5,43 +5,62 @@
 ################################################################################
 ## Select ----------------------------------------------------------------------
 
+#' select sequences
+#' @param seqObj seq object
+#' @param row_names row names to select
+#' @param Keys keys to filter
+#' @importClassesFrom Biostrings DNAStringSet
+#' @importFrom Biostrings DNAStringSet
+#' @importFrom RSQLite dbGetQuery
+#' @importFrom DECIPHER Codec
+#' @keywords internals
 .select.seq <- function(seqObj, row_names, Keys){
-    result <- RSQLite::dbGetQuery(seqObj, paste("select row_names, sequence from _Seqs where row_names in ", paste0("(", paste0(row_names, collapse = ','), ")")))
-    seqs <- DECIPHER::Codec(result$sequence)
-    dnaStringSet <- Biostrings::DNAStringSet(seqs)
+    result <- dbGetQuery(seqObj, paste("select row_names, sequence from _Seqs where row_names in ", paste0("(", paste0(row_names, collapse = ','), ")")))
+    seqs <- Codec(result$sequence)
+    dnaStringSet <- DNAStringSet(seqs)
     names(dnaStringSet) <- Keys[match(result[,1], row_names)]
 
     dnaStringSet
 }
 
-
+#' select taxa
+#' @param taxaDb taxa object
+#' @param metaDb metadata object
+#' @param keytype keytypes to select
+#' @param keys keys to filter
+#' @param columns columns to select, defaults to all
+#' @import dplyr
+#' @importFrom stringr str_c
+#' @importFrom stringr str_sub
+#' @import lazyeval
+#' @keywords internals
 .select.taxa <- function(taxaDb, metaDb, keys, keytype, columns="all"){
     ## setting values when keys and keytypes are not defined
     if (is.null(keys)) {
-        keys <- taxaDb %>% dplyr::select(Keys) %>% dplyr::collect() %>% .$Keys
+        keys <- taxaDb %>% select(Keys) %>% collect() %>% .$Keys
         keytype <- "Keys"
     }
 
     # selecting desired rows
     if (!is.null(keys)) {
         if (keytype !=  "Keys") {
-            level_id <- stringr::str_sub(string = keytype,
+            level_id <- str_sub(string = keytype,
                                          start = 1,
                                          end = 1) %>%
                 tolower() %>% rep(length(keys))
             if (metaDb$DB_TYPE_NAME == "GreenGenes") {
-                keys <- stringr::str_c(level_id,keys,sep = "__")
+                keys <- str_c(level_id,keys,sep = "__")
             }
         }
 
         if (length(keys) == 1) {
-            filter_criteria <- lazyeval::interp(~which_column == keys,
+            filter_criteria <- interp(~which_column == keys,
                                                 which_column = as.name(keytype))
         } else {
-            filter_criteria <- lazyeval::interp(~which_column %in% keys,
+            filter_criteria <- interp(~which_column %in% keys,
                                                 which_column = as.name(keytype))
         }
-        select_tbl <- dplyr::filter_(taxaDb, filter_criteria)
+        select_tbl <- filter_(taxaDb, filter_criteria)
     }else{
         select_tbl <- taxaDb
     }
@@ -49,20 +68,33 @@
 
     # selecting desired columns
     if (columns[1] != "all") {
-        select_tbl <- dplyr::select_(select_tbl, .dots = columns)
+        select_tbl <- select_(select_tbl, .dots = columns)
     }
 
-    return(dplyr::collect(select_tbl))
+    return(collect(select_tbl))
 }
 
+#' select tree tips
+#' @param tree tree object
+#' @param ids tip ids to select
+#' @importFrom ape drop.tip
+#' @importFrom ape as.phylo
+#' @keywords internals
 .select.tree <- function(tree, ids){
     drop_tips <- tree$tip.label[!(tree$tip.label %in% ids)]
     # drop.tip return class phy defining
     # class to match mgFeature class description
-    ape::drop.tip(tree,drop_tips) %>% ape::as.phylo()
+    drop.tip(tree,drop_tips) %>% as.phylo()
 }
 
-## either select by ids for taxa information
+#' either select by ids for taxa information
+#' @param mgdb mgdb object
+#' @param type selection type, can be seq, taxa, tree or all
+#' @param keytype keytypes to select
+#' @param keys keys to filter
+#' @param columns columns to select, defaults to all
+#' @import dplyr
+#' @keywords internals
 .select <- function(mgdb, type, keys, keytype, columns){
     ## check correct types
     select_types <- c("seq","taxa", "tree", "all")
@@ -93,7 +125,7 @@
     # vector with all objects to return
     if ("taxa" %in% type || type == "all") {
         ## Removing decipher columns
-        select_obj$taxa <- dplyr::select(taxa_df, -row_names,
+        select_obj$taxa <- select(taxa_df, -row_names,
                                          -description, -identifier)
     }
 

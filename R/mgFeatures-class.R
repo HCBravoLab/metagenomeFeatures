@@ -72,11 +72,12 @@ mgFeatures <- function(taxa = data.frame(), tree = NULL, seq = NULL, metadata){
 ################################################################################
 
 ## subset ----------------------------------------------------------------------
+#' @importFrom ape drop.tip
 .subset_tree <- function(tree, ids){
     drop_tips <- tree$tip.label[!(tree$tip.label %in% ids)]
     # drop.tip return class phy defining class to match mgFeature class
     # description
-    ape::drop.tip(tree,drop_tips) # %>% ape::as.phylo()
+    drop.tip(tree,drop_tips) # %>% ape::as.phylo()
 }
 
 #' mgFeatures-class subset method

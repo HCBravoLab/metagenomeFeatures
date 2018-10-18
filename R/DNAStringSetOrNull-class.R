@@ -8,4 +8,6 @@ setOldClass("DNAStringSetOrNull")
 # the component data classes is not available, in which case NULL will be used
 # instead.
 #' @keywords internal
+#' @importClassesFrom Biostrings DNAStringSet
+#' @importClassesFrom Biostrings QualityScaledDNAStringSet
 setClassUnion("DNAStringSetOrNull", c("DNAStringSet", "NULL"))

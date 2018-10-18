@@ -30,9 +30,10 @@ Suggests:
     knitr (>= 1.11),
     testthat (>= 0.10.0),
     rmarkdown (>= 1.3),
-    tidyverse (>= 1.2.1),
     devtools (>= 1.13.5),
-    ggtree(>= 1.8.2)
+    ggtree(>= 1.8.2),
+    forcats,
+    ggplot2
 Collate:
     'utils.R'
     'phylo-class.R'

@@ -36,7 +36,9 @@ First we need to load the `metagenomeFeatues` package.
 The tidyverse packages, dplyr, tidyr, and ggplot are used display the results.
 ```{r message = FALSE}
 library(metagenomeFeatures) 
-library(tidyverse)
+library(dplyr)
+library(forcats)
+library(ggplot2)
 ```
 
 <!-- TODO Update links after Bioconductor submission -->

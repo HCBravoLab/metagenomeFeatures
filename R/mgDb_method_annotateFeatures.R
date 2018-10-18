@@ -5,9 +5,12 @@
 ################################################################################
 ## mgDb_annotateFeatures -------------------------------------------------------
 
-## Generates an mgFeatures object when passed a vector of keys or dataframe
-## (e.g. query)
-
+#' Generates an mgFeatures object when passed a vector of keys or dataframe
+#' (e.g. query)
+#' @param mgdb mdgdb object
+#' @param query search param
+#' @importFrom dplyr right_join
+#' @keywords internals
 .mgDb_annotateFeatures <- function(mgdb, query) {
     ##### SELECT_KEYS
     ## check query type: vector or data.frame
@@ -38,7 +41,7 @@
 
     ##### ANNOTATED_DB
     if (is.data.frame(query)) {
-        annotated_db <- dplyr::right_join(query, filtered_db$taxa)
+        annotated_db <- right_join(query, filtered_db$taxa)
     } else {
         annotated_db <- as.data.frame(filtered_db$taxa)
     }

@@ -25,6 +25,11 @@ NULL
 
 
 ### Taxa keys function ---------------------------------------------------------
+#' Taxa keys functions
+#' import dplyr
+#' @param mgdb mgDb class
+#' @param keytype taxa keytype
+#' @keywords internals
 .taxa_keys <- function(mgdb, keytype){
     if (length(keytype) > 0) {
         nonvalid_keytype <- c()
@@ -40,8 +45,8 @@ NULL
             stop(msg)
         }
         mgDb_taxa(mgdb) %>%
-            dplyr::select_(keytype) %>%
-            dplyr::collect() %>%
+            select_(keytype) %>%
+            collect() %>%
             return()
     }else{
         mgDb_taxa(mgdb)
@@ -63,6 +68,9 @@ setMethod("taxa_keys", "MgDb",
 
 
 ### Taxa columns function ------------------------------------------------------
+#' taxa columns
+#' @param mgdb mdgdb object
+#' @keywords internals
 .taxa_columns = function(mgdb){
     taxa_cols <- colnames(mgDb_taxa(mgdb))
     ## Excluding decipher column names
@@ -84,6 +92,7 @@ setMethod("taxa_columns", "MgDb",
 
 
 ### taxa keytypes function -----------------------------------------------------
+#' @keywords internals
 .taxa_keytypes = function(mgdb){
     colnames(mgDb_taxa(mgdb))
 }
