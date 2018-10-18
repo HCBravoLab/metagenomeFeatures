@@ -105,7 +105,6 @@ Future development of a common data structure for working with microbiome data  
 For this new class the `mgFeatures-class` will define the `rowData` slot. 
 
 ```{r}
-library(phyloseq)
 data_dir <- system.file("extdata", package = "metagenomeFeatures")
 
 ## Load Biom
