@@ -1,0 +1,532 @@
+---
+title: "Supplemental Material - _metagenomeFeatures_: An R package for working with 16S rRNA reference databases and marker-gene survey feature data."
+subtitle: "_Paenibacillus_ species resolution for 16S rRNA V12 and V4 regions."
+author: "Nathan D. Olson and Nidhi Shah"
+date: "`r Sys.Date()`"
+output: bookdown::pdf_document2
+---
+
+# Background
+16S rRNA amplicon sequencing is commonly used for microbial community characterization, including differential abundance analysis.
+A limitation to 16S rRNA amplicon sequencing is a lack of taxonomic resolution, where organisms are only identifiable to the genus or family level.
+We define taxonomic resolution as the ability to differentiate between groups within a taxonomic level, for example differentiating between species within a genus. 
+We are interested in determining whether the 16S rRNA region of interest contains sufficient information for species-level taxonomic assignment.
+Taxonomic resolution varies by clade and amplicon regions. 
+However, the extent to which taxonomic resolution varies is not well characterized. 
+
+Here we demonstrate how _metagenomeFeatures_ and the `MgDb` annotation packages can be used to characterize taxonomic resolution for a specific clade and amplicon region, specifically for the _Paenibacillus_ genus and V12 and V4 regions. 
+Originally, _Paenibacillus_ was classified under the _Bacillus_ genus, a novel genus was formed based on the 16S rRNA gene similarity in the 1990s. 
+_Paenibacillus_ spp. are facultative anaerobic bacteria present in a variety of environments including the soil, water, and can act as opportunistic pathogens in humans [@ouyang2008]. 
+It has been shown that _Paenibacillus_ spp. will play an important role in sustainable agricultural industries [@grady2016]. 
+Thus, an appropriate speciation of this genus is of an interest to the community. 
+
+We used V12 and V4 region as they represent two commonly used amplicons for 16S rRNA marker-gene surveys. 
+We will use the Greengenes 13.5 database, accessed using the _greengenes13.5MgDb_, Silva 128 database, accessed using the _silva128.1MgDb_, and RDP 11.5 database, accessed using the _ribosomaldatabaseproject11.5MgDb_, as annotation packages for our analysis of the _Paenibacillus_ genus. 
+First, we show the distribution of sequences belonging to _Paenibacillus_ in these three database, and then a way to combine different subsets of database sequences to build a custom database object. 
+This helps investigators to pool sequences from different databases, to create an accurate and most representative database for their sample. 
+This is especially helpful when a certain clade of interest is not very well represented in the databases.
+We then evaluate 16S rRNA amplicon sequencing taxonomic resolution for _Paenibacillus_ species for V12 and V4 regions. 
+In many analyses, the Greengenes 13.5 database is used for demonstration purposes but the other `MgDb` annotation packages such as RDP 11.5, SILVA 128, can also be used. 
+
+# Required Packages 
+In addition to _metagenomeFeatures_, _greengenes13.5MgDb_, _ribosomaldatabaseproject11.5MgDb_, and _silva128.1MgDb_, the _DECIPHER_, _tidyverse_, and _ggpubr_ packages are also used in the following analysis. 
+Our analysis uses the `DECIPHER` package to extract the amplicon regions, perform multiple sequence alignment, and generate a pairwise sequence distance matrix [@Wright2016-mo].
+The `tidyverse` and `ggpubr` packages will be used to reformat the taxonomic and distance matrix data and generate summary figures [@tidyverse;@ggpubr].
+
+```{r message = FALSE, echo = TRUE}
+library(tidyverse); packageVersion("tidyverse")
+library(ggpubr); packageVersion("ggpubr")
+library(gplots); packageVersion("gplots")
+library(DECIPHER); packageVersion("DECIPHER")
+library(metagenomeFeatures); packageVersion("metagenomeFeatures")
+library(greengenes13.5MgDb); packageVersion("greengenes13.5MgDb")
+# library(silva128.1MgDb, lib.loc = "~/Documents/Fall2018/installed_packages/"); packageVersion("silva128.1MgDb")
+library(silva128.1MgDb); packageVersion("silva128.1MgDb")
+library(ribosomaldatabaseproject11.5MgDb); packageVersion("ribosomaldatabaseproject11.5MgDb")
+```
+
+# Database Comparison
+- Three databases
+  - greengenes
+  - silva
+  - Ribosomal database project
+
+- number of database entries and fraction of entries with RNAcentralIDs
+- note that the mgDb_taxa slot is a tbl_dbi
+```{r echo = FALSE}
+get_rnacentral_entries <- function(mgdb){
+   if("rnacentral_ids" %in% taxa_columns(mgdb)){
+    rna_filt <- mgDb_taxa(mgdb) %>% 
+      filter(!is.na(rnacentral_ids))
+  } else {
+    rna_filt <- mgDb_taxa(mgdb) %>% 
+      filter(!is.na(RNAcentralID))    
+  }
+  rna_filt 
+}
+
+get_size_and_rnacentral <- function(mgdb){
+  db_size <- mgDb_taxa(mgdb) %>% 
+    tally() %>% collect() %>% as.numeric()
+  
+  db_wrna_id <- get_rnacentral_entries(mgdb) %>% 
+    tally() %>% collect() %>% as.numeric()
+  
+  ## return size and size with rna central ids
+  data_frame(n_entries = db_size, 
+             n_entries_rnaid = db_wrna_id)
+}
+
+db_list <- list(gg = gg13.5MgDb, 
+                slv = slv128.1MgDb, 
+                rdp = rdp11.5MgDb)
+
+db_info_df <- db_list %>% 
+  map_dfr(get_size_and_rnacentral, .id = "mgdb")
+db_info_df %>% mutate(frac_w_rnaids = (n_entries_rnaid)/n_entries)
+```
+
+
+- RNAcentral id overlap
+```{r}
+get_rnacentral_ids <- function(mgdb){
+   if("rnacentral_ids" %in% taxa_columns(mgdb)){
+    rna_filt <- mgDb_taxa(mgdb) %>% 
+      filter(!is.na(rnacentral_ids)) 
+  } else {
+    rna_filt <- mgDb_taxa(mgdb) %>% 
+      filter(!is.na(RNAcentralID)) 
+  }
+  rna_filt %>% 
+    select(contains("central")) %>% 
+    collect() %>% 
+    distinct() %>% 
+    .[[1,]]
+}
+
+## This is really slow ...
+rna_central_id_list <- db_list %>% 
+  map(get_rnacentral_ids)
+```
+
+
+```{r}
+venn(rna_central_id_list)
+```
+
+
+# _Paenibacillus_ Sequence and Taxonomy Data
+First subset the databases using the `mgDb_select()` function.
+Then we will summarize the taxonomy data using functions from `tidyverse` package, specifically `dplyr`, `stringr` and `forcats` functions for manipulating `data.frames`, `strings`, and `factor` vectors respectively. 
+
+__TODO__ Clean-up do not want to load both taxa and seq into memory
+```{r subsetDb, echo = TRUE}
+paeni_16S_greengenes <- metagenomeFeatures::mgDb_select(gg13.5MgDb,
+                          type = c("taxa"),
+                          keys = "Paenibacillus",
+                          keytype = "Genus")
+paeni_16S_silva <- metagenomeFeatures::mgDb_select(slv128.1MgDb,
+                          type = c("taxa"),
+                          keys = "Paenibacillus",
+                          keytype = "Genus")
+paeni_16S_rdp <- metagenomeFeatures::mgDb_select(rdp11.5MgDb,
+                          type = c("taxa"),
+                          keys = "Paenibacillus",
+                          keytype = "Genus")
+```
+
+```{r getCounts, echo = FALSE}
+## Per genus count data - greengeness
+tidy_gg_taxa <- paeni_16S_greengenes %>%
+    ## cleaning up species names
+    mutate(Species = if_else(Species == "s__", "Unassigned", Species),
+           Species = str_replace(Species, "s__",""))
+
+taxa_df_greengenes <- tidy_gg_taxa %>%
+    group_by(Species) %>%
+    summarise(Count = n()) %>%
+    ungroup() %>%
+    mutate(Species = fct_reorder(Species, Count))
+
+## Count info for text
+total_otus_greengenes <- sum(taxa_df_greengenes$Count)
+unassigned_idx_greengenes <- taxa_df_greengenes$Species == "Unassigned"
+no_species_assignment_greengenes <- taxa_df_greengenes$Count[unassigned_idx_greengenes]
+
+## Per genus count data - SILVA
+tidy_slv_taxa <- paeni_16S_silva %>% rowwise() %>% 
+  mutate(new = str_split(Species, boundary("word")),Species = paste(new[1],new[2])) %>% 
+  mutate(new = NULL) %>%
+  mutate(Species = if_else(!str_detect(Species, "Paenibacillus"), "Unassigned", Species)) %>%
+  mutate(Species = if_else(str_detect(Species, paste(c("Paenibacillus sp", "uncultured", "unidentified"), collapse = '|')), "Unassigned", Species)) %>%
+  mutate(Species = str_remove(Species, "Paenibacillus "))
+
+taxa_df_silva <- tidy_slv_taxa %>% 
+  group_by(Species) %>%
+  summarise(Count = n()) %>%
+  ungroup() %>%
+  mutate(Species = fct_reorder(Species, Count))
+
+## Count info for text
+total_otus_silva <- sum(taxa_df_silva$Count)
+unassigned_idx_silva <- taxa_df_silva$Species == "Unassigned"
+no_Species_assignment_silva <- taxa_df_silva$Count[unassigned_idx_silva]
+
+## Per genus count data - RDP
+tidy_rdp_taxa <- paeni_16S_rdp %>% rowwise() %>% 
+  dplyr::rename(Species = species, Genus = genus) %>% 
+  mutate(new = str_split(Species, boundary("word")), Species = paste(new[1],new[2])) %>% 
+  mutate(new = NULL) %>%
+  mutate(Species = if_else(!str_detect(Species, "Paenibacillus"), "Unassigned", Species)) %>%
+  mutate(Species = if_else(str_detect(Species, paste(c("Paenibacillus sp", "uncultured", "unidentified"), collapse = '|')), "Unassigned", Species)) %>%
+  mutate(Species = str_remove(Species, "Paenibacillus "))
+
+taxa_df_rdp <- tidy_rdp_taxa %>% 
+  group_by(Species) %>%
+  summarise(Count = n()) %>%
+  ungroup() %>%
+  mutate(Species = fct_reorder(Species, Count))
+
+## Count info for text
+total_otus_rdp <- sum(taxa_df_rdp$Count)
+unassigned_idx_rdp <- taxa_df_rdp$Species == "Unassigned"
+no_Species_assignment_rdp <- taxa_df_rdp$Count[unassigned_idx_rdp]
+#print (paste0("Number of sequences with unassigned species label: ", taxa_df_rdp$Count[taxa_df_rdp$Species == "Unassigned"]))
+```
+
+
+__TODO__ Revise text - all three databases
+For the Greengenes 13.5 database, there are a total of `r total_otus_greengenes` sequences classified as `r nlevels(taxa_df_greengenes$Species)` species in the Genus _Paenibacillus_.
+The number of sequences assigned to specific _Paenibacillus_ species range from 199 _Paenibacillus amylolyticus_ to 2 _Paenibacillus illinoisensis_ (Fig. \@ref(fig:speciesCount)).
+Sequences only classified to the genus level, "Unassigned", is the most abundant group, `r no_species_assignment_greengenes`.
+
+Similarly, we extracted _Paenibacillus_ sequences from Silva 128 database. Fig. \@ref(fig:speciesCountSilva) shows the number of species in the Genus _Paenibacillus_ in the Silva database. 
+
+For the RDP 11.5 database, all the sequences belonging to _Paenibacillus_ genus were either uncultured, unidentified, or unassigned. 
+
+```{r speciesCount, fig.cap = "Number of sequences in the Greengenes database assigned to species in the genus _Paenibacillus_ for the SILVA and Greengenes databases."}
+combined_taxa_df <- bind_rows(list(Greengenes = taxa_df_greengenes, 
+                                   SILVA = taxa_df_silva, 
+                                   RDP = taxa_df_rdp), 
+                              .id = "Database") %>% 
+  group_by(Species) %>% 
+  mutate(max_count = max(Count, na.rm = TRUE)) %>% 
+  ungroup() %>% 
+  top_n(60, max_count) %>% 
+  mutate(Species = fct_reorder(Species, max_count))
+  
+combined_taxa_df %>% 
+  group_by(Species) %>% 
+  mutate(ymin = min(Count),
+         ymax = max(Count)) %>% 
+ggplot() +
+    geom_linerange(aes(x = Species, ymin = ymin + 1, ymax = ymax + 1)) + 
+    geom_point(aes(x = Species, y = Count + 1, color = Database)) + 
+    labs(y = "Number of sequences") +
+  scale_y_log10() + 
+    coord_flip() +
+    theme_bw() +
+    theme(axis.text.y = element_text(face = "italic"),
+          legend.position = "bottom") 
+```
+
+## Taxonomic resolution
+Next, we evaluate the 16S rRNA amplicon sequencing taxonomic resolution for _Paenibacillus_ Species by comparing within and between Species amplicon pairwise distance for the V12 and V4 regions.
+To differentiate between Species the pairwise distances for within-Species amplicon sequences must be less than the between Species distances.
+Additionally ,the difference in amplicon sequence pairwise distances between and within Species must be greater than the sequencing error rate to detect the difference.
+For our taxonomic resolution analysis, we used pattern matching to extract the V12 and V4 regions of the 16S rRNA sequences.
+We then generate a pairwise distance matrix for the two regions and compare the within and between Species pairwise distances.
+Here, we work with sequences only in Greengenes 13.5 database for simplicity, the same analysis can be done with any other database.
+
+For our _in-silico_ PCR we will use the following PCR primers:
+
+|Region |Direction |Primer                             |
+|:------|:-------- |:----------------------------------|
+|V12    |Forward   | 27F - AGAGTTTGATCATGGCTCAG        |
+|       |Reverse   | 336R - CACTGCTGCSYCCCGTAGGAGTCT   |
+|V4     |Forward   | 515F - GTGCCAGCMGCCGCGGTAA        |
+|       |Reverse   | 806R - GGACTACHVGGGTWTCTAAT       |
+
+### Generating Distance Matrix for 16S Amplicons
+Demonstrate process using gg and V12. 
+Code hidden for other databases and V4, see Rmarkdown for full code, __PATH to Rmarkdown in repo__.
+
+
+Extracting the V12 region from the database sequences, only sequences with containing both forward and reverse primers are included in the analysis.
+
+```{r trimSeqs, echo = TRUE}
+forward_primer <- "AGAGTTTGATCATGGCTCAG"
+## reverse complementing reverse primer
+reverse_primer <- DNAString("CACTGCTGCSYCCCGTAGGAGTCT") %>%
+    reverseComplement() %>%
+    as.character()
+
+## Finding sequeces with forward primer
+forward_match <- Biostrings::vmatchPattern(forward_primer,
+                                           subject = paeni_16S_greengenes$seq,
+                                           max.mismatch = 2) %>%
+    as.list() %>% map_dfr(as.data.frame,.id = "seq_id")
+
+## Finding sequences with reverse primer
+reverse_match <- Biostrings::vmatchPattern(reverse_primer,
+                                           subject = paeni_16S_greengenes$seq,
+                                           max.mismatch = 2,
+                                           fixed = FALSE) %>%
+    as.list() %>% map_dfr(as.data.frame,.id = "seq_id")
+
+## sequences with both forward and reverse primers
+seqs_to_use_ids <- intersect(forward_match$seq_id, reverse_match$seq_id)
+seqs_to_use <- names(paeni_16S_greengenes$seq) %in% seqs_to_use_ids
+
+## Trimming sequences with both primers
+paeni_V12 <- TrimDNA(paeni_16S_greengenes$seq[seqs_to_use],
+                     leftPatterns = forward_primer,
+                     rightPatterns = reverse_primer,
+                     type = "both")
+
+## Excluding seqs with lenght 0
+paeni_V12_seqs <- paeni_V12[[2]][width(paeni_V12[[2]]) != 0]
+```
+
+Generating a multiple sequence alignment using the `AlignSeqs` function in the `DECIPHER` package.
+
+```{r align, echo = TRUE}
+v12_align <- AlignSeqs(paeni_V12[[2]], verbose = FALSE)
+```
+
+The resulting alignment can be viewed using the `BrowseSeqs` function in the `DECIPHER` package.
+
+```{r eval = FALSE, echo = TRUE}
+BrowseSeqs(v12_align)
+```
+
+Generating pairwise distance matrix using the `DistanceMatrix` function in the `DECIPHER` package for taxonomic resolution analysis and converting distance matrix to a data frame for analysis.
+
+```{r v12Anno, echo = TRUE}
+v12_dist <- DistanceMatrix(v12_align,
+                           correction = "none",
+                           verbose = FALSE,
+                           includeTerminalGaps = FALSE)
+```
+
+### Multiple Database Comparison
+```{r distDFfuns, echo = FALSE, message = FALSE}
+get_amp <- function(paeni_16S, forward_primer, reverse_primer){
+
+    ## Finding sequeces with forward primer
+    forward_match <- Biostrings::vmatchPattern(forward_primer, 
+                                               subject = paeni_16S, 
+                                               max.mismatch = 2) %>% 
+        as.list() %>% map_dfr(as.data.frame,.id = "seq_id")
+    
+    ## Finding sequences with reverse primer 
+    reverse_match <- Biostrings::vmatchPattern(reverse_primer, 
+                                               subject = paeni_16S, 
+                                               max.mismatch = 2,
+                                               fixed = FALSE) %>% 
+        as.list() %>% map_dfr(as.data.frame,.id = "seq_id")
+    
+    ## sequences with both forward and reverse primers 
+    seqs_to_use_ids <- intersect(forward_match$seq_id, reverse_match$seq_id)
+    seqs_to_use <- names(paeni_16S) %in% seqs_to_use_ids
+  
+    ## Trimming sequences with both primers
+    paeni_amp <- TrimDNA(paeni_16S[seqs_to_use],
+                         leftPatterns = forward_primer,
+                         rightPatterns = reverse_primer,
+                         type = "both")
+  
+    ## Excluding seqs with lenght 0
+    paeni_amp <- paeni_amp[[2]][width(paeni_amp[[2]]) != 0]
+    
+    ## Returning target seqs
+    paeni_amp
+}
+
+get_dist <- function(amp_seqs){
+  aligned_seqs <- AlignSeqs(amp_seqs, verbose = FALSE)
+  amp_dist <- DistanceMatrix(aligned_seqs,
+                            correction = "none",
+                            verbose = FALSE,
+                            includeTerminalGaps = FALSE)
+
+  Key_ord <- data.frame(Keys = rownames(amp_dist), 
+                        Keys_ord = 1:nrow(amp_dist))
+  Key2_ord <- data.frame(Keys2 = rownames(amp_dist), 
+                         Keys2_ord = 1:nrow(amp_dist))
+  
+  ## Creating a data frame for exploratory analysis
+  amp_dist_df <- amp_dist %>%
+      as.data.frame() %>%
+      rownames_to_column(var = "Keys") %>%
+      gather("Keys2","distance", -Keys) %>%
+      left_join(Key_ord) %>% 
+      left_join(Key2_ord) %>% 
+      filter(Keys_ord < Keys2_ord) %>% 
+      select(-Keys_ord, -Keys2_ord)
+}
+
+get_tidy_dist_df <- function(mgdb, tax_df, forward_primer, reverse_primer){
+    ## Get seqs and taxa
+    paeni_16S <- metagenomeFeatures::mgDb_select(mgdb,
+                              type = "seq",
+                              keys = tax_df$Keys,
+                              keytype = "Keys")
+    
+    ## Subset seqs
+    amp_seqs <- get_amp(paeni_16S, forward_primer, reverse_primer)
+    
+    ## Get distance DF 
+    amp_dist_df <- get_dist(amp_seqs)
+    
+    ## get distance df
+    amp_dist_anno_df <- amp_dist_df %>%
+      left_join(tax_df) %>%
+      left_join(tax_df,by = c("Keys2" = "Keys")) %>%
+      dplyr::rename(Keys_Species = Species.x, 
+                    Keys2_Species = Species.y) %>%
+      mutate(group_comp = if_else(Keys_Species == Keys2_Species, 
+                                  "within","between"))
+
+    ## Return tidy dataframe
+    amp_dist_anno_df
+}
+```
+
+```{r getDistDF, echo = FALSE, message = FALSE}
+### GG
+gg_for_seq_comp <- tidy_gg_taxa %>% filter(!is.na(rnacentral_ids), Species != "Unassigned")
+
+### SILVA
+slv_for_seq_comp <- tidy_slv_taxa %>% filter(!is.na(RNAcentralID), Species != "Unassigned")
+
+### RDP
+rdp_for_seq_comp <- tidy_rdp_taxa %>% filter(!is.na(RNAcentralID), Species != "Unassigned")
+
+## V12 Amplicon
+forward_primer <- "AGAGTTTGATCATGGCTCAG"
+## reverse complementing reverse primer
+reverse_primer <- DNAString("CACTGCTGCSYCCCGTAGGAGTCT") %>% 
+    reverseComplement() %>% 
+    as.character()
+
+taxa_list <- list(gg = gg_for_seq_comp, 
+                  slv = slv_for_seq_comp, 
+                  rdp = rdp_for_seq_comp)
+
+multidb_dist_V12_df <- map2_dfr(db_list, taxa_list,
+                                get_tidy_dist_df,
+                                forward_primer,
+                                reverse_primer,
+                                .id = "Database")
+
+## V4 Amplicon
+forward_primer <- "GTGCCAGCMGCCGCGGTAA"
+## reverse complementing reverse primer
+reverse_primer <- "ATTAGAWACCCBDGTAGTCC"
+
+multidb_dist_V4_df <- map2_dfr(db_list, taxa_list,
+                                get_tidy_dist_df,
+                                forward_primer,
+                                reverse_primer,
+                                .id = "Database")
+
+## Combine into a single dataframe 
+multidb_dist_df <- bind_rows(
+  list(V12 = multidb_dist_V12_df, 
+       V4  = multidb_dist_V4_df),
+  .id = "amplicon")
+```
+
+__TODO__ Check about removal
+```{r}
+# ## Excluding outlier sequence "329842" - mean pairwise distance to all other
+# ## sequences is 0.2
+# v4_dist_anno_filt <- filter(v4_dist_anno_df, 
+#                              Keys != "329842", 
+#                              Keys2 != "329842")
+```
+
+
+#### Amplicon Sequence Lengths
+The trimmed sequence length varies for forward and reverse primers resulting in varying amplicon sizes for both the V12 and V4 amplicons (Fig. \@ref(fig:trimInfo)).
+
+```{r trimInfo, fig.cap = "Primer trimmed sequence, amplicon, length and start and end positions relative to full length sequences for the V12 and V4 regions."}
+# list(V12 = paeni_V12[[1]], V4 = paeni_V4[[1]]) %>%
+#     map_dfr(as.data.frame, .id = "amplicon") %>% 
+#     filter(width != 0) %>% 
+#     gather("key","value", -names, -amplicon) %>%
+#     mutate(key = if_else(key == "width", "length", key),
+#            key = factor(key, levels = c("length","start","end"))) %>%
+#     mutate(position_type = if_else(key == "length",
+#                                    "length", "position")) %>%
+#     ggplot() +
+#     geom_histogram(aes(x = value, fill = key), bins = 100) +
+#     facet_grid(amplicon~position_type, scales = "free") +
+#     theme_bw()
+```
+
+
+#### Genus Level Comparison
+
+Pairwise distance is significantly different for within and between Species comparisons indicating that the V12 and V4 regions are potentially suitable forclassifying members of the _Paenibacillus_ genus to the Species level (Fig. \@ref(fig:pairDist)).
+Overall the V12 region had greater pairwise distances than V4 for both within and between Species.
+It is important also to consider that the majority of sequences in the database were only classified to the genus level.
+Species-level information for these sequences might yield results that are inconsistent with our analysis.
+Additionally, our analysis does not identify the pairwise sequence distance required to classify a sequence as a novel _Paenibacillus_ Species.
+
+```{r pairDist, fig.cap = "Distribution of within and between Species pairwise distances for the V12 and V4 16S rRNA region. Sequences not classified to the Species level were excluded from the analysis."}
+multidb_dist_df  %>% 
+  # filter(Database == "gg") %>% 
+    ggplot(aes(x = group_comp, y = distance, fill = Database)) +
+    geom_boxplot() +
+    facet_grid(.~amplicon) +
+    labs(x = "Species Comparison", fill = "Database") +
+        theme_bw() +
+    theme(legend.position = "bottom")
+```
+
+
+#### Species level comparison
+While the overall pairwise distance is greater between Species than within Species for the _Paenibacillus_ genus, it is important to understand how the within and between Species pairwise distances compare for individual Species.
+The heatmap below shows pairwise distance information for within and between different _Paenibacillus_ Species for the V12 and V4 regions (Fig. \@ref(fig:distHeatMap)).
+Whether the sequences are assigned to more than one OTU depends on the pairwise sequence distance metric and linkage method employed by the clustering algorithm.
+In general though for Species levels classification the maximum within Species distance should be less than the minimum between Species distance.
+For example as the maximum within Species pairwise distance for _P. lentimorbus_ is 0.13 and the minimum between Species pairwise distance for _P. lentimorbus_ and _P. alvei_ is 0.08 (Fig. \@ref(fig:distHeatMap)A), correctly assigning a V12 amplicon sequences to one of these two Species is not possible.
+
+__REVISE figure legend__
+```{r distHeatMap, fig.cap = "Pairwise distances between _Paenibacillus_ Species (A) V12 and (B) V4 amplicon regions. Fill color indicates the mean pairwise sequence distance within and between Species. The text indicates the maximum pairwise distance for within-Species comparisons, values along the diagonal, and maximum pairwise distance for between Species comparisons. Different number of Species are included in the V12 and V4 plots as there are no full-length \\textit{P. chondroitinus} sequences with the V12 primer in the database.", fig.height = 8}
+multidb_dist_df %>% 
+  filter(Keys_Species %in% c("polymyxa", "amylolyticus", "lautus","chondroitinus"),
+         Keys2_Species %in% c("polymyxa", "amylolyticus", "lautus","chondroitinus")) %>% 
+    ggplot() +
+    geom_boxplot(aes(x = amplicon,
+                    y = distance,
+                    fill = Database)) +
+    facet_grid(Keys_Species~Keys2_Species) +
+   theme_bw()
+```
+
+
+## Conclusion
+Here we demonstrate how the _metagenomeFeatures_ package in conjunction with one of the associated 16S rRNA database packages, _greengenes13.5MgDb_, and other R packages, can be used to evaluate whether Species-level taxonomic classification is possible for a specific amplicon region.
+The approach used here can easily be extended to use different 16S rRNA databases (starting with a different `MgDb`class object), taxonomic groups (changing filtering parameters), or amplicon regions (changing primer sequences).
+
+********************************************************************************
+
+## Session Information
+### System Information
+```{r warning = FALSE}
+s_info <- devtools::session_info(include_base = FALSE)
+pander::pander(s_info$platform)
+```
+
+### Package Versions
+```{r}
+s_info$packages %>% filter(`*` == "*") %>% select(-`*`) %>%
+    knitr::kable(booktabs = TRUE)
+```
+
+
+<!-- __Potential reference__ https://www.biorxiv.org/content/early/2018/03/25/288654?%3Fcollection= -->
+<!-- Sequencing of the 16S ribosomal RNA (rRNA) gene and the fungal Internal Transcribed Spacer (ITS) region is widely used to survey microbial communities. Specialized ribosomal sequence databases have been developed to support this approach including Greengenes, SILVA and RDP. Most taxonomy annotations in these databases are predictions from sequence rather than authoritative assignments based on studies of type strains or isolates. Here, I investigate the error rates of taxonomy annotations in these databases. I found 253,485 sequences with conflicting annotations in SILVA v128 and Greengenes v13.5 at ranks up to phylum (9,644 conflicts), indicating that the annotation error rate in these databases is ~15%. I found that 34% of non-singleton genera have overlapping subtrees in the Greengenes tree from 2001 according to the RDP taxonomy, most of which are probably due to branching order errors in the Greengenes tree, which is therefore an unreliable guide to phylogeny. Using a blinded test, I estimated that the annotation error rate of the RDP database is ~10%. -->
