@@ -4,7 +4,7 @@ author:
 - name: Nathan D. Olson
   affiliation: National Institute of Standards and Technology, Maryland, USA
 package: metagenomeFeatures
-output: 
+output:
     BiocStyle::html_document:
         toc_float: true
 vignette: >
@@ -36,7 +36,7 @@ The database connection is managed using the `r CRANpkg("RSQLite")` R package, a
 The `r Biocpkg("DECIPHER")` package is used to format the sequence data as an SQLite database and provides functions for working directly with the sequence data in the SQLite database. 
 The `phylo-class`, from the `r CRANpkg("APE")` R package, defines the tree slot. 
 
-The following examples utilize `gg85` the example `MgDb-class` object included in the `r Biocpkg("metagenomeFeatures")` package. `MgDb-class` objects with full databases are in separate Bioconductor Annotation packages such as the `r Biocpkg("greengenesMgDb13.5")` package.[^1]
+The following examples utilize `gg85` as the example `MgDb-class` object included in the `r Biocpkg("metagenomeFeatures")` package. `MgDb-class` objects with full databases are in separate Bioconductor Annotation packages such as the `r Biocpkg("greengenesMgDb13.5")` package.[^1]
 
 After loading the `r Biocpkg("metagenomeFeatures")`, the `get_gg13.8_85MgDb()` is use to load the `gg85` database. The taxonomy table is stored in a SQLite database and the taxonomy slot is an open connection to the database. 
 
