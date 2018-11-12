@@ -109,7 +109,7 @@ make_mgdb_sqlite <- function(db_name, db_file, taxa_tbl, seqs) {
     ## seqs either a fasta file or DNAStringSet
     if (is.character(seqs)) {
         if (file.exists(seqs)) {
-            seqs <- readDNAStringSet(seqs)
+            seqs <- Biostrings::readDNAStringSet(seqs)
         } else {
             stop("seqs is a character string but no file exists, check filename")
         }
@@ -139,7 +139,7 @@ make_mgdb_sqlite <- function(db_name, db_file, taxa_tbl, seqs) {
     ## Taxa tbl ids and string ids match and are in the same order
     taxa_tbl$Keys <- as.character(taxa_tbl$Keys)
     taxa_tbl <- taxa_tbl[match(names(seqs), taxa_tbl$Keys),]
-    rownames(taxa_tbl) <- 1:nrow(taxa_tbl)
+    rownames(taxa_tbl) <- seq_len(nrow(taxa_tbl))
 
     ## Create database with taxa and sequence data
     db_conn <- dbConnect(SQLite(), db_file)
@@ -152,7 +152,7 @@ make_mgdb_sqlite <- function(db_name, db_file, taxa_tbl, seqs) {
     # get seqs table from database
     db_seqs <- dbReadTable(db_conn, "Seqs")
 
-    taxa_tbl$row_names <- seq(1:nrow(taxa_tbl))
+    taxa_tbl$row_names <- seq_len(nrow(taxa_tbl))
 
     # merge taxa data with seq table
     db_merge_table <- merge(db_seqs, taxa_tbl, by='row_names')
@@ -202,7 +202,7 @@ newMgDb <- function(db_file, tree, metadata){
     db_conn <- dbConnect(SQLite(), db_file)
 
     ## taxa slot
-    taxa_dbi <- tbl(src = db_conn, from = "Seqs")
+    taxa_dbi <- dplyr::tbl(src = db_conn, from = "Seqs")
 
     ## tree slot
     if (!(is.character(tree) | is.null(tree))) {
