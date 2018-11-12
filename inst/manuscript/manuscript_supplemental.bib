@@ -16,10 +16,78 @@
     pages = {352-359},
 }
 
+
+@ARTICLE{Wright2015-me,
+  title    = "{DECIPHER}: harnessing local sequence context to improve protein
+              multiple sequence alignment",
+  author   = "Wright, Erik S",
+  abstract = "BACKGROUND: Alignment of large and diverse sequence sets is a
+              common task in biological investigations, yet there remains
+              considerable room for improvement in alignment quality. Multiple
+              sequence alignment programs tend to reach maximal accuracy when
+              aligning only a few sequences, and then diminish steadily as more
+              sequences are added. This drop in accuracy can be partly
+              attributed to a build-up of error and ambiguity as more sequences
+              are aligned. Most high-throughput sequence alignment algorithms
+              do not use contextual information under the assumption that sites
+              are independent. This study examines the extent to which local
+              sequence context can be exploited to improve the quality of large
+              multiple sequence alignments. RESULTS: Two predictors based on
+              local sequence context were assessed: (i) single sequence
+              secondary structure predictions, and (ii) modulation of gap costs
+              according to the surrounding residues. The results indicate that
+              context-based predictors have appreciable information content
+              that can be utilized to create more accurate alignments.
+              Furthermore, local context becomes more informative as the number
+              of sequences increases, enabling more accurate protein alignments
+              of large empirical benchmarks. These discoveries became the basis
+              for DECIPHER, a new context-aware program for sequence alignment,
+              which outperformed other programs on large sequence sets.
+              CONCLUSIONS: Predicting secondary structure based on local
+              sequence context is an efficient means of breaking the
+              independence assumption in alignment. Since secondary structure
+              is more conserved than primary sequence, it can be leveraged to
+              improve the alignment of distantly related proteins. Moreover,
+              secondary structure predictions increase in accuracy as more
+              sequences are used in the prediction. This enables the scalable
+              generation of large sequence alignments that maintain high
+              accuracy even on diverse sequence sets. The DECIPHER R package
+              and source code are freely available for download at
+              DECIPHER.cee.wisc.edu and from the Bioconductor repository.",
+  journal  = "BMC Bioinformatics",
+  volume   =  16,
+  pages    = "322",
+  month    =  oct,
+  year     =  2015,
+  language = "en"
+}
+
+
 @Manual{ggpubr,
     title = {ggpubr: 'ggplot2' Based Publication Ready Plots},
     author = {Alboukadel Kassambara},
     year = {2017},
     note = {R package version 0.1.6},
     url = {https://CRAN.R-project.org/package=ggpubr},
+}
+
+@article{grady2016,
+  title={Current knowledge and perspectives of Paenibacillus: a review},
+  author={Grady, Elliot Nicholas and MacDonald, Jacqueline and Liu, Linda and Richman, Alex and Yuan, Ze-Chun},
+  journal={Microbial cell factories},
+  volume={15},
+  number={1},
+  pages={203},
+  year={2016},
+  publisher={BioMed Central}
+}
+@article{ouyang2008,
+  title={Paenibacillus thiaminolyticus: a new cause of human infection, inducing bacteremia in a patient on hemodialysis},
+  author={Ouyang, Jie and Pei, Zhiheng and Lutwick, Larry and Dalal, Sharvari and Yang, Liying and Cassai, Nicholas and Sandhu, Kuldip and Hanna, Bruce and Wieczorek, Rosemary L and Bluth, Martin and others},
+  journal={Annals of Clinical \& Laboratory Science},
+  volume={38},
+  number={4},
+  pages={393--400},
+  year={2008},
+  publisher={Assoc Clin Scientists}
 }
