@@ -8,10 +8,12 @@
 #' get_gg13.8_85MgDb()
 get_gg13.8_85MgDb <- function(){
     ## Data generated using make_greengenes13.8_85.R script in inst/scripts
-
-    metadata_file <- system.file("extdata", 'gg13.8_85_metadata.RData',
-                           package = "metagenomeFeatures")
-    load(metadata_file, envir=globalenv())
+    metadata <- list(ACCESSION_DATE = date(),
+                     URL = "ftp://greengenes.microbio.me/greengenes_release/gg_13_8_otus",
+                     DB_TYPE_NAME = "GreenGenes",
+                     DB_VERSION = "13.8 85% OTUS",
+                     DB_TYPE_VALUE = "MgDb",
+                     DB_SCHEMA_VERSION = "2.0")
 
     gg_db_file <- system.file("extdata", 'gg13.8_85.sqlite',
                                 package = "metagenomeFeatures")
