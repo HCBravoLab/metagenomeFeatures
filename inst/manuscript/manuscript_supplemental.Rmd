@@ -7,16 +7,16 @@ bibliography: manuscript_supplemental.bib
 ---
 
 # Background
-16S rRNA amplicon sequencing is commonly used for microbial community characterization, including differential abundance analysis.
+16S rRNA amplicon sequencing is commonly used for microbial community characterization, including differential abundance and diversity analysis.
 A limitation to 16S rRNA amplicon sequencing is a lack of taxonomic resolution, where organisms are only identifiable to the genus or family level.
 We define taxonomic resolution as the ability to differentiate between groups within a taxonomic level, for example, differentiating between species within a genus.
 We are interested in determining whether the 16S rRNA region of interest contains sufficient information for species-level taxonomic assignment.
 Taxonomic resolution varies by clade and amplicon regions.
 However, the extent to which taxonomic resolution varies is not well characterized.
 
-There are multiple 16S rRNA databases whose maintainers use different curation approaches resulting in different taxonomic and sequence compositions as well as being differently formatted. 
-One can perform taxonomic or other 16S rRNA sequence analysis on an individual databases but with metagenomeFeatures and MgDb annotation packages the same analysis can easily be performed on multiple databases, increasing the power of the analysis.
-Here we demonstrate how `metagenomeFeatures` and the `MgDb` annotation packages can be used to characterize taxonomic resolution for a specific clade and amplicon region, specifically for the _Paenibacillus_ genus and V12 and V4 regions.
+There are multiple 16S rRNA databases each using their own file format and whose maintainers use different curation approaches resulting in different taxonomic and sequence compositions. 
+One can perform taxonomic or other 16S rRNA sequence analysis on an individual database but with `metagenomeFeatures` and `MgDb` annotation packages the same analysis can easily be performed on multiple databases, increasing the power of the analysis.
+Here we demonstrate how `metagenomeFeatures` and the `MgDb` annotation packages can be used to characterize taxonomic resolution for the _Paenibacillus_ genus and V12 and V4 amplicon regions.
 Originally, _Paenibacillus_ was classified under the _Bacillus_ genus, a novel genus was formed based on the 16S rRNA gene similarity in the 1990s.
 _Paenibacillus_ spp. are facultative anaerobic bacteria present in a variety of environments including the soil, water, and can act as opportunistic pathogens in humans [@ouyang2008].
 It has been shown that _Paenibacillus_ spp. will play an important role in sustainable agricultural industries [@grady2016].
@@ -24,7 +24,7 @@ Thus, an appropriate speciation of this genus is of an interest to the community
 
 We used V12 and V4 region as they represent two commonly used amplicons for 16S rRNA marker-gene surveys.
 We will use the Greengenes 13.5 database, accessed using the `greengenes13.5MgDb`, Silva 128 database, accessed using the `silva128.1MgDb`, and RDP 11.5 database, accessed using the `ribosomaldatabaseproject11.5MgDb`, as annotation packages for our analysis of the _Paenibacillus_ genus.
-First, we show the distribution of sequences belonging to _Paenibacillus_ in these three database, and then a way to combine different subsets of database sequences to build a custom database object.
+First, we show the distribution of sequences belonging to _Paenibacillus_ in these three databases, and then a way to combine different subsets of database sequences to build a custom database object.
 This helps investigators to pool sequences from different databases, to create an accurate and most representative database for their sample.
 This is especially helpful when a certain clade of interest is not very well represented in the databases.
 We then evaluate 16S rRNA amplicon sequencing taxonomic resolution for _Paenibacillus_ species for V12 and V4 regions.
@@ -32,7 +32,7 @@ In many analyses, the Greengenes 13.5 database is used for demonstration purpose
 
 While the databases provide a consistent interface to the different 16S rRNA databases, the databases use different approaches to formatting the taxonomic names.
 As a result, the majority of the code used to produce this document is tidying the data.
-This code is not shown in the document but is available in the source Rmarkdown file which is provided as supplemental material and available in the metagenomeFeatures github repository.[^1] 
+This code is not shown in the document but is available in the source Rmarkdown file which is provided as supplemental material and available in the metagenomeFeatures GitHub repository.[^1] 
 
 [^1]: https://github.com/HCBravoLab/metagenomeFeatures/blob/master/inst/manuscript/manuscript_supplemental.Rmd
 
@@ -54,7 +54,7 @@ library(ribosomaldatabaseproject11.5MgDb)
 ```
 
 # 16S rRNA Database Comparison
-We have developed 16S rRNA MgDb annotation packages for three 16S rRNA databases, Greengenes, SILVA, and RDP. 
+We developed 16S rRNA MgDb annotation packages for three 16S rRNA databases, Greengenes, SILVA, and RDP. 
 RNAcentral, a meta-database for non-coding RNA sequences provides cross database unique identifiers for sequences in the databases. 
 The number of sequences in the databases and fraction of sequences with RNAcentralIDs varies for the three databases (Table \@ref(tab:dbSize)). 
 Using the RNAcentral IDs we can evaluate the overlap between the three databases (Fig. \@ref(fig:dbVenn)). 
@@ -123,7 +123,7 @@ upset(fromList(rna_central_id_list), order.by = "freq")
 ```
 
 # _Paenibacillus_ Taxonomic Resolution
-For the taxonomic resolution analysis we will;
+For the taxonomic resolution analysis, we will:
 1. characterize the taxonomic composition of the _Paenibacillus_ genus in the three databases,
 2. calculate pairwise distances between sequences for 30 species with the most sequences,
 3. evaluate pairwise distances within and between species.
@@ -207,13 +207,13 @@ no_Species_assignment_rdp <- taxa_df_rdp$Count[unassigned_idx_rdp]
 
  
 For _Paenibacillus_ genus the databases vary in the number of sequences for each species with some databases not having any sequences for some species (Fig. \@ref(fig:speciesCount)). 
-With a relatively small overlap between the databases, multiple database analysis provide additional power  (Fig. \@ref(fig:dbVenn)). 
+With a relatively small overlap between the databases, multiple database analysis provides additional power  (Fig. \@ref(fig:dbVenn)). 
 The three database maintainers differ in their curation approaches, taxonomic name formatting, and update frequency. 
 There are benefits to using all three databases in a cross database analysis. 
-The Greengenes database taxonomic name is more rigidly formatted, only including the major taxonmic levels, e.g. does not include intermediate level such as suborder, and only goes to the species level. 
+The Greengenes database taxonomic name is more rigidly formatted, only including the major taxonomic levels, e.g. does not include intermediate level such as suborder, and only goes to the species level. 
 As a result, species name parsing is unlikely to negatively impact the results. 
 SILVA and RDP are consistently updated while Greengenes has not been updated since 2013, and therefore it does not contain sequences that were not available in 2013. As a result, the SILVA and RDP databases are significantly more comprehensive than Greengenes.
-Both, the SILVA and RDP taxonomic name formating include intermediate taxonomic levels allowing for more fine grained taxonomic analysis. 
+Both, the SILVA and RDP taxonomic name formatting include intermediate taxonomic levels allowing for more fine grained taxonomic analysis. 
 Additionally, the SILVA database is the only one of the three to include eukaryotic 16S sequences as well as prokaryotic sequences.
 For our analysis of the  _Paenibacillus_, the and issue with all databases is that the sequences only classified to the genus level ("Unassigned" at species level) is the most abundant group, Greeengenes - `r no_species_assignment_greengenes`, SILVA - `r no_Species_assignment_silva`, and RDP - `r no_Species_assignment_rdp` (Fig. \@ref(fig:speciesCount)).  
 
@@ -282,7 +282,7 @@ paeni_16S_greengenes <- metagenomeFeatures::mgDb_select(gg13.5MgDb,
                           keys = "Paenibacillus",
                           keytype = "Genus")
 
-## Finding sequeces with forward primer
+## Finding sequences with forward primer
 forward_match <- Biostrings::vmatchPattern(forward_primer,
                                            subject = paeni_16S_greengenes$seq,
                                            max.mismatch = 2) %>%
@@ -485,8 +485,8 @@ multidb_dist_df <- filter(multidb_dist_df, Keys != "329842",Keys2 != "329842")
 
 Pairwise distance is smaller within than between species, indicating that the V12 and V4 regions are potentially suitable for classifying members of the _Paenibacillus_ genus to the Species level (Fig. \@ref(fig:pairDist)). 
 The median and interquartile pairwise distance range for within and between species comparisons in consistent across the three databases further supporting our observation. 
-A large number of outliers, pairwise distances past the boxplot wiskers, were observed for all three databases. 
-Outliers below the between between species boxplots and above the within species are problematic for species level classification. 
+A large number of outliers, pairwise distances past the boxplot whiskers, were observed for all three databases. 
+Outliers below the between species boxplots and above the within species are problematic for species level classification. 
 The sequences and taxonomic assignment of these outliers should be evaluated to ensure they are not errors in the database, a result of incorrect database parsing, or are examples where phylogeny and taxonomy are inconsistent. 
 
 
@@ -507,15 +507,10 @@ multidb_dist_df  %>%
 
 
 #### Species level comparison
-Add text for new figure
-
-<!--
-While the overall pairwise distance is greater between Species than within Species for the _Paenibacillus_ genus, it is important to understand how the within and between Species pairwise distances compare for individual Species.
-The heatmap below shows pairwise distance information for within and between different _Paenibacillus_ Species for the V12 and V4 regions (Fig. \@ref(fig:distHeatMap)).
-Whether the sequences are assigned to more than one OTU depends on the pairwise sequence distance metric and linkage method employed by the clustering algorithm.
-In general though for Species levels classification the maximum within Species distance should be less than the minimum between Species distance.
-For example as the maximum within Species pairwise distance for _P. lentimorbus_ is 0.13 and the minimum between Species pairwise distance for _P. lentimorbus_ and _P. alvei_ is 0.08 (Fig. \@ref(fig:distHeatMap)A), correctly assigning a V12 amplicon sequences to one of these two Species is not possible.
--->
+While the overall pairwise distance is greater between than within species for the _Paenibacillus_ genus, it is important to understand how within and between species pairwise distances compare for individual Species.
+The within species pairwise for _P. amylolyticus_ distances are similar to between species distances for _P. pabuli_ and _P. illnoisensis_ (Fig. \@ref(fig:speciesComp)). 
+When including outliers the within pairwise distances for _P. amylolyticus_ is in the range of between pairwise distances for other _P. spp._.
+Similar to the genus level comparison investigation of the outliers sequences and strains is required to evaluate the taxonomic resolution for _Paenibacillus_.
 
 ```{r speciesComp, fig.cap = "Pairwise distances within the _Paenibacillus amylolyticus_  species and between  _P. amylolyticus_ and the 9 other most represented species.", echo = FALSE}
 multidb_dist_df %>%
