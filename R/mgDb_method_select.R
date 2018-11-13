@@ -30,6 +30,7 @@
 # #' @param keys keys to filter
 # #' @param columns columns to select, defaults to all
 #' @importFrom dplyr select
+#' @importFrom dplyr select_
 #' @importFrom dplyr filter
 #' @importFrom dplyr collect
 #' @importFrom stringr str_c
@@ -96,7 +97,7 @@
 # #' @param keytype keytypes to select
 # #' @param keys keys to filter
 # #' @param columns columns to select, defaults to all
-# #' @import dplyr
+#' @importFrom dplyr select_
 # #' @keywords internals
 .select <- function(mgdb, type, keys, keytype, columns){
     ## check correct types
@@ -128,6 +129,9 @@
     # vector with all objects to return
     if ("taxa" %in% type || type == "all") {
         ## Removing decipher columns
+        ## avoiding namespace conflict with colname arguments in select
+        description <- NULL
+        identifier <- NULL
         select_obj$taxa <- dplyr::select(taxa_df, -row_names,
                                          -description, -identifier)
     }

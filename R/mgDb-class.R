@@ -7,10 +7,10 @@
 
 ## MgDb Class ------------------------------------------------------------------
 
-#' Tree can be either rds with phylo class object or tree file
-#' @param tree_file location of tree
+# #' Tree can be either rds with phylo class object or tree file
+# #' @param tree_file location of tree
 #' @importFrom ape read.tree
-#' @keywords internals
+# #' @keywords internals
 .load_tree <- function(tree_file){
     if (!file.exists(tree_file)) {
         stop(paste0("tree_file:", tree_file, " is not a valid file path"))
