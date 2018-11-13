@@ -1,4 +1,4 @@
-## Setting phylo and phyloOrNULL class for MGDb and mgFeatures
+## Setting phylo and phyloOrNULL class for MgDb and mgFeatures
 
 setOldClass("phylo")
 
