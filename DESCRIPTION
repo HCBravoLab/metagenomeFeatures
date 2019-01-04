@@ -1,6 +1,6 @@
 Package: metagenomeFeatures
 Title: Exploration of marker-gene sequence taxonomic annotations
-Version: 2.3.01
+Version: 2.3.2
 Author: Nathan D. Olson, Joseph Nathaniel Paulson, Hector Corrada Bravo
 Maintainer: Nathan D. Olson <nolson@umiacs.umd.edu>
 Description: metagenomeFeatures was developed for use in exploring
@@ -52,7 +52,7 @@ Collate:
 VignetteBuilder: knitr
 URL: https://github.com/HCBravoLab/metagenomeFeatures
 BugReports: https://github.com/HCBravoLab/metagenomeFeatures/issues
-biocViews: Microbiome, Metagenomics, Annotation, Infrastructure, Sequencing,
+biocViews: ImmunoOncology, Microbiome, Metagenomics, Annotation, Infrastructure, Sequencing,
     Software
 NeedsCompilation: no
 RoxygenNote: 6.1.0
