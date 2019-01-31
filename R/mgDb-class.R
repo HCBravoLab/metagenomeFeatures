@@ -25,7 +25,7 @@
     tree
 }
 
-setOldClass(c("tbl_dbi"))
+setOldClass(c("tbl_SQLiteConnection"))
 #' Metagenome Database class
 #'
 #' The MgDb-class object contains sequence, taxonomic data, and a phylogenetic
@@ -53,7 +53,7 @@ setOldClass(c("tbl_dbi"))
 #' @importClassesFrom RSQLite SQLiteConnection
 setClass("MgDb",
          slots = list(seq = "SQLiteConnection",
-                      taxa = "tbl_dbi",
+                      taxa = "tbl_SQLiteConnection",
                       tree = "phyloOrNULL",
                       ## Add db file path to metadata list
                       ## use hash to check for changes
@@ -235,7 +235,7 @@ setValidity("MgDb", function(object) {
     }
     ## Add check for valid DECIPHER database structure - two table system
 
-    if (!("taxa" %in% slotNames(object)) || !is(object@taxa, "tbl_dbi")) {
+    if (!("taxa" %in% slotNames(object)) || !is(object@taxa, "tbl_SQLiteConnection")) {
         msg <- paste(msg, "'taxa' slot must contain a tbl object", sep = "\n")
     }
     ## Add checks for taxa heirarchy.
