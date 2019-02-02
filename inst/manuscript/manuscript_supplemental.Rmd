@@ -541,14 +541,16 @@ The approach used here can easily be extended to evaluate taxonomic groups (chan
 
 # Session Information {#sessionInfo}
 ## System Information
-```{r warning = FALSE}
-s_info <- devtools::session_info(include_base = FALSE)
-pander::pander(s_info$platform)
+```{r}
+sessioninfo::platform_info()
 ```
+
 
 ## Package Versions
 ```{r}
-s_info$packages %>% filter(`*` == "*") %>% select(-`*`) %>%
+sessioninfo::package_info() %>% 
+  filter(attached == TRUE) %>% 
+  select(package, loadedversion, source) %>% 
     knitr::kable(booktabs = TRUE)
 ```
 
