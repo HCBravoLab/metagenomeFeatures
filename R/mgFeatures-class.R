@@ -2,7 +2,7 @@
 #' Class mgFeature
 #'
 #' Class defines taxonomic annotation and reference sequence data for
-#' classified OTUs. The class extends the \link[S4Vectors]{DataFrame}
+#' classified OTUs. The class indirectly extends the \link[S4Vectors]{DataFrame}
 #' class with a slot with a subset of the reference database sequences and
 #' phylogenetic tree for taxonomically classified OTUs, along with an additional
 #' slot for metadata including information on the database source.
@@ -10,7 +10,7 @@
 #' @return mgFeature class object
 #' @name mgFeatures-class
 #' @rdname mgFeatures-class
-#' @importFrom S4Vectors DataFrame
+#' @import S4Vectors
 #' @exportClass mgFeatures
 #' @examples
 #' data(mock_mgF)
@@ -18,7 +18,7 @@ setClass("mgFeatures",
          slots = list(metadata = "list",
                       refDbSeq = "DNAStringSetOrNull",
                       refDbTree = "phyloOrNULL"),
-         contains = c("DataFrame")
+         contains = c("DFrame")
 )
 
 ## making sure new object conforms to class definition

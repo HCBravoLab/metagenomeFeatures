@@ -24,7 +24,7 @@ mgFeatures-class object
 }
 \description{
 Class defines taxonomic annotation and reference sequence data for
-classified OTUs. The class extends the \link[S4Vectors]{DataFrame}
+classified OTUs. The class indirectly extends the \link[S4Vectors]{DataFrame}
 class with a slot with a subset of the reference database sequences and
 phylogenetic tree for taxonomically classified OTUs, along with an additional
 slot for metadata including information on the database source.
