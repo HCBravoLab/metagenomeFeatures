@@ -55,5 +55,5 @@ BugReports: https://github.com/HCBravoLab/metagenomeFeatures/issues
 biocViews: ImmunoOncology, Microbiome, Metagenomics, Annotation, Infrastructure, Sequencing,
     Software
 NeedsCompilation: no
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Encoding: UTF-8
