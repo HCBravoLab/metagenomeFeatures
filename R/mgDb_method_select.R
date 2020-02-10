@@ -127,7 +127,7 @@
     row_names <- taxa_df$row_names
 
     # vector with all objects to return
-    if ("taxa" %in% type || type == "all") {
+    if ("taxa" %in% type || (length(type)  == 1 && type == "all")) {
         ## Removing decipher columns
         ## avoiding namespace conflict with colname arguments in select
         description <- NULL
@@ -136,17 +136,17 @@
                                          -description, -identifier)
     }
 
-    if ("seq" %in% type || type == "all") {
+    if ("seq" %in% type || (length(type)  == 1 && type == "all")) {
         select_obj$seq <- .select.seq(mgDb_seq(mgdb),
                                       taxa_df$row_names, taxa_df$Keys)
     }
 
-    if ("tree" %in% type || type == "all") {
+    if ("tree" %in% type || (length(type)  == 1 && type == "all")) {
         select_obj$tree <- .select.tree(mgDb_tree(mgdb), taxa_df$Keys)
     }
 
     ## return single obj if only selecting one type
-    if (type != "all" && length(type)  == 1) {
+    if (length(type)  == 1 && type != "all") {
         select_obj <- select_obj[[type]]
     }
 
